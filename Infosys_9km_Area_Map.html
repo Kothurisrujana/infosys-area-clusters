@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Infosys 9 km Area Map</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: full-height map with a distance-sorted area register beside it */
+:root{--bg:#f6f7f5;--panel:#fff;--fg:#1d2a2c;--muted:#5d6b6d;--line:#dde2df;--ring:#0b6e75;--own:#c2410c;--dot:#0b6e75;--font:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+[hidden]{display:none!important}
+body{font:14px/1.4 var(--font);color:var(--fg);background:var(--bg);display:grid;grid-template-columns:320px 1fr;height:100vh}
+aside{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0;min-width:0}
+header{padding:16px;border-bottom:1px solid var(--line)}
+h1{font-size:18px;font-weight:600;margin:0 0 4px;text-wrap:balance}
+header p{margin:0;color:var(--muted);font-size:13px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:12px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.sw{width:10px;height:10px;border-radius:50%;background:var(--dot);display:inline-block}.sw.own{background:var(--own)}.sw.ring{background:none;border:2px dashed var(--ring)}.sw.hq{background:var(--fg);border-radius:2px;transform:rotate(45deg)}
+#q{margin:12px 16px;padding:8px 10px;font:inherit;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)}
+#list{list-style:none;margin:0;padding:0 0 12px;overflow:auto;flex:1;min-height:0}
+#list button{all:unset;box-sizing:border-box;display:grid;grid-template-columns:1fr 34px 46px;gap:6px;width:100%;padding:6px 16px;cursor:pointer}
+#list button:hover,#list button:focus-visible{background:var(--bg)}
+#list button:focus-visible{box-shadow:inset 0 0 0 2px var(--ring)}
+#list .own{color:var(--own);font-weight:600}
+#list .d,#list .k{color:var(--muted);font-size:12px;text-align:right;font-variant-numeric:tabular-nums;align-self:center}
+#map{min-width:0;min-height:0;background:#e8ecea}
+.lbl{position:absolute;white-space:nowrap;font:500 11.5px/1.1 var(--font);color:#16282a;text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 2px #fff,0 0 1px #fff;pointer-events:none}
+.lbl.own{color:#9a3208;font-weight:600;font-size:12.5px}
+.lbl.hq{font-weight:600;font-size:13px;color:#000}
+.hq-mark{width:14px;height:14px;background:#111;border:2px solid #fff;transform:rotate(45deg);box-shadow:0 0 0 1px #111}
+@media (max-width:760px){body{grid-template-columns:1fr;grid-template-rows:62vh auto;height:auto;min-height:100vh}#map{grid-row:1;height:62vh}aside{grid-row:2;border-right:0}#list{overflow:visible}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#172022;--panel:#1e292b;--fg:#e6ecea;--muted:#9fadab;--line:#33413f;--ring:#57c7cf;--own:#fb923c;--dot:#57c7cf;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#172022;--panel:#1e292b;--fg:#e6ecea;--muted:#9fadab;--line:#33413f;--ring:#57c7cf;--own:#fb923c;--dot:#57c7cf;color-scheme:dark}
+</style></head><body>
+<aside><header><h1>Areas within 9 km of Infosys, Gachibowli</h1>
+<p><b id="n"></b> areas, measured in a straight line to each area's centre. Data from OpenStreetMap.</p>
+<div class="legend"><span><i class="sw hq"></i>Infosys</span><span><i class="sw ring"></i>9 km radius</span><span><i class="sw"></i>Area</span><span><i class="sw own"></i>In your property files</span></div></header>
+<input id="q" type="search" placeholder="Filter areas" aria-label="Filter areas">
+<ul id="list"></ul></aside><div id="map" role="application" aria-label="Map of areas within 9 km of Infosys"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const HQ=[17.4350636,78.3505964],RADIUS=9000,AREAS=[{"name": "Gachibowli", "km": 1.0, "lat": 17.44362, "lon": 78.35196, "dir": "N", "own": false}, {"name": "Telecom Nagar", "km": 1.7, "lat": 17.43314, "lon": 78.36682, "dir": "E", "own": false}, {"name": "Nanakramguda", "km": 2.0, "lat": 17.42178, "lon": 78.33798, "dir": "SW", "own": false}, {"name": "Khajaguda", "km": 2.5, "lat": 17.41722, "lon": 78.36561, "dir": "SE", "own": false}, {"name": "Gowlidoddi", "km": 2.7, "lat": 17.42905, "lon": 78.32619, "dir": "W", "own": false}, {"name": "Whitefields", "km": 2.7, "lat": 17.45434, "lon": 78.36589, "dir": "NE", "own": false}, {"name": "Financial District", "km": 2.8, "lat": 17.41298, "lon": 78.33863, "dir": "SW", "own": false}, {"name": "Kothaguda", "km": 3.0, "lat": 17.4587, "lon": 78.36388, "dir": "NE", "own": false}, {"name": "Kondapur", "km": 3.5, "lat": 17.45879, "lon": 78.37306, "dir": "NE", "own": true}, {"name": "Chitrapuri Colony", "km": 3.5, "lat": 17.41949, "lon": 78.37984, "dir": "SE", "own": false}, {"name": "Manikonda", "km": 3.6, "lat": 17.41464, "lon": 78.37666, "dir": "SE", "own": false}, {"name": "Masjid Banda", "km": 3.7, "lat": 17.46704, "lon": 78.34152, "dir": "N", "own": false}, {"name": "Serilingampally", "km": 3.7, "lat": 17.46672, "lon": 78.34042, "dir": "N", "own": false}, {"name": "HITEC City", "km": 3.9, "lat": 17.45081, "lon": 78.38345, "dir": "NE", "own": false}, {"name": "Madhapur", "km": 4.4, "lat": 17.44089, "lon": 78.39163, "dir": "E", "own": false}, {"name": "Kavuri Hills", "km": 4.7, "lat": 17.43852, "lon": 78.39441, "dir": "E", "own": false}, {"name": "Kokapet", "km": 4.7, "lat": 17.39486, "lon": 78.33652, "dir": "S", "own": true}, {"name": "Raidurg", "km": 4.8, "lat": 17.41417, "lon": 78.39072, "dir": "SE", "own": false}, {"name": "Narsingi", "km": 4.9, "lat": 17.39152, "lon": 78.35989, "dir": "S", "own": false}, {"name": "Alkapur Township", "km": 5.1, "lat": 17.39402, "lon": 78.37179, "dir": "SE", "own": false}, {"name": "Puppalguda", "km": 5.1, "lat": 17.39591, "lon": 78.37568, "dir": "SE", "own": false}, {"name": "Hafeezpet", "km": 5.5, "lat": 17.48344, "lon": 78.36113, "dir": "N", "own": false}, {"name": "Neknampur", "km": 5.5, "lat": 17.39155, "lon": 78.37518, "dir": "SE", "own": false}, {"name": "Gandipet", "km": 6.2, "lat": 17.38726, "lon": 78.32047, "dir": "SW", "own": false}, {"name": "Shaikpet", "km": 6.2, "lat": 17.4058, "lon": 78.40065, "dir": "SE", "own": false}, {"name": "Jubilee Hills", "km": 6.3, "lat": 17.43084, "lon": 78.41029, "dir": "E", "own": false}, {"name": "Madinaguda", "km": 6.4, "lat": 17.49179, "lon": 78.34231, "dir": "N", "own": false}, {"name": "Vattinagulapally", "km": 6.4, "lat": 17.41884, "lon": 78.29243, "dir": "W", "own": false}, {"name": "Manchirevula", "km": 6.5, "lat": 17.37697, "lon": 78.35379, "dir": "S", "own": true}, {"name": "Khanapur", "km": 6.5, "lat": 17.40098, "lon": 78.3003, "dir": "SW", "own": false}, {"name": "Nallagandla", "km": 6.7, "lat": 17.47748, "lon": 78.30604, "dir": "NW", "own": false}, {"name": "Film Nagar", "km": 6.8, "lat": 17.41406, "lon": 78.4105, "dir": "E", "own": false}, {"name": "Ibrahim Bagh", "km": 6.8, "lat": 17.38196, "lon": 78.38175, "dir": "SE", "own": false}, {"name": "Aziz Bagh", "km": 6.9, "lat": 17.4034, "lon": 78.40683, "dir": "SE", "own": false}, {"name": "Lingampally", "km": 7.0, "lat": 17.48818, "lon": 78.31611, "dir": "NW", "own": false}, {"name": "Miyapur", "km": 7.0, "lat": 17.49816, "lon": 78.35676, "dir": "N", "own": false}, {"name": "Chandanagar", "km": 7.1, "lat": 17.49361, "lon": 78.32464, "dir": "NW", "own": false}, {"name": "Borabanda", "km": 7.1, "lat": 17.45167, "lon": 78.41542, "dir": "E", "own": false}, {"name": "Bairagiguda", "km": 7.5, "lat": 17.37082, "lon": 78.37153, "dir": "S", "own": false}, {"name": "Tolichowki", "km": 7.6, "lat": 17.40029, "lon": 78.41181, "dir": "SE", "own": false}, {"name": "Tellapur", "km": 7.6, "lat": 17.46552, "lon": 78.28635, "dir": "NW", "own": false}, {"name": "Osman Nagar", "km": 7.7, "lat": 17.44181, "lon": 78.27822, "dir": "W", "own": false}, {"name": "Hydernagar", "km": 7.8, "lat": 17.49846, "lon": 78.3819, "dir": "NE", "own": false}, {"name": "Moti Nagar", "km": 7.8, "lat": 17.45081, "lon": 78.42224, "dir": "E", "own": false}, {"name": "BHEL Township", "km": 7.8, "lat": 17.4911, "lon": 78.30558, "dir": "NW", "own": false}, {"name": "Krishna Nagar", "km": 7.9, "lat": 17.43305, "lon": 78.42467, "dir": "E", "own": false}, {"name": "Golconda", "km": 7.9, "lat": 17.38733, "lon": 78.40573, "dir": "SE", "own": false}, {"name": "KPHB Colony", "km": 8.1, "lat": 17.49221, "lon": 78.39736, "dir": "NE", "own": false}, {"name": "Yousufguda", "km": 8.2, "lat": 17.43875, "lon": 78.42799, "dir": "E", "own": false}, {"name": "Moosapet", "km": 8.3, "lat": 17.46853, "lon": 78.42067, "dir": "NE", "own": false}, {"name": "Gandhamguda", "km": 8.4, "lat": 17.36808, "lon": 78.38798, "dir": "SE", "own": false}, {"name": "Kukatpally", "km": 8.7, "lat": 17.49308, "lon": 78.40544, "dir": "NE", "own": false}, {"name": "Hydershakote", "km": 8.8, "lat": 17.3665, "lon": 78.39112, "dir": "SE", "own": false}, {"name": "Satavahana Nagar", "km": 8.9, "lat": 17.49997, "lon": 78.40028, "dir": "NE", "own": false}, {"name": "Bharath Nagar", "km": 9.0, "lat": 17.46539, "lon": 78.42899, "dir": "E", "own": false}];
+const map=L.map('map',{zoomSnap:.25,zoomDelta:.5}).setView(HQ,12);
+L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',{subdomains:'abc',maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, tiles by <a href="https://www.openstreetmap.fr/">OpenStreetMap France</a>'}).addTo(map);
+L.control.scale({imperial:false}).addTo(map);
+const ringColor='#0b6e75';
+const circle=L.circle(HQ,{radius:RADIUS,color:ringColor,weight:2.5,dashArray:'8 6',fillColor:ringColor,fillOpacity:.07,interactive:false}).addTo(map);
+map.fitBounds(circle.getBounds(),{padding:[16,16]});
+L.marker(HQ,{icon:L.divIcon({className:'',html:'<div class="hq-mark"></div>',iconSize:[14,14]}),title:'Infosys, Gachibowli',zIndexOffset:1000}).addTo(map).bindPopup('<b>Infosys, Gachibowli</b><br>17.4351, 78.3506');
+const labelPane=map.createPane('labels');labelPane.style.zIndex=640;labelPane.style.pointerEvents='none';
+const ctx=document.createElement('canvas').getContext('2d');
+const items=AREAS.map(a=>{
+  const m=L.circleMarker([a.lat,a.lon],{radius:a.own?6:4,color:'#fff',weight:1.5,fillColor:a.own?'#c2410c':'#0b6e75',fillOpacity:1}).addTo(map).bindPopup(`<b>${a.name}</b><br>${a.km} km ${a.dir} of Infosys`);
+  const el=document.createElement('div');el.className='lbl'+(a.own?' own':'');el.textContent=a.name;labelPane.appendChild(el);
+  ctx.font=(a.own?'600 12.5px':'500 11.5px')+' "IBM Plex Sans",sans-serif';
+  return{a,m,el,w:ctx.measureText(a.name).width+4,h:a.own?15:14};
+});
+const hqLabel=document.createElement('div');hqLabel.className='lbl hq';hqLabel.textContent='Infosys';labelPane.appendChild(hqLabel);
+/* Place labels greedily: property-file areas first, then nearest. A label that cannot fit is hidden until the map is zoomed in. */
+function layout(){
+  const hp=map.latLngToLayerPoint(HQ),taken=[{x:hp.x+10,y:hp.y-8,w:50,h:16}];
+  L.DomUtil.setPosition(hqLabel,L.point(hp.x+10,hp.y-8));
+  const pts=items.map(i=>map.latLngToLayerPoint(i.m.getLatLng()));
+  pts.forEach(p=>taken.push({x:p.x-5,y:p.y-5,w:10,h:10}));
+  const order=items.map((it,idx)=>({it,p:pts[idx]})).sort((x,y)=>(y.it.a.own-x.it.a.own)||(x.it.a.km-y.it.a.km));
+  const hit=r=>taken.some(t=>r.x<t.x+t.w&&t.x<r.x+r.w&&r.y<t.y+t.h&&t.y<r.y+r.h);
+  order.forEach(({it,p})=>{
+    const c=[[7,-it.h/2],[-it.w-7,-it.h/2],[-it.w/2,-it.h-6],[-it.w/2,6],[7,-it.h-3],[-it.w-7,-it.h-3],[7,3],[-it.w-7,3]];
+    let spot=null;for(const[dx,dy]of c){const r={x:p.x+dx,y:p.y+dy,w:it.w,h:it.h};if(!hit(r)){spot=r;break}}
+    it.el.hidden=!spot;
+    if(spot){taken.push(spot);L.DomUtil.setPosition(it.el,L.point(spot.x,spot.y))}
+  });
+}
+map.on('zoomend moveend',layout);
+layout();
+if(document.fonts)document.fonts.ready.then(layout);
+const list=document.getElementById('list');document.getElementById('n').textContent=AREAS.length;
+items.forEach(i=>{const li=document.createElement('li'),b=document.createElement('button');b.type='button';
+  b.innerHTML=`<span class="${i.a.own?'own':''}">${i.a.name}</span><span class="d">${i.a.dir}</span><span class="k">${i.a.km} km</span>`;
+  b.onclick=()=>{map.flyTo(i.m.getLatLng(),Math.max(map.getZoom(),14),{duration:.6});i.m.openPopup()};li.appendChild(b);list.appendChild(li);i.li=li});
+document.getElementById('q').addEventListener('input',e=>{const v=e.target.value.trim().toLowerCase();items.forEach(i=>i.li.hidden=!i.a.name.toLowerCase().includes(v))});
+window.__map={map,items};
+</script></body></html>

@@ -1,0 +1,943 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Infosys Area Price Clusters</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: fixed area register on the left; controls, map and cluster results on the right.
+   Single light theme by choice, to sit with the light street map. */
+:root{color-scheme:light;--bg:#f3f5f4;--panel:#fff;--fg:#1a2729;--muted:#556467;--line:#d9dfdd;--accent:#0c5f68;--accent-soft:#e3f0f0;--warn-bg:#fdf3dd;--warn-fg:#6b4a05;
+--low:#00909e;--med:#e39a0b;--high:#a8327e;--font:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}html,body{margin:0;height:100%}[hidden]{display:none!important}
+body{font:14px/1.45 var(--font);color:var(--fg);background:var(--bg);display:grid;grid-template-columns:340px minmax(0,1fr);height:100vh;overflow:hidden}
+aside{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0;min-width:0}
+main{overflow:auto;min-width:0;min-height:0}
+h1{font-size:18px;font-weight:600;margin:0 0 2px;text-wrap:balance}h2{font-size:16px;font-weight:600;margin:0}h3{font-size:13px;font-weight:600;margin:0}
+.sub{color:var(--muted);font-size:13px;margin:0}
+.block{padding:14px 16px;border-bottom:1px solid var(--line)}
+button,select,input{font:inherit;color:inherit}
+.btn{border:1px solid var(--line);background:var(--panel);padding:6px 11px;border-radius:6px;cursor:pointer}
+.btn:hover{background:var(--bg)}.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:500}.btn.primary:hover{background:#094c54}
+:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+#drop{display:block;border:1.5px dashed #9fb0ae;border-radius:8px;padding:14px;text-align:center;cursor:pointer;background:var(--bg)}
+#drop:hover,#drop.over{border-color:var(--accent);background:var(--accent-soft)}#drop b{display:block;font-weight:600}#drop span{color:var(--muted);font-size:12.5px}
+#file{position:absolute;width:1px;height:1px;opacity:0}
+#confirm{margin-top:10px;display:grid;gap:8px;background:var(--accent-soft);padding:10px;border-radius:8px}
+#confirm label{font-size:12.5px;font-weight:500;display:grid;gap:3px}
+#confirm select,#confirm input,#q,#tq{padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:#fff;width:100%}
+.msg{font-size:12.5px;margin:0;overflow-wrap:anywhere}.msg.err{color:#a3201a;margin-top:8px;font-weight:500}.msg.warn{background:var(--warn-bg);color:var(--warn-fg);padding:6px 8px;border-radius:6px}
+#listhead{padding:10px 16px 6px;display:grid;gap:6px}
+#list{list-style:none;margin:0;padding:0 0 10px;overflow:auto;flex:1;min-height:0}
+#list button{all:unset;box-sizing:border-box;display:grid;grid-template-columns:1fr auto;gap:6px;width:100%;padding:5px 16px;cursor:pointer;align-items:center}
+#list button:hover{background:var(--bg)}#list button:focus-visible{box-shadow:inset 0 0 0 2px var(--accent)}
+#list .sel button{background:var(--accent-soft);font-weight:600}
+#list .m{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums;font-weight:400}
+#list .has{background:var(--accent);color:#fff;font-size:11.5px;padding:1px 7px;border-radius:9px;font-weight:500;font-variant-numeric:tabular-nums}
+.toolbar{position:sticky;top:0;z-index:1100;background:var(--panel);border-bottom:1px solid var(--line);padding:10px 16px;display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center}
+.group{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.group>span{font-size:12px;color:var(--muted)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button{border:0;background:var(--panel);padding:4px 10px;cursor:pointer;font-size:13px}.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed=true]{background:var(--accent);color:#fff}
+.chip{display:inline-flex;gap:6px;align-items:center;border:1px solid var(--line);background:var(--panel);border-radius:14px;padding:3px 10px;cursor:pointer;font-size:13px}
+.chip[aria-pressed=false]{opacity:.45;text-decoration:line-through}
+.sw{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none}.sw.low{background:var(--low)}.sw.med{background:var(--med)}.sw.high{background:var(--high)}
+#map{height:calc(64vh - var(--tb,90px));min-height:300px;background:#e8ecea}
+#sheet{position:fixed;left:340px;right:0;bottom:0;height:36vh;min-height:220px;z-index:1200;background:var(--panel);border-top:2px solid var(--accent);box-shadow:0 -4px 14px rgba(0,0,0,.14);display:flex;flex-direction:column;padding:10px 16px 12px;gap:8px}
+#sheet.big{height:82vh}
+.sh-head{display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:space-between;align-items:center}.sh-title{min-width:0}
+#shS{display:flex;flex-wrap:wrap;gap:2px 8px;align-items:center}
+#shQ{padding:5px 8px;border:1px solid var(--line);border-radius:6px;width:190px}
+#shW{flex:1;min-height:0;max-height:none;margin:0}
+#shTable td:first-child,#shTable th:first-child{position:sticky;left:0;background:var(--panel);z-index:1;border-right:1px solid var(--line);font-weight:500}
+#shTable th{z-index:2}#shTable th:first-child{z-index:3;background:#eef1f0}
+#confirm{max-height:62vh;overflow:auto}#queue{display:grid;gap:8px}
+.qrow{background:#fff;border:1px solid var(--line);border-radius:6px;padding:8px;display:grid;gap:5px;min-width:0}.qhead{display:flex;justify-content:space-between;gap:8px;align-items:baseline}.qhead b{font-size:12.5px;font-weight:600;overflow-wrap:anywhere;min-width:0}
+.qx{border:0;background:none;color:var(--accent);font-size:12px;cursor:pointer;text-decoration:underline;flex:none}
+.atag{position:absolute;transform:translate(-50%,calc(-100% - 3px));background:#111;color:#fff;font:600 12px/1 var(--font);padding:4px 7px;border-radius:4px;white-space:nowrap;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.35)}.atag.sel{background:var(--accent)}
+#ovplot{position:relative;margin-top:10px;min-width:0}#ovplot svg{display:block;width:100%}#ovplot text{font:12px var(--font);fill:var(--muted)}#ovplot text.ch{font-weight:600;fill:var(--fg)}#ovplot text.an{font-weight:500;font-size:13px;fill:var(--fg);cursor:pointer;text-decoration:underline;text-decoration-color:#9fb0ae}#ovplot text.an.sel{font-weight:700}#ovplot text.cnt{font-size:11.5px;font-variant-numeric:tabular-nums}
+.sw.good{background:#1e9e5a}.sw.okay{background:#2b7fd4}.sw.notsug{background:#e39a0b}.sw.rej{background:#b3261e}
+#sizegroup label{font-size:12px;color:var(--muted)}#minsq{width:72px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;font-size:13px}
+.pd{width:10px;height:10px;border-radius:50%;background:#7b8a8c;border:1px solid #111;display:inline-block;margin:0 6px;flex:none}.bd{width:0;height:13px;border-left:2px dashed #556467;display:inline-block}
+.ovkey{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12.5px;color:var(--muted);align-items:center}.ovkey span{display:inline-flex;gap:5px;align-items:center}.tk{width:3px;height:13px;background:#1a2729;display:inline-block}
+.blegend{background:#fff;border:1px solid var(--line);border-radius:6px;padding:7px 10px;max-width:250px;font:12.5px/1.35 var(--font);color:var(--fg);box-shadow:0 1px 5px rgba(0,0,0,.2)}
+.blegend .bl-t{font-weight:600;font-size:13.5px;margin-bottom:3px}.blegend .bl-r{display:flex;align-items:center;gap:7px}.blegend .bl-n{color:var(--muted);font-size:12px;margin-top:3px}
+.ln{width:22px;flex:none;border-top:3px solid #111}.ln.ward{border-top:2px dashed #1d4ed8}.ln.est{border-top:3px dashed #111}
+.cl{width:100%;height:100%;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;padding:1px;font:600 10.5px/1.15 var(--font);color:#0b1416;white-space:nowrap}.cl b,.cl span{background:rgba(255,255,255,.82);padding:0 2px}.cl b{font-weight:700;font-size:9.5px;border-radius:2px 2px 0 0}.cl span{font-weight:500;font-size:9.5px;border-radius:0 0 2px 2px}.cl b:only-child{border-radius:3px}
+.tile .rec{margin-top:10px;width:100%;font-size:13px}
+.lbl{position:absolute;white-space:nowrap;font:500 11.5px/1.1 var(--font);color:#16282a;text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 2px #fff,0 0 1px #fff;pointer-events:none}
+.lbl.hq{font-weight:600;font-size:13px;color:#000}.hq-mark{width:14px;height:14px;background:#111;border:2px solid #fff;transform:rotate(45deg);box-shadow:0 0 0 1px #111}
+.pie{border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.35);width:100%;height:100%}
+.leaflet-popup-content{font:13px/1.4 var(--font);margin:10px 12px}.pop-t{font-weight:600;margin-bottom:3px}.pop-r{display:flex;gap:6px;align-items:center;font-variant-numeric:tabular-nums;white-space:nowrap}
+#results{padding:16px;display:grid;gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px;min-width:0}
+.head{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline;justify-content:space-between}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.tile{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--panel);min-width:0}
+.tile .t{display:flex;align-items:center;gap:6px;font-weight:600}.tile .big{font-size:21px;font-weight:600;font-variant-numeric:tabular-nums;margin-top:6px;line-height:1.2}.tile .cap{color:var(--muted);font-size:12px}
+.tile dl{margin:8px 0 0;display:grid;grid-template-columns:auto 1fr;gap:1px 10px;font-size:12.5px}.tile dt{color:var(--muted)}.tile dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
+#chart{position:relative;margin-top:8px}#chart svg{display:block;width:100%}#chart text{font:12px var(--font);fill:var(--muted)}#chart text.cn{fill:var(--fg);font-weight:600}
+#tip{position:fixed;z-index:2000;background:#1a2729;color:#fff;font-size:12.5px;padding:5px 8px;border-radius:5px;pointer-events:none;max-width:260px}
+.tw{overflow:auto;max-height:430px;margin-top:8px;border:1px solid var(--line);border-radius:6px}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:5px 10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{background:#eef1f0;font-weight:600;position:sticky;top:0}th button{all:unset;cursor:pointer}th button:focus-visible{outline:2px solid var(--accent)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}tr.link,tr.cellrow{cursor:pointer}tr.link:hover td,tr.cellrow:hover td{background:var(--bg)}
+.tag{display:inline-flex;align-items:center;gap:5px}
+.note{color:var(--muted);font-size:12.5px;margin:8px 0 0;max-width:80ch}
+.empty{background:var(--panel);border:1px dashed #9fb0ae;border-radius:8px;padding:22px;text-align:center}
+.empty p{margin:4px 0 0;color:var(--muted)}
+@media (max-width:860px){#map{height:56vh}#sheet{left:0;height:50vh}body{display:block;height:auto;overflow:auto}aside{border-right:0;border-bottom:1px solid var(--line)}#list{max-height:260px;flex:none}main{overflow:visible}.tiles{grid-template-columns:1fr}.toolbar{position:static}}
+</style></head><body>
+<aside>
+  <div class="block"><h1>Infosys Area Price Clusters</h1><p class="sub">Areas within 9 km of Infosys, Gachibowli</p></div>
+  <div class="block">
+    <label id="drop" for="file"><b>Upload area files</b><span>Drop one or more CSV or Excel files here, or click to choose</span></label>
+    <input id="file" type="file" accept=".csv,.xlsx,.xls" multiple>
+    <p id="err" class="msg err" role="alert" hidden></p>
+    <form id="confirm" hidden>
+      <div id="queue"></div>
+      <p id="qerr" class="msg err" role="alert" hidden></p>
+      <div class="group"><button class="btn primary" type="submit" id="qgo">Run clustering</button><button class="btn" type="button" id="ccancel">Cancel</button></div>
+    </form>
+    <p id="savewarn" class="msg warn" hidden style="margin-top:8px">This browser is not saving your uploads, so they will be gone after a refresh. Try opening this file in Chrome or Edge.</p>
+  </div>
+  <div id="listhead"><h3 id="listcount"></h3><input id="q" type="search" placeholder="Filter areas" aria-label="Filter areas"></div>
+  <ul id="list"></ul>
+</aside>
+<main>
+  <div class="toolbar">
+    <div class="group"><span>Classify by</span><div class="seg" id="method"><button type="button" data-v="buyer">Buyer fit</button><button type="button" data-v="bands">Price bands</button><button type="button" data-v="kmeans">K-means</button></div></div>
+    <div class="group" id="sizegroup"><label for="minsq">Spacious from</label><input id="minsq" type="number" min="0" step="50" value="1600"><span>sqft</span></div>
+    <div class="group" id="metricgroup"><span>Cluster by</span><div class="seg" id="metric"><button type="button" data-v="price">Total price</button><button type="button" data-v="ppsf">Price per sqft</button></div></div>
+    <div class="group" id="scalegroup"><span>Price gaps</span><div class="seg" id="scale"><button type="button" data-v="log" title="A move from 1 Cr to 2 Cr counts the same as 10 Cr to 20 Cr">Proportional</button><button type="button" data-v="raw" title="Every rupee counts the same, so very expensive homes dominate">Raw rupees</button></div></div>
+    <div class="group"><span>Map shows</span><div class="seg" id="view"><button type="button" data-v="grid">Grid</button><button type="button" data-v="pies">Projects</button></div></div>
+    <div class="group" id="cellgroup"><span>Grid size</span><div class="seg" id="cell"><button type="button" data-v="250">250 m</button><button type="button" data-v="500">500 m</button><button type="button" data-v="1000">1 km</button></div></div>
+    <div class="group" id="chips"></div>
+    <button type="button" class="btn" id="whole">Whole 9 km area</button>
+  </div>
+  <div id="map" role="application" aria-label="Map of areas within 9 km of Infosys and uploaded property listings"></div>
+  <div id="results"></div>
+</main>
+<section id="sheet" hidden aria-label="Property records">
+  <div class="sh-head"><div class="sh-title"><h2 id="shT"></h2><p class="sub" id="shS"></p></div>
+    <div class="group"><input id="shQ" type="search" placeholder="Search these records" aria-label="Search these records"><button class="btn" id="shDl" type="button">Download (CSV)</button><button class="btn" id="shBig" type="button">Larger</button><button class="btn" id="shX" type="button">Close</button></div></div>
+  <p class="msg warn" id="shOld" hidden>This area was uploaded with an earlier version, so listings with possibly old prices are still included. Upload its file again to remove them.</p>
+  <div class="tw" id="shW"><table id="shTable"><thead id="shH"></thead><tbody id="shB"></tbody></table></div>
+</section>
+<div id="tip" hidden></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+"use strict";
+const HQ=[17.4350636,78.3505964],RADIUS_KM=9,AREAS=[{"name": "Gachibowli", "km": 1.0, "lat": 17.44362, "lon": 78.35196, "dir": "N", "own": false}, {"name": "Telecom Nagar", "km": 1.7, "lat": 17.43314, "lon": 78.36682, "dir": "E", "own": false}, {"name": "Nanakramguda", "km": 2.0, "lat": 17.42178, "lon": 78.33798, "dir": "SW", "own": false}, {"name": "Khajaguda", "km": 2.5, "lat": 17.41722, "lon": 78.36561, "dir": "SE", "own": false}, {"name": "Gowlidoddi", "km": 2.7, "lat": 17.42905, "lon": 78.32619, "dir": "W", "own": false}, {"name": "Whitefields", "km": 2.7, "lat": 17.45434, "lon": 78.36589, "dir": "NE", "own": false}, {"name": "Financial District", "km": 2.8, "lat": 17.41298, "lon": 78.33863, "dir": "SW", "own": false}, {"name": "Kothaguda", "km": 3.0, "lat": 17.4587, "lon": 78.36388, "dir": "NE", "own": false}, {"name": "Kondapur", "km": 3.5, "lat": 17.45879, "lon": 78.37306, "dir": "NE", "own": true}, {"name": "Chitrapuri Colony", "km": 3.5, "lat": 17.41949, "lon": 78.37984, "dir": "SE", "own": false}, {"name": "Manikonda", "km": 3.6, "lat": 17.41464, "lon": 78.37666, "dir": "SE", "own": false}, {"name": "Masjid Banda", "km": 3.7, "lat": 17.46704, "lon": 78.34152, "dir": "N", "own": false}, {"name": "Serilingampally", "km": 3.7, "lat": 17.46672, "lon": 78.34042, "dir": "N", "own": false}, {"name": "HITEC City", "km": 3.9, "lat": 17.45081, "lon": 78.38345, "dir": "NE", "own": false}, {"name": "Madhapur", "km": 4.4, "lat": 17.44089, "lon": 78.39163, "dir": "E", "own": false}, {"name": "Kavuri Hills", "km": 4.7, "lat": 17.43852, "lon": 78.39441, "dir": "E", "own": false}, {"name": "Kokapet", "km": 4.7, "lat": 17.39486, "lon": 78.33652, "dir": "S", "own": true}, {"name": "Raidurg", "km": 4.8, "lat": 17.41417, "lon": 78.39072, "dir": "SE", "own": false}, {"name": "Narsingi", "km": 4.9, "lat": 17.39152, "lon": 78.35989, "dir": "S", "own": false}, {"name": "Alkapur Township", "km": 5.1, "lat": 17.39402, "lon": 78.37179, "dir": "SE", "own": false}, {"name": "Puppalguda", "km": 5.1, "lat": 17.39591, "lon": 78.37568, "dir": "SE", "own": false}, {"name": "Hafeezpet", "km": 5.5, "lat": 17.48344, "lon": 78.36113, "dir": "N", "own": false}, {"name": "Neknampur", "km": 5.5, "lat": 17.39155, "lon": 78.37518, "dir": "SE", "own": false}, {"name": "Gandipet", "km": 6.2, "lat": 17.38726, "lon": 78.32047, "dir": "SW", "own": false}, {"name": "Shaikpet", "km": 6.2, "lat": 17.4058, "lon": 78.40065, "dir": "SE", "own": false}, {"name": "Jubilee Hills", "km": 6.3, "lat": 17.43084, "lon": 78.41029, "dir": "E", "own": false}, {"name": "Madinaguda", "km": 6.4, "lat": 17.49179, "lon": 78.34231, "dir": "N", "own": false}, {"name": "Vattinagulapally", "km": 6.4, "lat": 17.41884, "lon": 78.29243, "dir": "W", "own": false}, {"name": "Manchirevula", "km": 6.5, "lat": 17.37697, "lon": 78.35379, "dir": "S", "own": true}, {"name": "Khanapur", "km": 6.5, "lat": 17.40098, "lon": 78.3003, "dir": "SW", "own": false}, {"name": "Nallagandla", "km": 6.7, "lat": 17.47748, "lon": 78.30604, "dir": "NW", "own": false}, {"name": "Film Nagar", "km": 6.8, "lat": 17.41406, "lon": 78.4105, "dir": "E", "own": false}, {"name": "Ibrahim Bagh", "km": 6.8, "lat": 17.38196, "lon": 78.38175, "dir": "SE", "own": false}, {"name": "Aziz Bagh", "km": 6.9, "lat": 17.4034, "lon": 78.40683, "dir": "SE", "own": false}, {"name": "Lingampally", "km": 7.0, "lat": 17.48818, "lon": 78.31611, "dir": "NW", "own": false}, {"name": "Miyapur", "km": 7.0, "lat": 17.49816, "lon": 78.35676, "dir": "N", "own": false}, {"name": "Chandanagar", "km": 7.1, "lat": 17.49361, "lon": 78.32464, "dir": "NW", "own": false}, {"name": "Borabanda", "km": 7.1, "lat": 17.45167, "lon": 78.41542, "dir": "E", "own": false}, {"name": "Bairagiguda", "km": 7.5, "lat": 17.37082, "lon": 78.37153, "dir": "S", "own": false}, {"name": "Tolichowki", "km": 7.6, "lat": 17.40029, "lon": 78.41181, "dir": "SE", "own": false}, {"name": "Tellapur", "km": 7.6, "lat": 17.46552, "lon": 78.28635, "dir": "NW", "own": false}, {"name": "Osman Nagar", "km": 7.7, "lat": 17.44181, "lon": 78.27822, "dir": "W", "own": false}, {"name": "Hydernagar", "km": 7.8, "lat": 17.49846, "lon": 78.3819, "dir": "NE", "own": false}, {"name": "Moti Nagar", "km": 7.8, "lat": 17.45081, "lon": 78.42224, "dir": "E", "own": false}, {"name": "BHEL Township", "km": 7.8, "lat": 17.4911, "lon": 78.30558, "dir": "NW", "own": false}, {"name": "Krishna Nagar", "km": 7.9, "lat": 17.43305, "lon": 78.42467, "dir": "E", "own": false}, {"name": "Golconda", "km": 7.9, "lat": 17.38733, "lon": 78.40573, "dir": "SE", "own": false}, {"name": "KPHB Colony", "km": 8.1, "lat": 17.49221, "lon": 78.39736, "dir": "NE", "own": false}, {"name": "Yousufguda", "km": 8.2, "lat": 17.43875, "lon": 78.42799, "dir": "E", "own": false}, {"name": "Moosapet", "km": 8.3, "lat": 17.46853, "lon": 78.42067, "dir": "NE", "own": false}, {"name": "Gandhamguda", "km": 8.4, "lat": 17.36808, "lon": 78.38798, "dir": "SE", "own": false}, {"name": "Kukatpally", "km": 8.7, "lat": 17.49308, "lon": 78.40544, "dir": "NE", "own": false}, {"name": "Hydershakote", "km": 8.8, "lat": 17.3665, "lon": 78.39112, "dir": "SE", "own": false}, {"name": "Satavahana Nagar", "km": 8.9, "lat": 17.49997, "lon": 78.40028, "dir": "NE", "own": false}, {"name": "Bharath Nagar", "km": 9.0, "lat": 17.46539, "lon": 78.42899, "dir": "E", "own": false}],BORDERS={"Gachibowli":{"kind":"ward","label":"Ward 105 Gachibowli","rings":[[[17.40959,78.39044],[17.4097,78.3883],[17.41105,78.38797],[17.41363,78.38822],[17.41439,78.38671],[17.41782,78.38142],[17.4174,78.37799],[17.41585,78.37726],[17.41461,78.37639],[17.4154,78.37561],[17.41552,78.37537],[17.41515,78.37527],[17.41516,78.37491],[17.41568,78.37473],[17.4157,78.37438],[17.41217,78.37194],[17.41283,78.36872],[17.41368,78.36785],[17.41305,78.36598],[17.41218,78.36583],[17.41218,78.3657],[17.41641,78.35363],[17.41348,78.35181],[17.41367,78.35003],[17.41252,78.34833],[17.41494,78.34368],[17.41203,78.34218],[17.41559,78.33527],[17.41572,78.32763],[17.4187,78.3166],[17.43259,78.2942],[17.4273,78.28939],[17.42378,78.28291],[17.42749,78.27878],[17.43365,78.27295],[17.44053,78.27175],[17.44159,78.27184],[17.45375,78.28325],[17.45572,78.28342],[17.45621,78.28707],[17.46305,78.28995],[17.47295,78.29651],[17.47658,78.29502],[17.47802,78.29774],[17.48032,78.30428],[17.48075,78.30721],[17.48069,78.31014],[17.48009,78.31078],[17.4799,78.31315],[17.47938,78.31962],[17.4777,78.31992],[17.47752,78.32143],[17.47827,78.3225],[17.47778,78.32375],[17.47338,78.32666],[17.47117,78.32962],[17.46904,78.33043],[17.46517,78.33354],[17.46185,78.33547],[17.46054,78.33684],[17.45665,78.33969],[17.45431,78.34205],[17.45237,78.34368],[17.45154,78.3446],[17.45019,78.34702],[17.44531,78.3521],[17.44343,78.35449],[17.44135,78.35918],[17.43849,78.36371],[17.42715,78.37623],[17.42255,78.3817],[17.42164,78.38347],[17.41866,78.38742],[17.41623,78.39152],[17.41497,78.39275],[17.41395,78.3941],[17.41286,78.39495],[17.41028,78.39482],[17.41039,78.39149],[17.40955,78.3911]]]},"Telecom Nagar":{"kind":"est","rings":[[[17.42481,78.37159],[17.42609,78.35299],[17.42868,78.35187],[17.44362,78.36345],[17.444,78.37278],[17.43908,78.37852],[17.43271,78.3807]]]},"Nanakramguda":{"kind":"est","rings":[[[17.41656,78.32609],[17.43602,78.33927],[17.42868,78.35187],[17.42609,78.35299],[17.41827,78.35157]]]},"Khajaguda":{"kind":"est","rings":[[[17.40621,78.35365],[17.41827,78.35157],[17.42609,78.35299],[17.42481,78.37159],[17.4206,78.37233],[17.40564,78.3685],[17.40548,78.36812],[17.40428,78.36318]]]},"Gowlidoddi":{"kind":"est","rings":[[[17.45354,78.31685],[17.4485,78.33152],[17.43602,78.33927],[17.41656,78.32609],[17.41094,78.3181],[17.41614,78.3119],[17.4407,78.30374],[17.44644,78.30542],[17.45092,78.30993]]]},"Whitefields":{"kind":"est","rings":[[[17.444,78.37278],[17.44362,78.36345],[17.4527,78.35578],[17.45803,78.36848],[17.44983,78.37406]]]},"Financial District":{"kind":"est","rings":[[[17.41094,78.3181],[17.41656,78.32609],[17.41827,78.35157],[17.40621,78.35365],[17.40264,78.34969],[17.40569,78.32088],[17.40649,78.31963]]]},"Kothaguda":{"kind":"est","rings":[[[17.47166,78.36833],[17.45803,78.36848],[17.4527,78.35578],[17.45673,78.35018],[17.47039,78.35578]]]},"Kondapur":{"kind":"ward","label":"Ward 104 Kondapur","rings":[[[17.41286,78.39495],[17.41395,78.3941],[17.41497,78.39275],[17.41623,78.39152],[17.41866,78.38742],[17.42164,78.38347],[17.42255,78.3817],[17.42715,78.37623],[17.43849,78.36371],[17.44039,78.36351],[17.44171,78.36274],[17.44886,78.36389],[17.45553,78.3638],[17.46305,78.34899],[17.46354,78.34744],[17.46806,78.34907],[17.47494,78.34925],[17.47805,78.34972],[17.48231,78.34972],[17.4824,78.36064],[17.47942,78.36119],[17.47544,78.36299],[17.475,78.36291],[17.47099,78.36489],[17.46913,78.36558],[17.46776,78.36653],[17.46567,78.36688],[17.46235,78.36661],[17.45903,78.36591],[17.45866,78.3663],[17.45722,78.37256],[17.45727,78.37587],[17.45353,78.37906],[17.45288,78.38001],[17.45142,78.38134],[17.44554,78.38619],[17.44354,78.38734],[17.44163,78.38805],[17.44095,78.39386],[17.43947,78.39615],[17.43707,78.39538],[17.43713,78.39728],[17.43468,78.39862],[17.43354,78.39792],[17.43213,78.39925],[17.43119,78.39876],[17.43065,78.39629],[17.43047,78.39335],[17.42967,78.39335],[17.42859,78.39519],[17.42675,78.3944],[17.42632,78.39632],[17.42471,78.39828],[17.41927,78.39855],[17.4181,78.39898],[17.41821,78.39844],[17.41758,78.39767],[17.4152,78.39822],[17.41342,78.39908],[17.41334,78.39834],[17.41122,78.39718]]]},"Chitrapuri Colony":{"kind":"est","rings":[[[17.41383,78.38367],[17.4206,78.37233],[17.42481,78.37159],[17.43271,78.3807],[17.43075,78.38463],[17.42662,78.39054]]]},"Manikonda":{"kind":"est","rings":[[[17.40564,78.3685],[17.4206,78.37233],[17.41383,78.38367],[17.40493,78.38334]]]},"Masjid Banda":{"kind":"est","rings":[[[17.47039,78.35578],[17.45673,78.35018],[17.45458,78.3449],[17.47956,78.33692],[17.47925,78.34764]]]},"Serilingampally":{"kind":"ward","label":"Ward 106 Serilingampally","rings":[[[17.48231,78.34972],[17.48288,78.34738],[17.48343,78.34618],[17.488,78.34083],[17.48856,78.33987],[17.48858,78.33661],[17.48666,78.32958],[17.48718,78.32587],[17.48678,78.3253],[17.48468,78.32055],[17.48543,78.31997],[17.4874,78.32023],[17.48849,78.31998],[17.48977,78.31904],[17.49087,78.31683],[17.49185,78.3162],[17.4942,78.31662],[17.49328,78.31602],[17.49295,78.31517],[17.49132,78.31439],[17.48615,78.31306],[17.48267,78.31133],[17.48009,78.31078],[17.4799,78.31315],[17.47938,78.31962],[17.4777,78.31992],[17.47752,78.32143],[17.47827,78.3225],[17.47778,78.32375],[17.47338,78.32666],[17.47117,78.32962],[17.46904,78.33043],[17.46517,78.33354],[17.46185,78.33547],[17.46054,78.33684],[17.45665,78.33969],[17.45431,78.34205],[17.45237,78.34368],[17.45154,78.3446],[17.45019,78.34702],[17.44531,78.3521],[17.44343,78.35449],[17.44135,78.35918],[17.43849,78.36371],[17.44039,78.36351],[17.44171,78.36274],[17.44886,78.36389],[17.45553,78.3638],[17.46305,78.34899],[17.46354,78.34744],[17.46806,78.34907],[17.47494,78.34925],[17.47805,78.34972]]]},"HITEC City":{"kind":"est","rings":[[[17.4547,78.39933],[17.43908,78.37852],[17.444,78.37278],[17.44983,78.37406],[17.47104,78.39195],[17.46952,78.39691],[17.46549,78.39901]]]},"Madhapur":{"kind":"ward","label":"Ward 107 Madhapur","rings":[[[17.45048,78.40527],[17.4484,78.4044],[17.4479,78.4055],[17.44578,78.40617],[17.44511,78.40546],[17.44342,78.40669],[17.44206,78.40658],[17.44051,78.40215],[17.43937,78.40005],[17.43852,78.39923],[17.43871,78.39733],[17.44095,78.39386],[17.44163,78.38805],[17.44354,78.38734],[17.44554,78.38619],[17.45142,78.38134],[17.45288,78.38001],[17.45353,78.37906],[17.45727,78.37587],[17.45722,78.37256],[17.45866,78.3663],[17.45903,78.36591],[17.46235,78.36661],[17.46567,78.36688],[17.46776,78.36653],[17.46913,78.36558],[17.47099,78.36489],[17.475,78.36291],[17.47544,78.36299],[17.47942,78.36119],[17.4824,78.36064],[17.48399,78.36043],[17.48329,78.36378],[17.48469,78.36352],[17.48585,78.36361],[17.48664,78.36238],[17.48805,78.3621],[17.48813,78.36105],[17.4893,78.36088],[17.48946,78.35982],[17.49206,78.36002],[17.49589,78.35811],[17.49644,78.35993],[17.49655,78.37381],[17.49389,78.37185],[17.49183,78.36978],[17.48291,78.36568],[17.4825,78.36606],[17.48163,78.37219],[17.47909,78.3753],[17.48354,78.37702],[17.48751,78.37711],[17.49172,78.38011],[17.49136,78.38155],[17.49076,78.38239],[17.48958,78.38257],[17.48085,78.37921],[17.48056,78.37878],[17.47689,78.3783],[17.4728,78.37641],[17.47138,78.37991],[17.46926,78.38267],[17.45981,78.38893],[17.45549,78.39306],[17.45364,78.39919],[17.45279,78.40059],[17.45082,78.40101]]]},"Kavuri Hills":{"kind":"est","rings":[[[17.42566,78.39756],[17.42662,78.39054],[17.43075,78.38463],[17.44931,78.40202],[17.44266,78.40659]]]},"Kokapet":{"kind":"est","rings":[[[17.40569,78.32088],[17.40264,78.34969],[17.38786,78.34737],[17.37748,78.33556]]]},"Raidurg":{"kind":"est","rings":[[[17.40154,78.38787],[17.40493,78.38334],[17.41383,78.38367],[17.42662,78.39054],[17.42566,78.39756],[17.42234,78.40066],[17.41531,78.40062]]]},"Narsingi":{"kind":"est","rings":[[[17.38786,78.34737],[17.40264,78.34969],[17.40621,78.35365],[17.40428,78.36318],[17.38537,78.36755],[17.38211,78.36756],[17.38099,78.36536]]]},"Alkapur Township":{"kind":"est","rings":[[[17.38537,78.36755],[17.40428,78.36318],[17.40548,78.36812],[17.39384,78.37433]]]},"Puppalguda":{"kind":"est","rings":[[[17.39384,78.37433],[17.40548,78.36812],[17.40564,78.3685],[17.40493,78.38334],[17.40154,78.38787],[17.39388,78.3912],[17.39246,78.38761]]]},"Hafeezpet":{"kind":"ward","label":"Ward 109 Hafeezpet","rings":[[[17.49418,78.34789],[17.4951,78.3426],[17.49485,78.33982],[17.49522,78.3346],[17.49481,78.3308],[17.49498,78.32623],[17.49451,78.32655],[17.49394,78.32561],[17.49384,78.32458],[17.49141,78.32454],[17.49097,78.32762],[17.48693,78.32771],[17.48666,78.32958],[17.48858,78.33661],[17.48856,78.33987],[17.488,78.34083],[17.48343,78.34618],[17.48288,78.34738],[17.48231,78.34972],[17.4824,78.36064],[17.48399,78.36043],[17.48329,78.36378],[17.48469,78.36352],[17.48585,78.36361],[17.48664,78.36238],[17.48805,78.3621],[17.48813,78.36105],[17.4893,78.36088],[17.48946,78.35982],[17.49206,78.36002],[17.49589,78.35811],[17.49392,78.34927]]]},"Neknampur":{"kind":"est","rings":[[[17.38211,78.36756],[17.38537,78.36755],[17.39384,78.37433],[17.39246,78.38761],[17.38167,78.37031]]]},"Gandipet":{"kind":"est","rings":[[[17.35699,78.3286],[17.35909,78.32161],[17.36179,78.31478],[17.36505,78.30823],[17.36884,78.30199],[17.37313,78.29613],[17.37388,78.29526],[17.40649,78.31963],[17.40569,78.32088],[17.37748,78.33556]]]},"Shaikpet":{"kind":"ward","label":"Ward 94 Shaikpet","rings":[[[17.41342,78.39908],[17.41384,78.40023],[17.41325,78.40234],[17.41158,78.40199],[17.41016,78.40665],[17.40965,78.40692],[17.4093,78.40744],[17.4083,78.41407],[17.40703,78.41486],[17.40715,78.41736],[17.40748,78.41782],[17.40368,78.41693],[17.40148,78.41751],[17.3986,78.41552],[17.39862,78.41245],[17.39966,78.40805],[17.39801,78.405],[17.39739,78.40063],[17.39233,78.39982],[17.39256,78.39379],[17.39287,78.39281],[17.39228,78.39205],[17.39235,78.39103],[17.39321,78.39106],[17.3942,78.39234],[17.3962,78.3911],[17.39931,78.39138],[17.40231,78.39165],[17.40186,78.3904],[17.40311,78.39057],[17.40304,78.39095],[17.40431,78.39063],[17.406,78.38933],[17.40704,78.38725],[17.4079,78.38693],[17.40781,78.3899],[17.40959,78.39044],[17.40955,78.3911],[17.41039,78.39149],[17.41028,78.39482],[17.41286,78.39495],[17.41122,78.39718],[17.41334,78.39834]]]},"Jubilee Hills":{"kind":"ward","label":"Ward 95 Jubilee Hills","rings":[[[17.40841,78.41913],[17.40715,78.41736],[17.40703,78.41486],[17.4083,78.41407],[17.4093,78.40744],[17.40965,78.40692],[17.41016,78.40665],[17.41158,78.40199],[17.41325,78.40234],[17.41384,78.40023],[17.41342,78.39908],[17.4152,78.39822],[17.41758,78.39767],[17.41821,78.39844],[17.4181,78.39898],[17.41927,78.39855],[17.42471,78.39828],[17.42632,78.39632],[17.42675,78.3944],[17.42859,78.39519],[17.42967,78.39335],[17.43047,78.39335],[17.43065,78.39629],[17.43119,78.39876],[17.43213,78.39925],[17.43354,78.39792],[17.43468,78.39862],[17.43713,78.39728],[17.43707,78.39538],[17.43947,78.39615],[17.43871,78.39733],[17.43852,78.39923],[17.43937,78.40005],[17.44051,78.40215],[17.44206,78.40658],[17.44342,78.40669],[17.44511,78.40546],[17.44578,78.40617],[17.44586,78.41206],[17.44241,78.41564],[17.44015,78.41618],[17.43853,78.41546],[17.43792,78.41647],[17.43551,78.41583],[17.43428,78.41586],[17.43282,78.41722],[17.43195,78.41862],[17.43186,78.42032],[17.43114,78.4204],[17.43075,78.41958],[17.43137,78.42228],[17.42985,78.42579],[17.42969,78.43182],[17.42979,78.43332],[17.43019,78.43423],[17.43014,78.43691],[17.42907,78.43634],[17.42882,78.43798],[17.42816,78.43786],[17.42724,78.44001],[17.4231,78.42621],[17.42631,78.41734],[17.42648,78.41592],[17.42595,78.41504],[17.42331,78.41337],[17.42277,78.41151],[17.42031,78.41098],[17.41996,78.41204],[17.41767,78.4132],[17.41493,78.42156],[17.4128,78.42096],[17.41246,78.42104],[17.41192,78.42006],[17.41087,78.42042],[17.40946,78.42059]]]},"Madinaguda":{"kind":"est","rings":[[[17.48903,78.35241],[17.47925,78.34764],[17.47956,78.33692],[17.4799,78.33203],[17.51469,78.33596],[17.51517,78.33975]]]},"Vattinagulapally":{"kind":"est","rings":[[[17.40086,78.27381],[17.4009,78.27379],[17.40741,78.27097],[17.41414,78.26874],[17.4202,78.26734],[17.4407,78.30374],[17.41614,78.3119]]]},"Manchirevula":{"kind":"est","rings":[[[17.35441,78.35524],[17.35422,78.3506],[17.35452,78.34321],[17.35544,78.33588],[17.35697,78.32866],[17.35699,78.3286],[17.37748,78.33556],[17.38786,78.34737],[17.38099,78.36536]]]},"Khanapur":{"kind":"est","rings":[[[17.37388,78.29526],[17.3779,78.29068],[17.3831,78.28568],[17.38869,78.28118],[17.39464,78.27721],[17.40086,78.27381],[17.41614,78.3119],[17.41094,78.3181],[17.40649,78.31963]]]},"Nallagandla":{"kind":"est","rings":[[[17.45354,78.31685],[17.45092,78.30993],[17.48374,78.28802],[17.4844,78.30925],[17.47235,78.32331]]]},"Film Nagar":{"kind":"est","rings":[[[17.41358,78.43227],[17.40887,78.43071],[17.40734,78.41309],[17.4096,78.40588],[17.41531,78.40062],[17.42234,78.40066],[17.42255,78.41907]]]},"Ibrahim Bagh":{"kind":"est","rings":[[[17.37321,78.38044],[17.38167,78.37031],[17.39246,78.38761],[17.39388,78.3912],[17.39364,78.39153],[17.37919,78.39508]]]},"Aziz Bagh":{"kind":"est","rings":[[[17.39576,78.39997],[17.4096,78.40588],[17.40734,78.41309],[17.39545,78.40493]]]},"Lingampally":{"kind":"est","rings":[[[17.47836,78.32914],[17.47235,78.32331],[17.4844,78.30925],[17.50001,78.314]]]},"Miyapur":{"kind":"ward","label":"Ward 108 Miyapur","rings":[[[17.49418,78.34789],[17.49392,78.34927],[17.49473,78.35331],[17.49644,78.35993],[17.49655,78.37381],[17.50696,78.37526],[17.50743,78.37326],[17.51293,78.37323],[17.5146,78.37217],[17.51469,78.37093],[17.51672,78.37093],[17.5191,78.37067],[17.51888,78.36883],[17.51891,78.36602],[17.52006,78.36444],[17.52113,78.36247],[17.51954,78.36026],[17.52131,78.35135],[17.52069,78.35021],[17.52086,78.34218],[17.51919,78.34156],[17.518,78.34155],[17.51652,78.34608],[17.51499,78.34779],[17.51321,78.34906],[17.50455,78.34218],[17.49915,78.34252],[17.49837,78.34846]]]},"Chandanagar":{"kind":"ward","label":"Ward 110 Chandanagar","rings":[[[17.49328,78.31602],[17.4942,78.31662],[17.49185,78.3162],[17.49087,78.31683],[17.48977,78.31904],[17.48849,78.31998],[17.4874,78.32023],[17.48543,78.31997],[17.48468,78.32055],[17.48678,78.3253],[17.48718,78.32587],[17.48693,78.32771],[17.49097,78.32762],[17.49141,78.32454],[17.49384,78.32458],[17.49394,78.32561],[17.49451,78.32655],[17.49498,78.32623],[17.49481,78.3308],[17.49522,78.3346],[17.49485,78.33982],[17.4951,78.3426],[17.49418,78.34789],[17.49837,78.34846],[17.49915,78.34252],[17.50455,78.34218],[17.51321,78.34906],[17.51499,78.34779],[17.51652,78.34608],[17.518,78.34155],[17.51822,78.33698],[17.51726,78.33673],[17.51707,78.33387],[17.51599,78.33711],[17.51259,78.33514],[17.51225,78.33415],[17.51139,78.33477],[17.50711,78.33464],[17.50542,78.33136],[17.50799,78.32756],[17.5085,78.32419],[17.50844,78.32258],[17.50711,78.32246],[17.50617,78.32258],[17.50592,78.32089],[17.50621,78.3166],[17.5084,78.31632],[17.50799,78.30814],[17.50594,78.3102],[17.50484,78.31304],[17.50361,78.31415],[17.50152,78.31424],[17.50034,78.31561],[17.49948,78.3163],[17.49691,78.31696]]]},"Borabanda":{"kind":"ward","label":"Ward 103 Borabanda","rings":[[[17.45048,78.40527],[17.4484,78.4044],[17.4479,78.4055],[17.44578,78.40617],[17.44586,78.41206],[17.44816,78.41264],[17.44911,78.41387],[17.44973,78.41587],[17.4503,78.416],[17.451,78.41632],[17.45063,78.41844],[17.45388,78.41826],[17.45384,78.41747],[17.45439,78.41449],[17.45543,78.41055]]]},"Bairagiguda":{"kind":"est","rings":[[[17.35854,78.37776],[17.35697,78.37253],[17.35544,78.36531],[17.35452,78.35798],[17.35441,78.35524],[17.38099,78.36536],[17.38211,78.36756],[17.38167,78.37031],[17.37321,78.38044]]]},"Tolichowki":{"kind":"ward","label":"Ward 68 Tolichowki","rings":[[[17.38812,78.39906],[17.38824,78.39651],[17.38996,78.39599],[17.39233,78.39982],[17.39739,78.40063],[17.39801,78.405],[17.39966,78.40805],[17.39862,78.41245],[17.3986,78.4162],[17.39831,78.41854],[17.3978,78.41932],[17.39565,78.4188],[17.39657,78.41747],[17.39473,78.41719],[17.39444,78.41479],[17.39371,78.41436],[17.3925,78.41472],[17.39113,78.41633],[17.39084,78.41438],[17.3901,78.41635],[17.38683,78.41513],[17.38511,78.4117],[17.38842,78.40859],[17.3899,78.404],[17.38828,78.40419],[17.38716,78.4053],[17.38734,78.40284],[17.38627,78.40286],[17.38893,78.39964]]]},"Tellapur":{"kind":"est","rings":[[[17.45771,78.26931],[17.46272,78.27097],[17.46923,78.27379],[17.47549,78.27721],[17.48144,78.28118],[17.48595,78.28481],[17.48374,78.28802],[17.45092,78.30993],[17.44644,78.30542]]]},"Osman Nagar":{"kind":"est","rings":[[[17.4202,78.26734],[17.42102,78.26714],[17.42802,78.26618],[17.43506,78.26586],[17.44211,78.26618],[17.4491,78.26714],[17.45599,78.26874],[17.45771,78.26931],[17.44644,78.30542],[17.4407,78.30374]]]},"Hydernagar":{"kind":"ward","label":"Ward 123 Hydernagar","rings":[[[17.49274,78.40399],[17.49582,78.39727],[17.49658,78.39432],[17.49814,78.39146],[17.49847,78.39011],[17.49936,78.38245],[17.49746,78.378],[17.49655,78.37381],[17.50696,78.37526],[17.50658,78.37649],[17.50763,78.37676],[17.50755,78.37914],[17.50949,78.37923],[17.50755,78.38558],[17.5086,78.3869],[17.51169,78.38814],[17.51169,78.38937],[17.5086,78.3929],[17.50847,78.39637],[17.50764,78.39915],[17.50704,78.40022],[17.50374,78.40161],[17.50208,78.40145],[17.49944,78.40172],[17.49873,78.40232],[17.49784,78.40197],[17.49679,78.40268],[17.49579,78.40453],[17.49459,78.40492]]]},"Moti Nagar":{"kind":"est","rings":[[[17.45514,78.43265],[17.4491,78.43405],[17.44868,78.43411],[17.44146,78.41748],[17.45955,78.41998],[17.4597,78.42182]]]},"BHEL Township":{"kind":"est","rings":[[[17.48595,78.28481],[17.48703,78.28568],[17.49223,78.29068],[17.497,78.29613],[17.50129,78.30199],[17.50508,78.30823],[17.50742,78.31293],[17.50001,78.314],[17.4844,78.30925],[17.48374,78.28802]]]},"Krishna Nagar":{"kind":"est","rings":[[[17.43122,78.43516],[17.42802,78.43502],[17.42102,78.43405],[17.41414,78.43245],[17.41358,78.43227],[17.42255,78.41907],[17.44054,78.41603],[17.44092,78.41686]]]},"Golconda":{"kind":"ward","label":"Ward 67 Golconda","rings":[[[17.38812,78.39906],[17.38893,78.39964],[17.38627,78.40286],[17.38734,78.40284],[17.38716,78.4053],[17.38828,78.40419],[17.3899,78.404],[17.38842,78.40859],[17.38511,78.4117],[17.38683,78.41513],[17.3901,78.41635],[17.39084,78.41438],[17.39113,78.41633],[17.3925,78.41472],[17.39371,78.41436],[17.39444,78.41479],[17.39473,78.41719],[17.39657,78.41747],[17.39565,78.4188],[17.39428,78.4203],[17.39276,78.41953],[17.39135,78.41846],[17.39182,78.42335],[17.3873,78.42307],[17.38695,78.4259],[17.38212,78.42474],[17.38132,78.42554],[17.37726,78.42571],[17.37792,78.42279],[17.37849,78.41852],[17.37951,78.4162],[17.37939,78.41239],[17.384,78.40344],[17.38661,78.40102]]]},"KPHB Colony":{"kind":"ward","label":"Ward 114 KPHB Colony","rings":[[[17.47033,78.38535],[17.47132,78.38712],[17.46971,78.39147],[17.47699,78.39558],[17.48203,78.39412],[17.48283,78.39342],[17.48704,78.39509],[17.48875,78.39334],[17.49158,78.39474],[17.49293,78.39456],[17.493,78.39571],[17.4944,78.39663],[17.49582,78.39727],[17.49658,78.39432],[17.49814,78.39146],[17.49847,78.39011],[17.49936,78.38245],[17.498,78.37946],[17.4972,78.37682],[17.49655,78.37381],[17.49389,78.37185],[17.49183,78.36978],[17.48291,78.36568],[17.4825,78.36606],[17.48163,78.37219],[17.47909,78.3753],[17.48354,78.37702],[17.48751,78.37711],[17.49172,78.38011],[17.49136,78.38155],[17.49076,78.38239],[17.48958,78.38257],[17.48085,78.37921],[17.48056,78.37878],[17.47689,78.3783],[17.47306,78.38397]]]},"Yousufguda":{"kind":"ward","label":"Ward 96 Yousufguda","rings":[[[17.4393,78.42397],[17.43909,78.42346],[17.43893,78.42152],[17.44106,78.41905],[17.44492,78.41742],[17.44561,78.41478],[17.44586,78.41206],[17.44241,78.41564],[17.44015,78.41618],[17.43853,78.41546],[17.43792,78.41647],[17.43551,78.41583],[17.43428,78.41586],[17.43282,78.41722],[17.43195,78.41862],[17.43186,78.42032],[17.43114,78.4204],[17.43075,78.41958],[17.43137,78.42228],[17.42985,78.42579],[17.42969,78.43182],[17.4307,78.43184],[17.43275,78.43263],[17.43471,78.43385],[17.43486,78.43462],[17.43406,78.43667],[17.43326,78.43971],[17.43521,78.44061],[17.43598,78.43757],[17.43605,78.43614],[17.43562,78.43476],[17.43654,78.43364],[17.43553,78.4329],[17.43502,78.43149],[17.43621,78.42807],[17.43713,78.42852]]]},"Moosapet":{"kind":"ward","label":"Ward 117 Moosapet","rings":[[[17.46149,78.43156],[17.46132,78.42871],[17.45914,78.42897],[17.45836,78.42805],[17.457,78.42792],[17.45656,78.42703],[17.45473,78.42659],[17.4548,78.42535],[17.45304,78.42544],[17.45285,78.42681],[17.45031,78.4266],[17.45059,78.42469],[17.45451,78.42408],[17.45396,78.41983],[17.45457,78.41968],[17.45635,78.41629],[17.45494,78.41496],[17.45851,78.41522],[17.4587,78.4164],[17.45933,78.41649],[17.4594,78.41735],[17.46539,78.41665],[17.46603,78.41752],[17.46715,78.41822],[17.46851,78.41823],[17.46877,78.42029],[17.46948,78.42317],[17.46971,78.42757],[17.46826,78.42648],[17.46589,78.42568],[17.465,78.4273],[17.46378,78.42699],[17.46215,78.43125]]]},"Gandhamguda":{"kind":"est","rings":[[[17.36186,78.38655],[17.36179,78.38641],[17.35909,78.37958],[17.35854,78.37776],[17.37321,78.38044],[17.37919,78.39508],[17.37859,78.3958]]]},"Kukatpally":{"kind":"ward","label":"Ward 121 Kukatpally","rings":[[[17.49777,78.43301],[17.49432,78.43149],[17.49402,78.43016],[17.49457,78.42868],[17.49372,78.4267],[17.49158,78.42625],[17.4909,78.4267],[17.48821,78.42531],[17.48575,78.42635],[17.48467,78.42748],[17.48351,78.42795],[17.48164,78.42785],[17.48106,78.42808],[17.48056,78.42935],[17.4775,78.42835],[17.4732,78.42818],[17.4753,78.42437],[17.47716,78.42148],[17.48397,78.41249],[17.48556,78.41308],[17.48619,78.41284],[17.48768,78.4138],[17.49493,78.41485],[17.49642,78.41688],[17.49627,78.42042],[17.49776,78.42043],[17.49768,78.42156],[17.49943,78.42403],[17.49884,78.42687],[17.49899,78.42721],[17.49873,78.42748],[17.49926,78.42914]]]},"Hydershakote":{"kind":"est","rings":[[[17.37289,78.40473],[17.36884,78.3992],[17.36505,78.39297],[17.36186,78.38655],[17.37859,78.3958]]]},"Satavahana Nagar":{"kind":"est","rings":[[[17.50633,78.39045],[17.50508,78.39297],[17.50129,78.3992],[17.49753,78.40434],[17.49531,78.40108],[17.49872,78.39113]]]},"Bharath Nagar":{"kind":"est","rings":[[[17.47093,78.42647],[17.46923,78.4274],[17.46272,78.43023],[17.45599,78.43245],[17.45514,78.43265],[17.4597,78.42182]]]}};
+const GROUPS={
+  buyer:{names:['Good','Okay','Not suggested','Reject'],cls:['good','okay','notsug','rej'],color:['#1e9e5a','#2b7fd4','#e39a0b','#b3261e']},
+  bands:{names:['Low','Medium','High'],cls:['low','med','high'],color:['#00909e','#e39a0b','#a8327e']},
+  kmeans:{names:['Low','Medium','High'],cls:['low','med','high'],color:['#00909e','#e39a0b','#a8327e']}};
+let BUDGET=GROUPS.buyer.names,BCLASS=GROUPS.buyer.cls,BCOLOR=GROUPS.buyer.color;
+function setGroups(m){BUDGET=GROUPS[m].names;BCLASS=GROUPS[m].cls;BCOLOR=GROUPS[m].color}
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const state={data:{},selected:null,metric:'price',scale:'log',show:[true,true,true,true],minSqft:1600,sort:{key:'price',dir:-1},tq:'',pending:null,view:'grid',cell:500,method:'buyer'};
+
+/* ---------- formatting ---------- */
+const inr=n=>Math.round(n).toLocaleString('en-IN');
+function money(n){if(n==null||!isFinite(n))return '–';if(n>=1e7)return '₹'+(n/1e7).toFixed(2)+' Cr';if(n>=1e5)return '₹'+(n/1e5).toFixed(1)+' L';return '₹'+inr(n)}
+const fmtV=(n,m)=>m==='ppsf'?'₹'+inr(n)+'/sqft':money(n);
+const metricName=m=>m==='ppsf'?'price per sqft':'total price';
+
+/* ---------- geography ---------- */
+function haversine(a,b,c,d){const p=Math.PI/180,x=Math.sin((c-a)*p/2)**2+Math.cos(a*p)*Math.cos(c*p)*Math.sin((d-b)*p/2)**2;return 2*6371*Math.asin(Math.sqrt(x))}
+
+/* ---------- centroid clustering (k-means, k = 3) ----------
+   Start from fixed positions so the same file always gives the same result,
+   move each centroid to the mean of its members until nothing changes,
+   and keep the start that leaves prices closest to their centroids. */
+function quantile(s,q){const i=(s.length-1)*q,l=Math.floor(i),h=Math.ceil(i);return s[l]+(s[h]-s[l])*(i-l)}
+function lloyd(x,start){
+  let c=start.slice(),assign=new Array(x.length).fill(0),iter=0;
+  for(;iter<300;iter++){
+    const sum=[0,0,0],cnt=[0,0,0];
+    x.forEach((v,i)=>{let b=0,bd=Infinity;for(let k=0;k<3;k++){const d=Math.abs(v-c[k]);if(d<bd){bd=d;b=k}}assign[i]=b;sum[b]+=v;cnt[b]++});
+    const n=c.map((o,k)=>cnt[k]?sum[k]/cnt[k]:o);
+    const same=n.every((v,k)=>Math.abs(v-c[k])<1e-9*Math.max(1,Math.abs(v)));
+    c=n;if(same)break;
+  }
+  x.forEach((v,i)=>{let b=0,bd=Infinity;for(let k=0;k<3;k++){const d=Math.abs(v-c[k]);if(d<bd){bd=d;b=k}}assign[i]=b});
+  let sse=0;x.forEach((v,i)=>sse+=(v-c[assign[i]])**2);
+  return{c,assign,sse,iter:iter+1};
+}
+function clusterValues(values,useLog){
+  const x=values.map(v=>useLog?Math.log(v):v),s=[...x].sort((a,b)=>a-b);
+  if(new Set(x).size<3)return null;
+  const lo=s[0],hi=s[s.length-1],w=(hi-lo)/4;
+  const starts=[[1/6,.5,5/6].map(q=>quantile(s,q)),[lo+w,lo+2*w,lo+3*w],[.1,.5,.9].map(q=>quantile(s,q))];
+  let best=null;
+  for(const st of starts){const r=lloyd(x,st);if(new Set(r.assign).size===3&&(!best||r.sse<best.sse))best=r}
+  if(!best)return null;
+  const order=[0,1,2].sort((a,b)=>best.c[a]-best.c[b]),rank=[];order.forEach((o,i)=>rank[o]=i);
+  return{assign:best.assign.map(a=>rank[a]),centroids:order.map(o=>useLog?Math.exp(best.c[o]):best.c[o]),iterations:best.iter};
+}
+/* The same grid covers every area: squares counted outward from Infosys, so cells line up across files.
+   A cell's value is the average of its listings, and k-means then groups one area's cells into 3 budgets. */
+const LOW_BELOW=2e7,HIGH_ABOVE=6e7;
+/* Below 2 Cr is Low. 2 Cr up to and including 6 Cr is Medium. Above 6 Cr is High. */
+const bandOf=p=>p<LOW_BELOW?0:p<=HIGH_ABOVE?1:2;
+const BAND_TEXT=['below ₹2 Cr','₹2 Cr to ₹6 Cr','above ₹6 Cr'];
+const usingBands=()=>state.method==='bands';
+const usingBuyer=()=>state.method==='buyer';
+const fixedRules=()=>state.method!=='kmeans';
+const BUDGET_LIMIT=1.5e7,OKAY_UP_TO=1.55e7,REJECT_ABOVE=2e7;
+/* Above 2 Cr: Reject. Above 1.55 Cr up to 2 Cr: Not suggested. Under 1.5 Cr and a spacious 3 BHK: Good. Everything else up to 1.55 Cr: Okay. */
+function buyerClass(r){
+  if(r.price>REJECT_ABOVE)return 3;
+  if(r.price>OKAY_UP_TO)return 2;
+  return r.price<BUDGET_LIMIT&&r.bhk===3&&r.sqft>=state.minSqft?0:1;
+}
+const groupName=k=>usingBuyer()?BUDGET[k]:`${BUDGET[k]} budget`;
+function ruleText(k){
+  if(usingBuyer())return[`3 BHK, ${inr(state.minSqft)}+ sqft, under ₹1.5 Cr`,`₹1.5 Cr to ₹1.55 Cr, or cheaper but not a 3 BHK of ${inr(state.minSqft)}+ sqft`,'Above ₹1.55 Cr, up to ₹2 Cr','Above ₹2 Cr, over budget'][k];
+  return usingBands()?'average · '+BAND_TEXT[k]:'centroid';
+}
+const classCounts=rows=>BUDGET.map((n,k)=>({n,k,c:rows.filter(r=>r.b===k).length})).filter(x=>x.c);
+const avg=v=>v.reduce((t,x)=>t+x,0)/v.length;
+const M_PER_DEG=111320;
+const gridStep=size=>({dLat:size/M_PER_DEG,dLon:size/(M_PER_DEG*Math.cos(HQ[0]*Math.PI/180))});
+const cellName=(r,c)=>(r>=0?'N'+(r+1):'S'+(-r))+' '+(c>=0?'E'+(c+1):'W'+(-c));
+/* Convex outline around the corners of an area's filled squares, so every square sits inside it. */
+function hullOf(cells){
+  if(!cells.length)return null;
+  const seen=new Set(),pts=[];
+  cells.forEach(c=>{const [[s,w],[n,e]]=c.bounds;[[s,w],[s,e],[n,w],[n,e]].forEach(p=>{const k=p.join();if(!seen.has(k)){seen.add(k);pts.push(p)}})});
+  pts.sort((a,b)=>a[1]-b[1]||a[0]-b[0]);
+  const cross=(o,a,b)=>(a[1]-o[1])*(b[0]-o[0])-(a[0]-o[0])*(b[1]-o[1]);
+  const half=list=>{const h=[];for(const p of list){while(h.length>=2&&cross(h[h.length-2],h[h.length-1],p)<=0)h.pop();h.push(p)}h.pop();return h};
+  return[...half(pts),...half([...pts].reverse())];
+}
+function inRings(lat,lon,rings){
+  return rings.some(r=>{let c=false;for(let i=0,j=r.length-1;i<r.length;j=i++){const a=r[i],b=r[j];if((a[1]>lon)!==(b[1]>lon)&&lat<(b[0]-a[0])*(lon-a[1])/(b[1]-a[1])+a[0])c=!c}return c});
+}
+/* The outline of each uploaded area, plus the chosen area's border if it has no file yet. */
+function ringSets(){
+  const sets=Object.values(state.data).filter(d=>d.grid&&d.grid.hull).map(d=>[d.grid.hull]);
+  const a=state.selected;
+  if(a&&a!=='__all'&&!(state.data[a]&&state.data[a].grid&&state.data[a].grid.hull)&&BORDERS[a])sets.push(BORDERS[a].rings);
+  return sets;
+}
+function areaRings(name){
+  if(!name||name==='__all')return null;
+  const d=state.data[name];
+  if(d&&d.grid&&d.grid.hull)return[d.grid.hull];
+  return BORDERS[name]?BORDERS[name].rings:null;
+}
+/* One entry per project at its real location. A project's band comes from the average price of its listings. */
+function buildProjects(d){
+  const map_=new Map();
+  d.rows.forEach(r=>{if(r.lat==null)return;const k=r.name+'|'+r.lat+'|'+r.lon;if(!map_.has(k))map_.set(k,{name:r.name,lat:r.lat,lon:r.lon,rows:[],cellId:r.cellId});map_.get(k).rows.push(r)});
+  d.grid.projects=[...map_.values()];
+  d.grid.projects.forEach(q=>{q.avg=avg(q.rows.map(r=>r.price));q.b=null});
+}
+function computeGrid(d){
+  d.rows.forEach(r=>{r.km=r.lat!=null?haversine(HQ[0],HQ[1],r.lat,r.lon):null;r.ready=readyLabel(r.status);r.cellId=null;r.cellB=null});
+  const m=state.metric,log=state.scale==='log'&&!fixedRules(),size=state.cell,{dLat,dLon}=gridStep(size),map_=new Map();
+  let noLoc=0;
+  d.rows.forEach(r=>{
+    if(!(r[m]>0))return;
+    if(r.lat==null){noLoc++;return}
+    const a=Math.floor((r.lat-HQ[0])/dLat),b=Math.floor((r.lon-HQ[1])/dLon),k=a+','+b;
+    if(!map_.has(k))map_.set(k,{r:a,c:b,id:cellName(a,b),rows:[],b:null,bounds:[[HQ[0]+a*dLat,HQ[1]+b*dLon],[HQ[0]+(a+1)*dLat,HQ[1]+(b+1)*dLon]]});
+    map_.get(k).rows.push(r);r.cellId=map_.get(k).id;
+  });
+  const cells=[...map_.values()];
+  cells.forEach(c=>{
+    const v=c.rows.map(r=>r[m]);
+    c.value=log?Math.exp(v.reduce((t,x)=>t+Math.log(x),0)/v.length):v.reduce((t,x)=>t+x,0)/v.length;
+    c.lat=(c.bounds[0][0]+c.bounds[1][0])/2;c.lon=(c.bounds[0][1]+c.bounds[1][1])/2;
+    c.km=haversine(HQ[0],HQ[1],c.lat,c.lon);
+  });
+  d.grid={cells,size,metric:m,scale:state.scale,noLoc,stats:null,iterations:0};
+  d.grid.hull=hullOf(cells);
+  buildProjects(d);
+  const groupStats=()=>BUDGET.map((_,k)=>{const g=cells.filter(c=>c.b===k),v=g.map(c=>c.value);return{n:g.length,listings:g.reduce((t,c)=>t+c.rows.length,0),centroid:g.length?avg(v):null,min:Math.min(...v),max:Math.max(...v)}});
+  if(usingBuyer()){
+    if(!cells.length)return;
+    cells.forEach(c=>{c.b=Math.min(...c.rows.map(r=>r.b));c.rows.forEach(r=>r.cellB=c.b)});
+    d.grid.stats=groupStats();
+    d.grid.projects.forEach(q=>q.b=Math.min(...q.rows.map(r=>r.b)));
+    return;
+  }
+  if(usingBands()){
+    if(!cells.length)return;
+    cells.forEach(c=>{c.b=bandOf(c.value);c.rows.forEach(r=>r.cellB=c.b)});
+    d.grid.stats=groupStats();
+    d.grid.projects.forEach(q=>q.b=bandOf(q.avg));
+    return;
+  }
+  const res=cells.length>=3?clusterValues(cells.map(c=>c.value),log):null;
+  if(!res)return;
+  cells.forEach((c,i)=>{c.b=res.assign[i];c.rows.forEach(r=>r.cellB=c.b)});
+  d.grid.iterations=res.iterations;
+  d.grid.stats=groupStats().map((x,k)=>({...x,centroid:res.centroids[k]}));
+  const f=log?Math.log:(x=>x);
+  d.grid.projects.forEach(q=>{let b=0,bd=Infinity;res.centroids.forEach((c,k)=>{const e=Math.abs(f(q.rows.reduce((t,r)=>t+r[m],0)/q.rows.length)-f(c));if(e<bd){bd=e;b=k}});q.b=b});
+}
+function computeCluster(d){
+  if(usingBuyer())d.rows.forEach(r=>r.b=buyerClass(r));
+  computeGrid(d);
+  const m=state.metric,idx=[];
+  d.rows.forEach((r,i)=>{r.b=null;if(r[m]>0)idx.push(i)});
+  if(fixedRules()){
+    d.unclustered=d.rows.length-idx.length;
+    idx.forEach(i=>d.rows[i].b=usingBuyer()?buyerClass(d.rows[i]):bandOf(d.rows[i].price));
+    const stats=BUDGET.map((_,k)=>{const v=d.rows.filter(r=>r.b===k).map(r=>r.price);return{n:v.length,centroid:v.length?avg(v):null,min:Math.min(...v),max:Math.max(...v)}});
+    d.cluster={stats,iterations:0,metric:'price',scale:state.scale,total:idx.length};
+    return;
+  }
+  const res=clusterValues(idx.map(i=>d.rows[i][m]),state.scale==='log');
+  d.cluster=null;d.unclustered=d.rows.length-idx.length;
+  if(!res)return;
+  idx.forEach((i,j)=>d.rows[i].b=res.assign[j]);
+  const stats=[0,1,2].map(k=>{const v=idx.filter((_,j)=>res.assign[j]===k).map(i=>d.rows[i][m]);return{n:v.length,centroid:res.centroids[k],min:Math.min(...v),max:Math.max(...v)}});
+  d.cluster={stats,iterations:res.iterations,metric:m,scale:state.scale,total:idx.length};
+}
+const recomputeAll=()=>Object.values(state.data).forEach(computeCluster);
+
+/* ---------- reading uploaded files ---------- */
+const isSold=st=>/\bsold\b/i.test(String(st??''));
+const isOldPrice=raw=>Object.values(raw||{}).some(v=>typeof v==='string'&&/many years old/i.test(v));
+const readyLabel=st=>/ready/i.test(st||'')?'Yes':/under\s*construction|upcoming|new launch/i.test(st||'')?'No':'Not stated';
+const norm=s=>String(s??'').replace(/^﻿/,'').trim().toLowerCase().replace(/[\s_.\-/]+/g,' ');
+function num(v){if(typeof v==='number')return isFinite(v)?v:null;const s=String(v??'').replace(/[₹,\s]/g,'');if(!s)return null;const n=Number(s);return isFinite(n)?n:null}
+function parsePriceText(v){
+  if(typeof v==='number')return v;
+  const m=String(v??'').replace(/[₹,]/g,'').trim().toLowerCase().match(/^(?:rs\.?\s*)?([\d.]+)\s*(cr|crore|crores|l|lac|lacs|lakh|lakhs|k)?/);
+  if(!m)return null;const n=parseFloat(m[1]);if(!isFinite(n))return null;
+  return Math.round(n*({cr:1e7,crore:1e7,crores:1e7,l:1e5,lac:1e5,lacs:1e5,lakh:1e5,lakhs:1e5,k:1e3}[m[2]]||1));
+}
+function pick(h,names){for(const n of names)if(n in h)return h[n];return null}
+function toRows(raw){
+  if(!raw.length)throw new Error('This file has no rows.');
+  const h={};Object.keys(raw[0]).forEach(k=>{const n=norm(k);if(!(n in h))h[n]=k});
+  const cPrice=pick(h,['price numeric','price','total price']),cAsk=pick(h,['asking price','asking']);
+  if(cPrice==null&&cAsk==null)throw new Error('No price column found. The file needs a column called price_numeric or asking price. It has: '+Object.keys(raw[0]).slice(0,12).join(', ')+'.');
+  const cSq=pick(h,['area sqft','size sqft','sqft','area']),cPs=pick(h,['price per sqft','price sqft','rate per sqft','ppsf']);
+  const cLL=pick(h,['lat lon','latlon','lat long','latitude longitude']),cLat=pick(h,['lat','latitude']),cLon=pick(h,['lon','lng','long','longitude']);
+  const cName=pick(h,['name of the project','project name','project','name']),cType=pick(h,['type','property type']),cBhk=pick(h,['bhk']),cStatus=pick(h,['status']);
+  const clean=r=>{const o={};for(const k in r)o[k.replace(/^\ufeff/,'').trim()]=r[k];return o};
+  const columns=Object.keys(clean(raw[0])),nameCol=cName!=null?cName.replace(/^\ufeff/,'').trim():null;
+  let skipped=0,sold=0,old=0;const rows=[];
+  raw.forEach(r=>{
+    if(cStatus!=null&&isSold(r[cStatus])){sold++;return}
+    if(isOldPrice(r)){old++;return}
+    let price=cPrice!=null?num(r[cPrice]):null;if(!(price>0)&&cAsk!=null)price=parsePriceText(r[cAsk]);
+    if(!(price>0)){skipped++;return}
+    const sqft=cSq!=null?num(r[cSq]):null;let ppsf=cPs!=null?num(r[cPs]):null;if(!(ppsf>0))ppsf=sqft>0?Math.round(price/sqft):null;
+    let lat=null,lon=null;
+    if(cLL!=null){const p=String(r[cLL]??'').split(/[,\s]+/).filter(Boolean).map(Number);if(p.length>=2){lat=p[0];lon=p[1]}}
+    else if(cLat!=null&&cLon!=null){lat=num(r[cLat]);lon=num(r[cLon])}
+    if(!(Math.abs(lat)<=90&&Math.abs(lon)<=180&&lat&&lon)){lat=null;lon=null}
+    rows.push({name:String(cName!=null?r[cName]??'':'').trim()||'Unnamed',type:cType!=null?String(r[cType]??'').trim():'',bhk:cBhk!=null?(v=>isFinite(v)?v:null)(parseFloat(String(r[cBhk]??''))):null,sqft,price,ppsf,lat,lon,status:cStatus!=null?String(r[cStatus]??'').trim():'',b:null,raw:clean(r)});
+  });
+  if(!rows.length)throw new Error('None of the rows has a recent, usable price.');
+  return{rows,skipped,columns,nameCol,sold,old};
+}
+function readFile(file){
+  return new Promise((ok,bad)=>{
+    if(/\.xlsx?$/i.test(file.name)){
+      const fr=new FileReader();fr.onerror=()=>bad(new Error('The file could not be read.'));
+      fr.onload=()=>{try{const wb=XLSX.read(fr.result,{type:'array'});ok(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''}))}catch(e){bad(new Error('The Excel file could not be read.'))}};
+      fr.readAsArrayBuffer(file);
+    }else if(/\.csv$/i.test(file.name)){
+      Papa.parse(file,{header:true,skipEmptyLines:true,complete:r=>ok(r.data),error:()=>bad(new Error('The CSV file could not be read.'))});
+    }else bad(new Error('Please choose a .csv or .xlsx file.'));
+  });
+}
+const letters=s=>s.toLowerCase().replace(/[^a-z]/g,'');
+function detectArea(fname){
+  const f=letters(fname.replace(/\.[^.]+$/,''));let best=null;
+  AREAS.forEach(a=>{const n=letters(a.name);if(f.includes(n)&&(!best||n.length>letters(best).length))best=a.name});
+  if(!best&&f.includes('hitech'))best='HITEC City';
+  Object.keys(state.data).forEach(k=>{const n=letters(k);if(n&&f.includes(n)&&(!best||n.length>letters(best).length))best=k});
+  return best;
+}
+function leftOut(d){const p=[];if(d.old)p.push(`${d.old} with prices that may be years old`);if(d.sold)p.push(`${d.sold} already sold`);if(d.skipped)p.push(`${d.skipped} with no price`);return p.join(', ')}
+/* Read every chosen file, then ask once which area each one belongs to. Files that fail are reported and the rest carry on. */
+async function onFiles(list){
+  const files=[...list];if(!files.length)return;
+  $('err').hidden=true;$('qerr').hidden=true;state.queue=[];
+  const errors=[];
+  for(const file of files){
+    try{
+      const parsed=toRows(await readFile(file));
+      state.queue.push({...parsed,file:file.name,area:detectArea(file.name)||(files.length===1&&state.selected&&state.selected!=='__all'&&!state.data[state.selected]?state.selected:''),other:''});
+    }catch(e){errors.push(`${file.name}: ${e.message||'could not be read.'}`)}
+  }
+  if(errors.length){$('err').textContent=errors.join(' ');$('err').hidden=false}
+  renderQueue();$('file').value='';
+}
+function areaOptions(val){
+  const extra=Object.keys(state.data).filter(k=>!AREAS.some(a=>a.name===k));
+  const names=[...AREAS.map(a=>a.name),...extra].sort((a,b)=>a.localeCompare(b));
+  return `<option value="">Choose an area</option>`+names.map(n=>`<option value="${esc(n)}"${n===val?' selected':''}>${esc(n)}</option>`).join('')+`<option value="__other"${val==='__other'?' selected':''}>Another area, not on this list</option>`;
+}
+function renderQueue(){
+  const q=state.queue||[];
+  $('confirm').hidden=!q.length;if(!q.length)return;
+  $('queue').innerHTML=q.map((x,i)=>{
+    const off=leftOut(x),no=x.rows.filter(r=>r.lat==null).length,out=x.rows.filter(r=>r.lat!=null&&haversine(HQ[0],HQ[1],r.lat,r.lon)>RADIUS_KM).length,ex=x.area&&state.data[x.area];
+    const notes=[];if(no)notes.push(`${no} listings have no location, so they stay off the map.`);if(out)notes.push(`${out} listings are outside the 9 km circle but are still clustered.`);if(ex)notes.push(`Replaces the ${ex.rows.length} listings already uploaded for ${x.area}.`);
+    return `<div class="qrow" data-i="${i}"><div class="qhead"><b>${esc(x.file)}</b><button type="button" class="qx" data-x="${i}" aria-label="Remove ${esc(x.file)}">Remove</button></div>
+    <p class="msg">${x.rows.length.toLocaleString('en-IN')} listings kept.${off?` Left out: ${esc(off)}.`:''}</p>
+    <label>Area<select data-area="${i}" aria-label="Area for ${esc(x.file)}">${areaOptions(x.area)}</select></label>
+    ${x.area==='__other'?`<label>Area name<input data-other="${i}" type="text" autocomplete="off" value="${esc(x.other)}"></label>`:''}
+    ${notes.length?`<p class="msg warn">${esc(notes.join(' '))}</p>`:''}</div>`}).join('');
+  $('qgo').textContent=q.length>1?`Run clustering on ${q.length} files`:'Run clustering';
+}
+
+/* ---------- saved data (kept in this browser only) ---------- */
+let dbp=null;
+function db(){if(dbp)return dbp;dbp=new Promise((ok,bad)=>{try{const r=indexedDB.open('infosys-clusters',1);r.onupgradeneeded=()=>r.result.createObjectStore('areas');r.onsuccess=()=>ok(r.result);r.onerror=()=>bad(r.error)}catch(e){bad(e)}});return dbp}
+async function saveArea(name,d){try{const c=await db();await new Promise((ok,bad)=>{const t=c.transaction('areas','readwrite');t.objectStore('areas').put({file:d.file,skipped:d.skipped,rows:d.rows,columns:d.columns,nameCol:d.nameCol,sold:d.sold,old:d.old,at:d.at},name);t.oncomplete=ok;t.onerror=bad})}catch(e){$('savewarn').hidden=false}}
+async function deleteArea(name){try{const c=await db();await new Promise((ok,bad)=>{const t=c.transaction('areas','readwrite');t.objectStore('areas').delete(name);t.oncomplete=ok;t.onerror=bad})}catch(e){}}
+async function loadAll(){try{const c=await db();await new Promise((ok,bad)=>{const s=c.transaction('areas').objectStore('areas'),q=s.openCursor();q.onsuccess=()=>{const u=q.result;if(u){const v=u.value,keep=v.rows.filter(r=>!isSold(r.status)&&!isOldPrice(r.raw));
+          v.sold=(v.sold||0)+v.rows.filter(r=>isSold(r.status)).length;v.old=(v.old||0)+v.rows.filter(r=>!isSold(r.status)&&isOldPrice(r.raw)).length;v.rows=keep;state.data[u.key]=v;u.continue()}else ok()};q.onerror=bad})}catch(e){}}
+
+/* ---------- map ---------- */
+const setToolbarVar=()=>document.documentElement.style.setProperty('--tb',document.querySelector('.toolbar').offsetHeight+'px');setToolbarVar();
+const map=L.map('map',{zoomSnap:.25,zoomDelta:.5}).setView(HQ,12);
+L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',{subdomains:'abc',maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, tiles by <a href="https://www.openstreetmap.fr/">OpenStreetMap France</a>'}).addTo(map);
+L.control.scale({imperial:false}).addTo(map);
+const WHOLE=L.latLng(HQ).toBounds(RADIUS_KM*2000);
+const circle=L.circle(HQ,{radius:RADIUS_KM*1000,color:'#0c5f68',weight:2.5,dashArray:'8 6',fillColor:'#0c5f68',fillOpacity:.05,interactive:false}).addTo(map);
+map.fitBounds(WHOLE,{padding:[12,12]});
+L.marker(HQ,{icon:L.divIcon({className:'',html:'<div class="hq-mark"></div>',iconSize:[14,14]}),title:'Infosys, Gachibowli',zIndexOffset:2000}).addTo(map).bindPopup('<b>Infosys, Gachibowli</b><br>17.4351, 78.3506');
+const labelPane=map.createPane('labels');labelPane.style.zIndex=640;labelPane.style.pointerEvents='none';
+const ctx=document.createElement('canvas').getContext('2d');ctx.font='500 11.5px "IBM Plex Sans",sans-serif';
+const areaItems=AREAS.map(a=>{
+  const m=L.circleMarker([a.lat,a.lon],{radius:3.5,color:'#fff',weight:1.2,fillColor:'#42565a',fillOpacity:1}).addTo(map).bindTooltip(`${esc(a.name)}: ${a.km} km ${a.dir} of Infosys`);
+  m.on('click',()=>select(a.name));
+  const el=document.createElement('div');el.className='lbl';el.textContent=a.name;labelPane.appendChild(el);
+  return{a,m,el,w:ctx.measureText(a.name).width+4,h:14};
+});
+const hqLabel=document.createElement('div');hqLabel.className='lbl hq';hqLabel.textContent='Infosys';labelPane.appendChild(hqLabel);
+/* Greedy label placement: uploaded and selected areas first, then nearest. A label that cannot fit stays hidden until the map is zoomed in. */
+function layout(){
+  const hp=map.latLngToLayerPoint(HQ),taken=[{x:hp.x+10,y:hp.y-8,w:50,h:16}];
+  L.DomUtil.setPosition(hqLabel,L.point(hp.x+10,hp.y-8));
+  const pts=areaItems.map(i=>map.latLngToLayerPoint(i.m.getLatLng()));
+  pts.forEach(p=>taken.push({x:p.x-4,y:p.y-4,w:8,h:8}));
+  const pri=i=>(i.a.name===state.selected?2:0)+(state.data[i.a.name]?1:0);
+  const order=areaItems.map((it,k)=>({it,p:pts[k]})).sort((x,y)=>pri(y.it)-pri(x.it)||x.it.a.km-y.it.a.km);
+  const hit=r=>taken.some(t=>r.x<t.x+t.w&&t.x<r.x+r.w&&r.y<t.y+t.h&&t.y<r.y+r.h);
+  const quiet=state.view==='grid'&&Object.keys(state.data).length&&cellPx()>=20;
+  order.forEach(({it,p})=>{
+    if(quiet||state.data[it.a.name]){it.el.hidden=true;return}
+    const c=[[6,-it.h/2],[-it.w-6,-it.h/2],[-it.w/2,-it.h-5],[-it.w/2,5],[6,-it.h-3],[-it.w-6,-it.h-3],[6,3],[-it.w-6,3]];
+    let s=null;for(const[dx,dy]of c){const r={x:p.x+dx,y:p.y+dy,w:it.w,h:it.h};if(!hit(r)){s=r;break}}
+    it.el.hidden=!s;if(s){taken.push(s);L.DomUtil.setPosition(it.el,L.point(s.x,s.y))}
+  });
+}
+map.on('zoomend moveend',layout);
+
+/* One pie per project location: its slices show how that project's listings split across the budgets. */
+const pieLayer=L.layerGroup().addTo(map);
+const gridPane=map.createPane('grid');gridPane.style.zIndex=390;
+const gridLines=L.layerGroup().addTo(map),gridCells=L.layerGroup().addTo(map);
+const tagPane=map.createPane('tags');tagPane.style.zIndex=650;
+const borderPane=map.createPane('border');borderPane.style.zIndex=395;borderPane.style.pointerEvents='none';
+const borderLayer=L.layerGroup().addTo(map),cellLabels=L.layerGroup().addTo(map);
+const legend=L.control({position:'topright'});
+legend.onAdd=()=>{const e=L.DomUtil.create('div','blegend');L.DomEvent.disableClickPropagation(e);e.hidden=true;return e};legend.addTo(map);
+function cellPx(){
+  const {dLon}=gridStep(state.cell),pa=map.latLngToLayerPoint([HQ[0],HQ[1]]),pb=map.latLngToLayerPoint([HQ[0],HQ[1]+dLon]);
+  return Math.abs(pb.x-pa.x);
+}
+function drawBorder(){
+  borderLayer.clearLayers();
+  const box=legend.getContainer(),a=state.selected,uploaded=Object.keys(state.data).filter(n=>state.data[n].grid&&state.data[n].grid.hull);
+  uploaded.forEach(n=>{
+    const h=state.data[n].grid.hull,sel=n===a;
+    L.polygon(h,{pane:'border',color:'#111',weight:sel?4:2,fill:false,interactive:false}).addTo(borderLayer);
+    const top=h.reduce((t,p)=>p[0]>t[0]?p:t,h[0]);
+    L.marker(top,{pane:'tags',title:`Focus on ${n}`,icon:L.divIcon({className:'',iconSize:[0,0],html:`<div class="atag${sel?' sel':''}">${esc(n)}</div>`})}).on('click',()=>select(n)).addTo(borderLayer);
+  });
+  if(!a||a==='__all'){
+    if(uploaded.length){box.innerHTML=`<div class="bl-t">${uploaded.length} uploaded area${uploaded.length>1?'s':''}</div><div class="bl-r"><i class="ln"></i>Each area's outer border</div>${state.view==='grid'?'<div class="bl-r"><i class="pd"></i>Each dot is one project</div>':''}<div class="bl-n">Click an area's name to focus on it.</div>`;box.hidden=false}
+    else box.hidden=true;
+    return;
+  }
+  const d=state.data[a],b=BORDERS[a],hasHull=d&&d.grid&&d.grid.hull;
+  let rows=`<div class="bl-t">${esc(a)}</div>`;
+  if(hasHull){
+    rows+=`<div class="bl-r"><i class="ln"></i>Outer border of its clustered grids</div>`;
+    if(b&&b.kind==='ward'){
+      b.rings.forEach(r=>L.polygon(r,{pane:'border',color:'#1d4ed8',weight:2,fill:false,dashArray:'3 5',interactive:false}).addTo(borderLayer));
+      const located=d.rows.filter(r=>r.lat!=null),inside=located.filter(r=>inRings(r.lat,r.lon,b.rings)).length;
+      rows+=`<div class="bl-r"><i class="ln ward"></i>Official ${esc(b.label)}</div><div class="bl-n">${inside} of ${located.length} listings are inside the official ward</div>`;
+    }
+  }else if(b){
+    const est=b.kind==='est';
+    b.rings.forEach(r=>L.polygon(r,{pane:'border',color:'#111',weight:3,fill:false,interactive:false,dashArray:est?'8 7':null}).addTo(borderLayer));
+    rows+=est?`<div class="bl-r"><i class="ln est"></i>Estimated border</div><div class="bl-n">Halfway to neighbouring areas, not an official boundary. Upload this area's file to replace it with its grids.</div>`:`<div class="bl-r"><i class="ln"></i>Official ${esc(b.label)}</div><div class="bl-n">Upload this area's file to fill its grids</div>`;
+  }else{box.hidden=true;return}
+  if(hasHull&&state.view==='grid')rows+='<div class="bl-r"><i class="pd"></i>Each dot is one project</div>';
+  box.innerHTML=rows;box.hidden=false;
+}
+function drawCellLabels(){cellLabels.clearLayers()}
+map.on('zoomend',drawCellLabels);
+const dotPane=map.createPane('dots');dotPane.style.zIndex=645;
+const projectDots=L.layerGroup().addTo(map);
+function dotTip(q){
+  if(!usingBuyer())return `<b>${esc(q.name)}</b><br>${money(q.avg)} average · ${q.rows.length} listing${q.rows.length>1?'s':''}<br>${q.b==null?'Not classified':BUDGET[q.b]+' budget'}`;
+  const ps=q.rows.map(r=>r.price),lo=Math.min(...ps),hi=Math.max(...ps);
+  return `<b>${esc(q.name)}</b><br>Best: ${BUDGET[q.b]}<br>${money(lo)}${hi>lo?' to '+money(hi):''} · ${q.rows.length} listing${q.rows.length>1?'s':''}<br>${classCounts(q.rows).map(x=>x.c+' '+x.n).join(' · ')}`;
+}
+function drawProjectDots(){
+  projectDots.clearLayers();
+  if(state.view!=='grid')return;
+  const radius=map.getZoom()>=13?5:3.5;
+  Object.entries(state.data).forEach(([a,d])=>{
+    if(!d.grid||!d.grid.projects)return;
+    [...d.grid.projects].sort((x,y)=>(y.b??9)-(x.b??9)).forEach(q=>{
+      if(q.b!=null&&!state.show[q.b])return;
+      const dot=L.circleMarker([q.lat,q.lon],{pane:'dots',radius:usingBuyer()&&q.b===0?radius+1.5:radius,color:'#111',weight:1,fillColor:q.b==null?'#7b8a8c':BCOLOR[q.b],fillOpacity:1})
+        .bindTooltip(dotTip(q),{direction:'top',offset:[0,-4]}).addTo(projectDots);
+      attachSheet(dot,{area:a,loc:q.lat+','+q.lon});
+    });
+  });
+}
+map.on('zoomend',drawProjectDots);
+function drawGrid(){
+  gridLines.clearLayers();gridCells.clearLayers();
+  if(state.view!=='grid')return;
+  const {dLat,dLon}=gridStep(state.cell),Rm=RADIUS_KM*1000,n=Math.ceil(Rm/state.cell);
+  if(!state.selected||state.selected==='__all'){
+    const style={pane:'grid',color:'#0c5f68',weight:.6,opacity:.35,interactive:false};
+    for(let i=-n;i<=n;i++){
+      const o=i*state.cell;if(Math.abs(o)>=Rm)continue;
+      const half=Math.sqrt(Rm*Rm-o*o);
+      L.polyline([[HQ[0]+i*dLat,HQ[1]-half/state.cell*dLon],[HQ[0]+i*dLat,HQ[1]+half/state.cell*dLon]],style).addTo(gridLines);
+      L.polyline([[HQ[0]-half/state.cell*dLat,HQ[1]+i*dLon],[HQ[0]+half/state.cell*dLat,HQ[1]+i*dLon]],style).addTo(gridLines);
+    }
+  }
+  const line={pane:'grid',color:'#0c5f68',weight:.8,opacity:.55,interactive:false};
+  ringSets().forEach(rg=>{
+    const flat=rg.flat(),la=flat.map(p=>p[0]),lo=flat.map(p=>p[1]);
+    const cuts=(axis,val)=>{const other=1-axis,out=[];rg.forEach(r=>{for(let i=0,j=r.length-1;i<r.length;j=i++){const a=r[i],b=r[j];if((a[axis]>val)!==(b[axis]>val))out.push(a[other]+(val-a[axis])/(b[axis]-a[axis])*(b[other]-a[other]))}});return out.sort((x,y)=>x-y)};
+    for(let i=Math.floor((Math.min(...la)-HQ[0])/dLat);i<=Math.ceil((Math.max(...la)-HQ[0])/dLat);i++){const v=HQ[0]+i*dLat,c=cuts(0,v);for(let k=0;k+1<c.length;k+=2)L.polyline([[v,c[k]],[v,c[k+1]]],line).addTo(gridLines)}
+    for(let i=Math.floor((Math.min(...lo)-HQ[1])/dLon);i<=Math.ceil((Math.max(...lo)-HQ[1])/dLon);i++){const v=HQ[1]+i*dLon,c=cuts(1,v);for(let k=0;k+1<c.length;k+=2)L.polyline([[c[k],v],[c[k+1],v]],line).addTo(gridLines)}
+  });
+  const names=Object.keys(state.data);
+  const byCell=new Map();
+  names.forEach(a=>state.data[a].grid.cells.forEach(c=>{c._rect=null;if(c.b!=null&&!state.show[c.b])return;const k=c.r+','+c.c;if(!byCell.has(k))byCell.set(k,[]);byCell.get(k).push({a,c})}));
+  /* Two areas can share a square, so it is split into side-by-side strips and neither hides the other. */
+  byCell.forEach(list=>list.forEach(({a,c},i)=>{
+    const [[s0,w0],[n0,e0]]=c.bounds,w=(e0-w0)/list.length;
+    const col=c.b==null?'#7b8a8c':BCOLOR[c.b],m=state.data[a].grid.metric;
+    c._rect=L.rectangle([[s0,w0+i*w],[n0,w0+(i+1)*w]],{pane:'grid',color:col,weight:1,opacity:.95,fillColor:col,fillOpacity:state.selected==='__all'||!state.selected?.5:(a===state.selected?.55:.28)}).addTo(gridCells);
+    attachSheet(c._rect,{area:a,cell:c.r+','+c.c});
+  }));
+}
+function drawPies(){
+  pieLayer.clearLayers();
+  if(state.view!=='pies')return;
+  const names=Object.keys(state.data);
+  names.forEach(area=>{
+    const groups=new Map();
+    state.data[area].rows.forEach(r=>{if(r.b==null||r.lat==null||!state.show[r.b])return;const k=r.lat+','+r.lon;if(!groups.has(k))groups.set(k,[]);groups.get(k).push(r)});
+    groups.forEach(rows=>{
+      const cnt=[0,0,0];rows.forEach(r=>cnt[r.b]++);let a=0;const stops=[];
+      cnt.forEach((c,k)=>{if(!c)return;const e=a+c/rows.length*360;stops.push(`${BCOLOR[k]} ${a}deg ${e}deg`);a=e});
+      const size=Math.min(30,12+3*Math.sqrt(rows.length));
+      const names=[...new Set(rows.map(r=>r.name))];
+      attachSheet(L.marker([rows[0].lat,rows[0].lon],{icon:L.divIcon({className:'',html:`<div class="pie" style="background:conic-gradient(${stops.join(',')})"></div>`,iconSize:[size,size]}),title:`${names[0]}: ${rows.length} listings`,zIndexOffset:500}).addTo(pieLayer),{area,loc:rows[0].lat+','+rows[0].lon});
+    });
+  });
+}
+/* A map move is ignored while a zoom is still animating, so finish any zoom first. */
+function settleMap(){map.stop();if(map._animatingZoom&&map._onZoomTransitionEnd)map._onZoomTransitionEnd()}
+function fitSelected(){
+  map.closePopup();settleMap();
+  const rg0=areaRings(state.selected);
+  if(rg0){map.fitBounds(L.latLngBounds(rg0.flat()).pad(.05),{maxZoom:16,animate:false});return}
+  const d=state.data[state.selected];
+  if(d){const pts=d.rows.filter(r=>r.lat!=null).map(r=>[r.lat,r.lon]);if(pts.length){map.fitBounds(L.latLngBounds(pts).pad(.12),{maxZoom:15,animate:false});return}}
+  const it=areaItems.find(i=>i.a.name===state.selected);
+  if(it)map.setView(it.m.getLatLng(),Math.max(map.getZoom(),13.5),{animate:false});else map.fitBounds(WHOLE,{padding:[12,12],animate:false});
+}
+
+/* ---------- area register ---------- */
+function renderList(){
+  const q=$('q').value.trim().toLowerCase();
+  const extra=Object.keys(state.data).filter(k=>!AREAS.some(a=>a.name===k)).map(n=>({name:n,km:null}));
+  const all=[...AREAS,...extra].sort((a,b)=>(!!state.data[b.name]-!!state.data[a.name])||((a.km??99)-(b.km??99)));
+  const up=Object.keys(state.data).length;
+  $('listcount').textContent=`${AREAS.length} areas · ${up} uploaded`;
+  $('list').innerHTML=all.filter(a=>a.name.toLowerCase().includes(q)).map(a=>{const d=state.data[a.name];
+    return `<li class="${a.name===state.selected?'sel':''}"><button type="button" data-a="${esc(a.name)}"><span>${esc(a.name)}</span>${d?`<span class="has" title="${d.rows.length} listings uploaded">${d.rows.length}</span>`:`<span class="m">${a.km!=null?a.km+' km':''}</span>`}</button></li>`}).join('');
+}
+
+/* ---------- results ---------- */
+function tileHTML(s,k,total,m){
+  return `<div class="tile"><div class="t"><i class="sw ${BCLASS[k]}"></i>${groupName(k)}</div>
+  <div class="big">${usingBuyer()?`${s.n} listing${s.n===1?'':'s'}`:fmtV(s.centroid,m)}</div><div class="cap">${esc(ruleText(k))}</div>
+  <dl>${usingBuyer()?`<dt>Average</dt><dd>${fmtV(s.centroid,m)}</dd><dt>Share</dt><dd>${total?Math.round(s.n/total*100):0}%</dd>`:`<dt>Listings</dt><dd>${s.n} (${total?Math.round(s.n/total*100):0}%)</dd>`}<dt>Lowest</dt><dd>${fmtV(s.min,m)}</dd><dt>Highest</dt><dd>${fmtV(s.max,m)}</dd></dl>${s.n?`<button class="btn rec" type="button" data-rec="listing:${k}">View ${s.n} records</button>`:''}</div>`;
+}
+function niceTicks(lo,hi,log){
+  if(log){const out=[];for(let e=Math.floor(Math.log10(lo));e<=Math.ceil(Math.log10(hi));e++)for(const m of[1,2,5]){const v=m*10**e;if(v>=lo*.98&&v<=hi*1.02)out.push(v)}return out}
+  const step0=(hi-lo)/5,mag=10**Math.floor(Math.log10(step0)),st=[1,2,5,10].map(x=>x*mag).find(x=>x>=step0);const out=[];for(let v=Math.ceil(lo/st)*st;v<=hi;v+=st)out.push(v);return out;
+}
+const cutLines=()=>usingBuyer()?[OKAY_UP_TO,REJECT_ABOVE]:usingBands()?[LOW_BELOW,HIGH_ABOVE]:[];
+const isBandLine=t=>cutLines().includes(t);
+function axisTicks(lo,hi,log){
+  const t=niceTicks(lo,hi,log);if(!fixedRules())return t;
+  const lines=cutLines().filter(v=>v>lo&&v<hi);
+  return[...t.filter(v=>lines.every(l=>Math.abs(Math.log(v/l))>.22)),...lines];
+}
+function drawStrip(hostId,pts,stats,m,log,ariaLabel){
+  const host=$(hostId);if(!host||!pts.length)return;
+  const W=Math.max(300,host.clientWidth),H=170,P={l:14,r:14,t:30,b:30};
+  const vals=pts.map(p=>p.v),lo=Math.min(...vals),hi=Math.max(...vals);
+  const f=v=>log?Math.log(v):v,X=v=>P.l+(f(v)-f(lo))/((f(hi)-f(lo))||1)*(W-P.l-P.r);
+  const y0=P.t+6,yh=H-P.t-P.b-12;
+  const hash=i=>{const s=Math.sin(i*127.1+11.7)*43758.5453;return s-Math.floor(s)};
+  let s=`<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="${esc(ariaLabel)}">`;
+  axisTicks(lo,hi,log).forEach(t=>{const x=X(t);s+=`<line x1="${x}" x2="${x}" y1="${P.t}" y2="${H-P.b}" ${isBandLine(t)?'stroke="#556467" stroke-dasharray="4 3"':'stroke="#e6eae8"'}/><text x="${x}" y="${H-P.b+18}" text-anchor="middle">${esc(m==='ppsf'?'₹'+inr(t):money(t).replace(/\.?0+ Cr$/,' Cr'))}</text>`});
+  s+=`<line x1="${P.l}" x2="${W-P.r}" y1="${H-P.b}" y2="${H-P.b}" stroke="#b9c3c1"/>`;
+  pts.forEach((p,i)=>{if(!state.show[p.b])return;s+=`<circle data-tip="${esc(p.tip)}" cx="${X(p.v).toFixed(1)}" cy="${(y0+hash(i)*yh).toFixed(1)}" r="${p.r||3.5}" fill="${BCOLOR[p.b]}" fill-opacity=".7" stroke="#fff" stroke-width=".6"/>`});
+  stats.forEach((c,k)=>{if(!c.n||usingBuyer())return;const x=X(c.centroid),txt=`${BUDGET[k]}: ${fmtV(c.centroid,m)}`,anchor=x<90?'start':x>W-90?'end':'middle';
+    s+=`<line x1="${x}" x2="${x}" y1="${P.t-6}" y2="${H-P.b}" stroke="#1a2729" stroke-width="2"/><text class="cn" x="${x}" y="${P.t-11}" text-anchor="${anchor}">${esc(txt)}</text>`});
+  host.innerHTML=s+'</svg>';
+}
+function drawChart(d){
+  if(!d.cluster)return;const m=d.cluster.metric;
+  drawStrip('chart',d.rows.filter(r=>r.b!=null).map(r=>({v:r[m],b:r.b,tip:`${r.name}: ${money(r.price)}${r.ppsf?' · ₹'+inr(r.ppsf)+'/sqft':''} · ${BUDGET[r.b]}`})),d.cluster.stats,m,d.cluster.scale==='log',`Each listing's ${metricName(m)} with the three centroids marked`);
+}
+function drawGridChart(d){
+  const g=d.grid;if(!g||!g.stats)return;
+  drawStrip('gridchart',g.cells.map(c=>({v:c.value,b:c.b,r:Math.min(9,3.5+Math.sqrt(c.rows.length)*.7),tip:`Cell ${c.id}: ${fmtV(c.value,g.metric)} average, ${c.rows.length} listing${c.rows.length>1?'s':''} · ${BUDGET[c.b]}`})),g.stats,g.metric,g.scale==='log',`Each grid cell's average ${metricName(g.metric)} with the three centroids marked`);
+}
+function buyerGridHTML(g,head){
+  const rows=g.cells.filter(c=>state.show[c.b]).sort((x,y)=>x.b-y.b||y.rows.filter(r=>r.b===0).length-x.rows.filter(r=>r.b===0).length);
+  return `<section class="card">${head}<p class="note">A square takes the colour of the best property inside it, so the buyer can see where suitable homes exist. Its other properties may rank lower, and the counts show the full mix.</p>
+  <div class="tw" style="max-height:300px"><table><thead><tr><th>Cell</th><th>Best inside</th>${BUDGET.map((n,k)=>`<th class="n"><span class="tag"><i class="sw ${BCLASS[k]}"></i>${n}</span></th>`).join('')}<th class="n">From Infosys</th><th>Projects</th></tr></thead><tbody>
+  ${rows.map(c=>{const t=[...new Set(c.rows.map(r=>r.name))];return `<tr class="cellrow" tabindex="0" data-cell="${c.r},${c.c}"><td>${esc(c.id)}</td><td><span class="tag"><i class="sw ${BCLASS[c.b]}"></i>${BUDGET[c.b]}</span></td>${BUDGET.map((_,k)=>`<td class="n">${c.rows.filter(r=>r.b===k).length}</td>`).join('')}<td class="n">${c.km.toFixed(1)} km</td><td>${esc(t.slice(0,3).join(', '))}${t.length>3?` and ${t.length-3} more`:''}</td></tr>`}).join('')}
+  </tbody></table></div></section>`;
+}
+function gridHTML(a,d){
+  const g=d.grid,m=g.metric,sz=g.size>=1000?(g.size/1000)+' km':g.size+' m';
+  const head=`<div class="head"><div><h2>${esc(a)}: ${usingBuyer()?'grid cells for the buyer':'grid cells by budget'}</h2><p class="sub">${g.cells.length} filled cells of ${sz} × ${sz}${usingBuyer()?'':`, by average ${metricName(m)}`} · ${g.projects?g.projects.length:0} projects</p></div>${g.stats?'<div class="group"><button class="btn" id="dlg" type="button">Download grid (CSV)</button></div>':''}</div>`;
+  if(usingBuyer()&&g.stats)return buyerGridHTML(g,head);
+  if(!g.stats)return `<section class="card">${head}<p class="note">${g.cells.length} filled cell${g.cells.length===1?'':'s'} at this size is not enough to form Low, Medium and High groups. Try a smaller grid size.</p></section>`;
+  const tile=(s,k)=>`<div class="tile"><div class="t"><i class="sw ${BCLASS[k]}"></i>${BUDGET[k]} budget cells</div><div class="big">${fmtV(s.centroid,m)}</div><div class="cap">${usingBands()?'average · '+BAND_TEXT[k]:'centroid'}</div><dl><dt>Grid cells</dt><dd>${s.n}</dd><dt>Listings inside</dt><dd>${s.listings}</dd><dt>Lowest cell</dt><dd>${fmtV(s.min,m)}</dd><dt>Highest cell</dt><dd>${fmtV(s.max,m)}</dd></dl>${s.listings?`<button class="btn rec" type="button" data-rec="grid:${k}">View ${s.listings} records</button>`:''}</div>`;
+  const rows=g.cells.filter(c=>state.show[c.b]).sort((x,y)=>y.value-x.value);
+  const single=g.cells.filter(c=>c.rows.length===1).length;
+  return `<section class="card">${head}<div class="tiles" style="margin-top:12px">${g.stats.map(tile).join('')}</div>
+  <h3 style="margin-top:16px">Every grid cell by average ${metricName(m)}, with ${usingBands()?"each group's average":'the three centroids'}</h3><div id="gridchart" style="position:relative;margin-top:8px"></div>
+  <p class="note">${usingBands()?"Each cell is classified by the average price of its listings: Low below ₹2 Cr, Medium from ₹2 Cr to ₹6 Cr, High above ₹6 Cr. Dots on the map show each project's own band.":`K-means with 3 centroids, run on this area's grid cells only. It settled after ${g.iterations} rounds.`} Every filled cell counts once, however many listings it holds${single?`, and ${single} of these cells rest on a single listing, so treat those with care`:''}.${g.noLoc?` ${g.noLoc} listings have no location and are left out of the grid.`:''}</p>
+  <div class="tw" style="max-height:300px"><table><thead><tr><th>Cell</th><th>Budget</th><th class="n">Average</th><th class="n">Listings</th><th class="n">From Infosys</th><th>Projects</th></tr></thead><tbody>
+  ${rows.map(c=>{const t=[...new Set(c.rows.map(r=>r.name))];return `<tr class="cellrow" tabindex="0" data-cell="${c.r},${c.c}"><td>${esc(c.id)}</td><td><span class="tag"><i class="sw ${BCLASS[c.b]}"></i>${BUDGET[c.b]}</span></td><td class="n">${fmtV(c.value,m)}</td><td class="n">${c.rows.length}</td><td class="n">${c.km.toFixed(1)} km</td><td>${esc(t.slice(0,3).join(', '))}${t.length>3?` and ${t.length-3} more`:''}</td></tr>`}).join('')}
+  </tbody></table></div></section>`;
+}
+function downloadGridCSV(a,d){
+  const g=d.grid,q=v=>{const s=String(v??'');return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s};
+  const lines=[['area','cell','cell_size_m','centre_lat','centre_lon','km_from_infosys','listings','average_'+g.metric,'budget','cluster_centroid','projects'].join(',')];
+  g.cells.forEach(c=>lines.push([a,c.id,g.size,c.lat.toFixed(6),c.lon.toFixed(6),c.km.toFixed(2),c.rows.length,Math.round(c.value),BUDGET[c.b],Math.round(g.stats[c.b].centroid),[...new Set(c.rows.map(r=>r.name))].join('; ')].map(q).join(',')));
+  const url=URL.createObjectURL(new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'}));
+  const link=document.createElement('a');link.href=url;link.download=`${a.replace(/[^\w]+/g,'_')}_grid_${g.size}m.csv`;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
+function resultRows(d){
+  const q=state.tq.toLowerCase(),{key,dir}=state.sort;
+  const out=d.rows.filter(r=>(r.b==null||state.show[r.b])&&(!q||r.name.toLowerCase().includes(q)));
+  return out.sort((a,b)=>{const x=a[key],y=b[key];if(x==null)return 1;if(y==null)return -1;return(typeof x==='string'?x.localeCompare(y):x-y)*dir});
+}
+function renderTable(d){
+  const body=$('tbody');if(!body)return;
+  const rows=resultRows(d);
+  $('tcount').textContent=`${rows.length} of ${d.rows.length} listings`;
+  body.innerHTML=rows.map(r=>`<tr><td>${esc(r.name)}</td><td>${esc(r.cellId)||'–'}</td><td>${r.b==null?'Not clustered':`<span class="tag"><i class="sw ${BCLASS[r.b]}"></i>${BUDGET[r.b]}</span>`}</td><td class="n">${r.bhk??'–'}</td><td class="n">${r.sqft?inr(r.sqft):'–'}</td><td class="n">${r.ppsf?'₹'+inr(r.ppsf):'–'}</td><td class="n">${money(r.price)}</td><td>${r.ready}</td><td class="n">${r.km!=null?r.km.toFixed(1)+' km':'–'}</td></tr>`).join('');
+}
+/* One row per area on a shared price axis, so areas compare directly. The bar on the right shows how each area's cells split. */
+function drawOverview(){
+  const host=$('ovplot');if(!host)return;
+  const grid=state.view==='grid'&&!usingBuyer(),m=state.metric,log=state.scale==='log',names=Object.keys(state.data).sort((a,b)=>a.localeCompare(b));
+  const rows=names.map(n=>{
+    const d=state.data[n],c=grid?d.grid:d.cluster;
+    if(!c||!c.stats)return{n,pts:[],stats:null};
+    const pts=grid?d.grid.cells.map(x=>({v:x.value,b:x.b,r:Math.min(9,3+Math.sqrt(x.rows.length)*.75),tip:`${n}, cell ${x.id}: ${fmtV(x.value,m)} average, ${x.rows.length} listing${x.rows.length>1?'s':''} · ${BUDGET[x.b]}`})):d.rows.filter(r=>r.b!=null).map(r=>({v:r[m],b:r.b,r:3,tip:`${n}, ${r.name}: ${fmtV(r[m],m)} · ${BUDGET[r.b]}`}));
+    return{n,pts,stats:c.stats};
+  });
+  const vals=rows.flatMap(r=>r.pts.map(p=>p.v));if(!vals.length){host.innerHTML='';return}
+  const W=Math.max(320,host.clientWidth),narrow=W<620,Lw=narrow?92:128,Mw=narrow?74:170,rowH=grid?44:40,top=22,bot=28,H=top+rows.length*rowH+bot,x0=Lw,x1=W-Mw-18,mx=W-Mw;
+  const lo=Math.min(...vals),hi=Math.max(...vals),f=v=>log?Math.log(v):v,X=v=>x0+6+(f(v)-f(lo))/((f(hi)-f(lo))||1)*(x1-x0-12);
+  const hash=i=>{const s=Math.sin(i*127.1+11.7)*43758.5453;return s-Math.floor(s)};
+  let o=`<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="${grid?'Grid cell':'Listing'} prices for each uploaded area on a shared axis, with centroids and the budget split"><text class="ch" x="${x0+6}" y="13">${grid?'Average '+metricName(m)+' of each grid cell':metricName(m)[0].toUpperCase()+metricName(m).slice(1)+' of each listing'}</text><text class="ch" x="${mx}" y="13">Share of ${grid?'cells':'listings'}</text>`;
+  axisTicks(lo,hi,log).forEach(t=>{const x=X(t);o+=`<line x1="${x}" x2="${x}" y1="${top}" y2="${H-bot}" ${isBandLine(t)?'stroke="#556467" stroke-dasharray="4 3"':'stroke="#e6eae8"'}/><text x="${x}" y="${H-bot+17}" text-anchor="middle">${esc(m==='ppsf'?'₹'+inr(t):money(t).replace(/\.?0+ Cr$/,' Cr'))}</text>`});
+  rows.forEach((r,i)=>{
+    const y=top+i*rowH,cy=y+rowH/2,sel=r.n===state.selected,short=r.n.length>(narrow?12:19)?r.n.slice(0,narrow?11:18)+'…':r.n;
+    if(sel)o+=`<rect x="0" y="${y+1}" width="${W}" height="${rowH-2}" fill="#e3f0f0" rx="4"/>`;
+    o+=`<line x1="${x0}" x2="${W}" y1="${y+rowH}" y2="${y+rowH}" stroke="#eef1f0"/>`;
+    o+=`<text class="an${sel?' sel':''}" data-sel="${esc(r.n)}" x="4" y="${cy+4}" tabindex="0" role="button"><title>Focus on ${esc(r.n)}</title>${esc(short)}</text>`;
+    r.pts.forEach((p,k)=>{if(state.show[p.b])o+=`<circle data-tip="${esc(p.tip)}" cx="${X(p.v).toFixed(1)}" cy="${(cy-rowH*.3+hash(k+i*31)*rowH*.6).toFixed(1)}" r="${p.r}" fill="${BCOLOR[p.b]}" fill-opacity=".72" stroke="#fff" stroke-width=".7"/>`});
+    if(r.stats){
+      r.stats.forEach((c,k)=>{if(!c.n||usingBuyer())return;const x=X(c.centroid).toFixed(1);o+=`<line data-tip="${esc(`${r.n} ${BUDGET[k]} ${usingBands()?'average':'centroid'}: ${fmtV(c.centroid,m)}`)}" x1="${x}" x2="${x}" y1="${cy-rowH*.4}" y2="${cy+rowH*.4}" stroke="#1a2729" stroke-width="2.5"/>`});
+      const tot=r.stats.reduce((t,c)=>t+c.n,0);let bx=mx;const bw=Mw-4;
+      r.stats.forEach((c,k)=>{const w=c.n/tot*bw;if(w>0){o+=`<rect data-tip="${esc(`${r.n}: ${c.n} ${BUDGET[k]} ${grid?'cells':'listings'} (${Math.round(c.n/tot*100)}%)`)}" x="${(bx+(k?1:0)).toFixed(1)}" y="${cy-11}" width="${Math.max(1,w-(k?1:0)).toFixed(1)}" height="10" rx="3" fill="${BCOLOR[k]}"/>`}bx+=w});
+      if(!narrow)o+=`<text class="cnt" x="${mx}" y="${cy+13}">${r.stats.map((c,k)=>BUDGET[k][0]+' '+c.n).join(' · ')}</text>`;
+    }else o+=`<text class="cnt" x="${x0+6}" y="${cy+4}">Too few values to form 3 groups</text>`;
+  });
+  host.innerHTML=o+'</svg>';
+}
+function compareHTML(){
+  const names=Object.keys(state.data).sort((a,b)=>a.localeCompare(b));if(!names.length)return'';
+  const m=state.metric,grid=state.view==='grid'&&!usingBuyer(),cw=fixedRules()?'average':'centroid';
+  const totalL=names.reduce((t,n)=>t+state.data[n].rows.length,0),totalC=names.reduce((t,n)=>t+(state.data[n].grid?state.data[n].grid.cells.length:0),0);
+  return `<section class="card"><div class="head"><div><h2>All uploaded areas</h2><p class="sub">${names.length} area${names.length>1?'s':''} · ${totalL.toLocaleString('en-IN')} listings · ${totalC} filled grid cells · ${names.reduce((t,n)=>t+(state.data[n].grid&&state.data[n].grid.projects?state.data[n].grid.projects.length:0),0)} projects</p></div>
+  <div class="ovkey">${BUDGET.map((n,k)=>`<span><i class="sw ${BCLASS[k]}"></i>${n}</span>`).join('')}${usingBuyer()?'<span><i class="bd"></i>₹1.55 Cr and ₹2 Cr limits</span>':`<span><i class="tk"></i>${usingBands()?'Group average':'Centroid'}</span>${usingBands()?'<span><i class="bd"></i>₹2 Cr and ₹6 Cr cut-offs</span>':''}`}${grid?'<span>Bigger dot, more listings</span>':''}</div></div>
+  <div id="ovplot"></div>
+  <div class="tw" style="max-height:none;margin-top:12px"><table><thead><tr><th>Area</th><th class="n">Listings</th>${BUDGET.map((n,k)=>`<th class="n"><span class="tag"><i class="sw ${BCLASS[k]}"></i>${n}${usingBuyer()?'':' '+cw}</span></th>`).join('')}</tr></thead><tbody>
+  ${names.map(n=>{const d=state.data[n],c=grid?d.grid:d.cluster;return `<tr class="link" data-a="${esc(n)}" tabindex="0"><td>${esc(n)}</td><td class="n">${d.rows.length}</td>${c&&c.stats?c.stats.map(s=>`<td class="n">${usingBuyer()?s.n:`${fmtV(s.centroid,m)} (${s.n})`}</td>`).join(''):`<td class="n" colspan="${BUDGET.length}">Too few values to form 3 groups</td>`}</tr>`}).join('')}
+  </tbody></table></div><p class="note">${usingBuyer()?'Numbers are listings. The same buyer rules apply to every area.':usingBands()?'The same price bands apply to every area, so Low, Medium and High mean the same everywhere.':'Each area is clustered on its own, so "High" means high for that area. A High home in one area can cost less than a Medium home in another.'}${usingBuyer()?'':` Numbers in brackets are ${grid?'grid cell':'listing'} counts.`}</p></section>`;
+}
+function renderResults(){
+  const R=$('results'),a=state.selected,d=state.data[a],up=Object.keys(state.data).length;
+  let h=compareHTML();
+  const gh=d&&d.grid?gridHTML(a,d):'';
+  if(!usingBuyer())h+=gh;
+  if(d&&d.cluster){
+    const c=d.cluster,m=c.metric;
+    h+=`<section class="card"><div class="head"><div><h2>${esc(a)}: ${usingBuyer()?'properties for the buyer':'listing clusters'}</h2><p class="sub">${esc(d.file)} · ${d.rows.length} listings kept${leftOut(d)?` · Left out: ${esc(leftOut(d))}`:''}</p></div>
+      <div class="group"><button class="btn" id="dl" type="button">Download results (CSV)</button><button class="btn" id="rm" type="button">Remove this data</button></div></div>
+      <div class="tiles" style="margin-top:12px">${c.stats.map((s,k)=>tileHTML(s,k,c.total,m)).join('')}</div>
+      <h3 style="margin-top:16px">Every listing by ${metricName(m)}${usingBuyer()?', with the ₹1.55 Cr and ₹2 Cr limits':`, with ${usingBands()?"each group's average":'the three centroids'}`}</h3><div id="chart"></div>
+      <p class="note">${usingBuyer()?`Buyer budget ₹1.5 Cr. Good means a 3 BHK of at least ${inr(state.minSqft)} sqft under ₹1.5 Cr. Okay is ₹1.5 Cr to ₹1.55 Cr, or under ₹1.5 Cr without meeting that. Not suggested is above ₹1.55 Cr, up to ₹2 Cr. Reject is above ₹2 Cr.`:usingBands()?"Each listing is classified by its own total price: Low below ₹2 Cr, Medium from ₹2 Cr to ₹6 Cr, High above ₹6 Cr.":`Centroid method (k-means, k = 3): each listing joins its nearest centroid, each centroid moves to the average of its listings, and this repeats until nothing changes. It settled after ${c.iterations} rounds, using ${c.scale==='log'?'proportional price gaps, so a few very expensive homes do not push nearly everything into Low. Centroids are geometric averages':'raw rupee gaps'}.`}${d.unclustered?` ${d.unclustered} listings have no ${metricName(m)} and were left out.`:''}</p></section>
+      <section class="card"><div class="head"><h2>Listings</h2><div class="group"><span id="tcount" class="sub"></span><input id="tq" type="search" placeholder="Filter by project" aria-label="Filter listings by project" style="width:180px" value="${esc(state.tq)}"></div></div>
+      <div class="tw"><table><thead><tr>${[['name','Project'],['cellId','Grid cell'],['b',usingBuyer()?'Buyer fit':'Budget'],['bhk','BHK',1],['sqft','Area (sqft)',1],['ppsf','Price per sqft',1],['price','Total price',1],['ready','Ready to move'],['km','From Infosys',1]].map(([k,t,n])=>`<th class="${n?'n':''}" aria-sort="${state.sort.key===k?(state.sort.dir>0?'ascending':'descending'):'none'}"><button type="button" data-s="${k}">${t}${state.sort.key===k?(state.sort.dir>0?' ▲':' ▼'):''}</button></th>`).join('')}</tr></thead><tbody id="tbody"></tbody></table></div></section>`;
+    if(usingBuyer())h+=gh;
+  }else if(d){
+    h+=`<div class="empty"><h2>${esc(a)}</h2><p>This file has fewer than three different ${metricName(state.metric)} values, so it cannot form Low, Medium and High groups.</p><p><button class="btn" id="rm" type="button">Remove this data</button></p></div>`;
+  }else if(a&&a!=='__all'){
+    h+=`<div class="empty"><h2>${esc(a)}</h2><p>No file uploaded for this area yet. Upload one on the left to see its Low, Medium and High clusters.</p></div>`;
+  }else if(!up){
+    h+=`<div class="empty"><h2>No files uploaded yet</h2><p>Upload your first area's file on the left. Files need a price column; a <i>lat-lon</i> column places the listings on the grid.</p></div>`;
+  }
+  R.innerHTML=h;
+  drawOverview();if(d&&d.grid)drawGridChart(d);if(d&&d.cluster){drawChart(d);renderTable(d)}
+}
+function renderAll(){renderList();renderResults();drawPies();drawGrid();drawBorder();drawCellLabels();drawProjectDots();layout();refreshSheet();
+  $('metricgroup').hidden=fixedRules();$('scalegroup').hidden=fixedRules();$('sizegroup').hidden=!usingBuyer();
+  document.querySelectorAll('#method button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===state.method));
+  const chipText=usingBuyer()?['Good','Okay','Not suggested','Reject']:usingBands()?['Low (under ₹2 Cr)','Medium (₹2–6 Cr)','High (over ₹6 Cr)']:BUDGET;
+  $('chips').innerHTML='<span>Show</span>'+BUDGET.map((_,k)=>`<button type="button" class="chip" data-b="${k}" aria-pressed="${state.show[k]}"><i class="sw ${BCLASS[k]}"></i>${chipText[k]}</button>`).join('');
+  setToolbarVar();
+  $('cellgroup').hidden=state.view!=='grid';
+  document.querySelectorAll('#view button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===state.view));
+  document.querySelectorAll('#cell button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.v===state.cell));
+  document.querySelectorAll('#metric button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===state.metric));
+  document.querySelectorAll('#scale button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===state.scale));
+  document.querySelectorAll('.chip').forEach(b=>b.setAttribute('aria-pressed',state.show[+b.dataset.b]));
+}
+function select(name,fly=true){closeSheet();state.selected=name;state.tq='';renderAll();if(fly)fitSelected()}
+function downloadCSV(a,d){
+  const c=d.cluster,q=v=>{const s=String(v??'');return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s};
+  const lines=[['area','project','grid_cell',usingBuyer()?'buyer_fit':'budget','bhk','area_sqft','price_per_sqft','total_price','ready_to_move','km_from_infosys'].join(',')];
+  d.rows.forEach(r=>lines.push([a,r.name,r.cellId,r.b==null?'':BUDGET[r.b],r.bhk,r.sqft,r.ppsf,r.price,r.ready,r.km!=null?r.km.toFixed(2):''].map(q).join(',')));
+  const url=URL.createObjectURL(new Blob(['﻿'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'}));
+  const link=document.createElement('a');link.href=url;link.download=`${a.replace(/[^\w]+/g,'_')}_clusters.csv`;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
+
+/* ---------- records panel ----------
+   Resting on a square or pie for a moment loads its records. Clicking keeps them in place,
+   so the mouse can reach the panel without crossing other squares and replacing the list. */
+const sheet={spec:null,pinned:false,q:'',sort:null,hl:null,cols:[],rows:[],file:'records'};
+let hoverT;
+function attachSheet(layer,spec){
+  layer.on('mouseover',()=>{clearTimeout(hoverT);hoverT=setTimeout(()=>{if(!sheet.pinned)openSheet(spec,false)},250)});
+  layer.on('mouseout',()=>clearTimeout(hoverT));
+  layer.on('click',()=>{clearTimeout(hoverT);openSheet(spec,true)});
+  return layer;
+}
+const countsHTML=rows=>classCounts(rows).map(x=>`<span>· <i class="sw ${BCLASS[x.k]}"></i> ${x.c} ${esc(x.n)}</span>`).join('');
+function resolveSheet(spec){
+  const d=state.data[spec.area];if(!d)return null;
+  const tag=b=>b==null?'Not clustered':BUDGET[b];
+  const swatch=b=>b==null?'':`<i class="sw ${BCLASS[b]}"></i>`;
+  if(spec.cell){
+    const c=d.grid.cells.find(x=>x.r+','+x.c===spec.cell);if(!c)return null;
+    return{d,grid:true,cellObj:c,items:c.rows.map(r=>({r,b:c.b,cell:c.id})),file:`${spec.area}_cell_${c.id}`,
+      title:`${spec.area}: grid square`,sub:`<span>${c.rows.length} listing${c.rows.length>1?'s':''}</span>${countsHTML(c.rows)}<span>· ${c.km.toFixed(1)} km from Infosys</span>`};
+  }
+  if(spec.level==='grid'){
+    const g=d.grid,s=g.stats&&g.stats[spec.budget];if(!s)return null;
+    const items=[];g.cells.filter(c=>c.b===spec.budget).forEach(c=>c.rows.forEach(r=>items.push({r,b:c.b,cell:c.id})));
+    return{d,grid:true,items,file:`${spec.area}_grid_${BUDGET[spec.budget]}`,title:`${spec.area}: ${groupName(spec.budget)} grid cells`,sub:`${swatch(spec.budget)}<span>${s.n} grid cells</span><span>· ${items.length} listings</span><span>· Centroid ${fmtV(s.centroid,g.metric)}</span>`};
+  }
+  if(spec.level==='listing'){
+    const c=d.cluster,s=c&&c.stats[spec.budget];if(!s)return null;
+    const items=d.rows.filter(r=>r.b===spec.budget).map(r=>({r,b:r.b}));
+    return{d,grid:false,items,file:`${spec.area}_listing_${BUDGET[spec.budget]}`,title:`${spec.area}: ${groupName(spec.budget)} properties`,sub:`${swatch(spec.budget)}<span>${items.length} listings</span><span>· ${fixedRules()?'Average':'Centroid'} ${fmtV(s.centroid,c.metric)}</span>${usingBuyer()?`<span>· ${esc(ruleText(spec.budget))}</span>`:''}`};
+  }
+  if(spec.loc){
+    const rows=d.rows.filter(r=>r.lat+','+r.lon===spec.loc);if(!rows.length)return null;
+    const names=[...new Set(rows.map(r=>r.name))];
+    return{d,grid:false,items:rows.map(r=>({r,b:r.b})),file:`${spec.area}_${names[0]}`,title:`${names.slice(0,2).join(', ')}${names.length>2?` and ${names.length-2} more`:''} · ${spec.area}`,sub:`<span>${rows.length} listing${rows.length>1?'s':''} at this location</span>${countsHTML(rows)}<span>· ${haversine(HQ[0],HQ[1],rows[0].lat,rows[0].lon).toFixed(1)} km from Infosys</span>`};
+  }
+  return null;
+}
+function sheetColumns(info){
+  const name=b=>b==null?'Not classified':BUDGET[b];
+  return[{key:'name',label:'Project',get:x=>x.r.name},
+    {key:'budget',label:usingBuyer()?'Buyer fit':'Budget',get:x=>name(x.r.b),order:x=>x.r.b,tag:x=>x.r.b},
+    {key:'bhk',label:'BHK',num:1,get:x=>x.r.bhk,order:x=>x.r.bhk},
+    {key:'sqft',label:'Area (sqft)',num:1,get:x=>x.r.sqft?inr(x.r.sqft):null,order:x=>x.r.sqft},
+    {key:'ppsf',label:'Price per sqft',num:1,get:x=>x.r.ppsf?'₹'+inr(x.r.ppsf):null,order:x=>x.r.ppsf},
+    {key:'price',label:'Total price',num:1,get:x=>money(x.r.price),order:x=>x.r.price},
+    {key:'ready',label:'Ready to move',get:x=>x.r.ready},
+    {key:'km',label:'From Infosys',num:1,get:x=>x.r.km!=null?x.r.km.toFixed(1)+' km':null,order:x=>x.r.km}];
+}
+const blank=v=>v==null||v==='';
+function sheetRows(){
+  const q=sheet.q.trim().toLowerCase();let items=sheet.items;
+  if(q)items=items.filter(x=>sheet.cols.some(c=>String(c.get(x)??'').toLowerCase().includes(q)));
+  const out=[...items];
+  if(sheet.sort){
+    const c=sheet.cols.find(k=>k.key===sheet.sort.key),dir=sheet.sort.dir;
+    if(c)out.sort((x,y)=>{const a=c.order?c.order(x):c.get(x),b=c.order?c.order(y):c.get(y);if(blank(a))return 1;if(blank(b))return -1;const na=Number(a),nb=Number(b);return(!isNaN(na)&&!isNaN(nb)?na-nb:String(a).localeCompare(String(b)))*dir});
+  }else out.sort((x,y)=>usingBuyer()?(x.r.b-y.r.b)||(x.r.price-y.r.price):y.r.price-x.r.price);
+  return out;
+}
+function drawSheetBody(){
+  const rows=sheetRows();
+  $('shB').innerHTML=rows.map(x=>'<tr>'+sheet.cols.map(c=>{const v=c.get(x),t=blank(v)?'–':String(v);
+    const b=c.tag?c.tag(x):null;
+    if(b!=null)return `<td><span class="tag"><i class="sw ${BCLASS[b]}"></i>${esc(t)}</span></td>`;
+    return `<td${c.num?' class="n"':''}>${esc(t)}</td>`}).join('')+'</tr>').join('');
+  sheet.shown=rows;
+}
+function drawSheetHead(){
+  $('shH').innerHTML='<tr>'+sheet.cols.map(c=>`<th${c.num?' class="n"':''}><button type="button" data-k="${esc(c.key)}">${esc(c.label)}${sheet.sort&&sheet.sort.key===c.key?(sheet.sort.dir>0?' ▲':' ▼'):''}</button></th>`).join('')+'</tr>';
+}
+function highlightCell(c){
+  if(sheet.hl){try{sheet.hl.setStyle({weight:1,color:sheet.hl.options.fillColor})}catch(e){}sheet.hl=null}
+  if(c&&c._rect){c._rect.setStyle({weight:3,color:'#111'});c._rect.bringToFront();sheet.hl=c._rect}
+}
+function padForSheet(){document.querySelector('main').style.paddingBottom=sheet.spec?$('sheet').offsetHeight+'px':''}
+function showSheet(info,keepScroll){
+  $('shT').textContent=info.title;
+  $('shS').innerHTML=info.sub+`<span>· ${sheet.pinned?'Kept open until you close it':'Click to keep this list open'}</span>`;
+  $('shOld').hidden=!!info.d.columns;
+  sheet.items=info.items;sheet.cols=sheetColumns(info);sheet.file=info.file;
+  drawSheetHead();drawSheetBody();
+  highlightCell(info.cellObj);
+  $('sheet').hidden=false;padForSheet();
+  if(!keepScroll){$('shW').scrollTop=0;$('shW').scrollLeft=0}
+}
+function openSheet(spec,pin){
+  const info=resolveSheet(spec);if(!info)return;
+  if(JSON.stringify(sheet.spec)!==JSON.stringify(spec)){sheet.q='';sheet.sort=null;$('shQ').value=''}
+  const same=JSON.stringify(sheet.spec)===JSON.stringify(spec);
+  sheet.spec=spec;sheet.pinned=pin;showSheet(info,same);
+}
+function refreshSheet(){
+  if(!sheet.spec)return;
+  sheet.hl=null;
+  const info=resolveSheet(sheet.spec);
+  if(info)showSheet(info,true);else closeSheet();
+}
+function closeSheet(){
+  clearTimeout(hoverT);highlightCell(null);sheet.spec=null;sheet.pinned=false;sheet.q='';sheet.sort=null;$('shQ').value='';
+  $('sheet').hidden=true;$('sheet').classList.remove('big');$('shBig').textContent='Larger';padForSheet();
+}
+$('shX').addEventListener('click',closeSheet);
+$('shBig').addEventListener('click',()=>{const b=$('sheet').classList.toggle('big');$('shBig').textContent=b?'Smaller':'Larger';padForSheet()});
+$('shQ').addEventListener('input',e=>{sheet.q=e.target.value;drawSheetBody()});
+$('shH').addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(!b)return;const k=b.dataset.k;
+  sheet.sort=sheet.sort&&sheet.sort.key===k?{key:k,dir:-sheet.sort.dir}:{key:k,dir:1};drawSheetHead();drawSheetBody()});
+$('shDl').addEventListener('click',()=>{
+  const q=v=>{const s=String(v??'');return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s};
+  const lines=[sheet.cols.map(c=>q(c.label)).join(',')];
+  (sheet.shown||[]).forEach(x=>lines.push(sheet.cols.map(c=>q(c.get(x))).join(',')));
+  const url=URL.createObjectURL(new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'}));
+  const link=document.createElement('a');link.href=url;link.download=sheet.file.replace(/[^\w]+/g,'_')+'_records.csv';document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
+});
+
+/* ---------- events ---------- */
+$('file').addEventListener('change',e=>onFiles(e.target.files));
+const drop=$('drop');
+['dragenter','dragover'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.add('over')}));
+['dragleave','drop'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.remove('over')}));
+drop.addEventListener('drop',e=>onFiles(e.dataTransfer.files));
+$('queue').addEventListener('change',e=>{const i=e.target.dataset.area;if(i==null)return;state.queue[+i].area=e.target.value;renderQueue()});
+$('queue').addEventListener('input',e=>{const i=e.target.dataset.other;if(i!=null)state.queue[+i].other=e.target.value});
+$('queue').addEventListener('click',e=>{const i=e.target.dataset.x;if(i==null)return;state.queue.splice(+i,1);renderQueue()});
+$('ccancel').addEventListener('click',()=>{state.queue=[];renderQueue();$('qerr').hidden=true});
+$('confirm').addEventListener('submit',async e=>{
+  e.preventDefault();const q=state.queue||[];if(!q.length)return;
+  const names=q.map(x=>x.area==='__other'?x.other.trim():x.area);
+  const fail=m=>{$('qerr').textContent=m;$('qerr').hidden=false};
+  const miss=q.filter((x,i)=>!names[i]).map(x=>x.file);
+  if(miss.length)return fail(`Choose an area for ${miss.join(', ')}.`);
+  const dup=names.find((n,i)=>names.indexOf(n)!==i);
+  if(dup)return fail(`Two files are set to ${dup}. Choose a different area for one, or remove it.`);
+  $('qerr').hidden=true;
+  for(let i=0;i<q.length;i++){
+    const x=q[i],d={file:x.file,rows:x.rows,skipped:x.skipped,columns:x.columns,nameCol:x.nameCol,sold:x.sold,old:x.old,at:Date.now()};
+    state.data[names[i]]=d;computeCluster(d);await saveArea(names[i],d);
+  }
+  state.queue=[];renderQueue();
+  if(names.length===1)select(names[0]);else selectAll();
+});
+$('q').addEventListener('input',renderList);
+$('list').addEventListener('click',e=>{const b=e.target.closest('button[data-a]');if(b)select(b.dataset.a)});
+$('metric').addEventListener('click',e=>{const v=e.target.dataset.v;if(v&&v!==state.metric){state.metric=v;recomputeAll();renderAll()}});
+$('scale').addEventListener('click',e=>{const v=e.target.dataset.v;if(v&&v!==state.scale){state.scale=v;recomputeAll();renderAll()}});
+$('minsq').addEventListener('change',e=>{const v=parseFloat(e.target.value);state.minSqft=v>=0?v:1600;e.target.value=state.minSqft;try{localStorage.setItem('minSqft',state.minSqft)}catch(x){}recomputeAll();renderAll()});
+try{const v=parseFloat(localStorage.getItem('minSqft'));if(v>=0){state.minSqft=v;$('minsq').value=v}}catch(x){}
+$('method').addEventListener('click',e=>{const v=e.target.dataset.v;if(!v||v===state.method)return;state.method=v;setGroups(v);state.show=BUDGET.map(()=>true);if(v!=='kmeans'){state.metric='price';state.scale='log'}recomputeAll();renderAll();map.invalidateSize()});
+$('view').addEventListener('click',e=>{const v=e.target.dataset.v;if(v&&v!==state.view){state.view=v;renderAll()}});
+$('cell').addEventListener('click',e=>{const v=+e.target.dataset.v;if(v&&v!==state.cell){state.cell=v;Object.values(state.data).forEach(computeGrid);renderAll()}});
+$('chips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;state.show[+b.dataset.b]=!state.show[+b.dataset.b];renderAll()});
+function selectAll(){closeSheet();state.selected='__all';state.tq='';renderAll();map.closePopup();settleMap();map.fitBounds(WHOLE,{padding:[12,12],animate:false})}
+$('whole').addEventListener('click',selectAll);
+$('results').addEventListener('click',async e=>{
+  const s=e.target.closest('button[data-s]');
+  if(s){const k=s.dataset.s;if(state.sort.key===k)state.sort.dir*=-1;else state.sort={key:k,dir:k==='name'||k==='type'||k==='status'?1:-1};renderResults();return}
+  const sn=e.target.closest('[data-sel]');
+  if(sn){select(sn.dataset.sel);return}
+  const rb=e.target.closest('button[data-rec]');
+  if(rb){const [level,k]=rb.dataset.rec.split(':');openSheet({area:state.selected,level,budget:+k},true);return}
+  if(e.target.id==='dlg'){downloadGridCSV(state.selected,state.data[state.selected]);return}
+  const cr=e.target.closest('tr.cellrow');
+  if(cr){focusCell(cr.dataset.cell);return}
+  if(e.target.id==='dl'){downloadCSV(state.selected,state.data[state.selected]);return}
+  if(e.target.id==='rm'){const a=state.selected;delete state.data[a];await deleteArea(a);select(a,false);return}
+  const tr=e.target.closest('tr.link');if(tr)select(tr.dataset.a);
+});
+$('results').addEventListener('keydown',e=>{if(e.key==='Enter'){const sn=e.target.closest('[data-sel]');if(sn)select(sn.dataset.sel);const tr=e.target.closest('tr.link');if(tr)select(tr.dataset.a);const cr=e.target.closest('tr.cellrow');if(cr)focusCell(cr.dataset.cell)}});
+function focusCell(key){
+  const c=state.data[state.selected].grid.cells.find(x=>x.r+','+x.c===key);if(!c)return;
+  if(state.view!=='grid'){state.view='grid';renderAll()}
+  settleMap();
+  map.setView([c.lat,c.lon],Math.max(map.getZoom(),14.5),{animate:false});
+  openSheet({area:state.selected,cell:key},true);
+  document.querySelector('main').scrollTop=0;
+}
+$('results').addEventListener('input',e=>{if(e.target.id==='tq'){state.tq=e.target.value;renderTable(state.data[state.selected])}});
+const tip=$('tip');
+$('results').addEventListener('mousemove',e=>{
+  const c=e.target.closest('[data-tip]');if(!c){tip.hidden=true;return}
+  tip.textContent=c.dataset.tip;tip.hidden=false;
+  tip.style.left=Math.min(innerWidth-270,e.clientX+12)+'px';tip.style.top=(e.clientY-34)+'px';
+});
+$('results').addEventListener('mouseleave',()=>tip.hidden=true);
+let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{const d=state.data[state.selected];drawOverview();if(d){drawChart(d);drawGridChart(d)}setToolbarVar();map.invalidateSize();padForSheet()},150)});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(layout);
+
+/* ---------- start ---------- */
+(async()=>{
+  await loadAll();recomputeAll();
+  const k=Object.keys(state.data);state.selected=k.length>1?'__all':(k[0]||null);
+  renderAll();if(state.selected)fitSelected();
+})();
+window.__app={state,onFiles,clusterValues,map,sheet,openSheet};
+</script></body></html>

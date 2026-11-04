@@ -1,0 +1,9 @@
+# Property data and buyer documents stay private. People upload their own files in the browser.
+*.csv
+*.xlsx
+*.xls
+*.docx
+~$*
+
+# Local tool settings
+.claude/
