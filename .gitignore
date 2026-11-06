@@ -7,3 +7,6 @@
 
 # Local tool settings
 .claude/
+
+# Saved portal pages stay private
+portal_pages/

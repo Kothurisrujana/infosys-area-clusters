@@ -53,12 +53,39 @@ button,select,input{font:inherit;color:inherit}
 #confirm{max-height:62vh;overflow:auto}#queue{display:grid;gap:8px}
 .qrow{background:#fff;border:1px solid var(--line);border-radius:6px;padding:8px;display:grid;gap:5px;min-width:0}.qhead{display:flex;justify-content:space-between;gap:8px;align-items:baseline}.qhead b{font-size:12.5px;font-weight:600;overflow-wrap:anywhere;min-width:0}
 .qx{border:0;background:none;color:var(--accent);font-size:12px;cursor:pointer;text-decoration:underline;flex:none}
-.atag{position:absolute;transform:translate(-50%,calc(-100% - 3px));background:#111;color:#fff;font:600 12px/1 var(--font);padding:4px 7px;border-radius:4px;white-space:nowrap;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.35)}.atag.sel{background:var(--accent)}
+.atag{position:absolute;transform:translate(-50%,-50%);background:#111;color:#fff;font:600 12px/1 var(--font);padding:4px 7px;border-radius:4px;white-space:nowrap;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.35)}.atag.sel{background:var(--accent)}
 #ovplot{position:relative;margin-top:10px;min-width:0}#ovplot svg{display:block;width:100%}#ovplot text{font:12px var(--font);fill:var(--muted)}#ovplot text.ch{font-weight:600;fill:var(--fg)}#ovplot text.an{font-weight:500;font-size:13px;fill:var(--fg);cursor:pointer;text-decoration:underline;text-decoration-color:#9fb0ae}#ovplot text.an.sel{font-weight:700}#ovplot text.cnt{font-size:11.5px;font-variant-numeric:tabular-nums}
+.sw.sa0{background:#2a78d6}.sw.sa1{background:#1baf7a}.sw.sa2{background:#008300}.sw.sh0{background:#eda100;border-radius:50%;box-shadow:0 0 0 1.5px #1a2729}.sw.sh1{background:#eb6834;border-radius:50%;box-shadow:0 0 0 1.5px #1a2729}.sw.sh2{background:#e87ba4;border-radius:50%;box-shadow:0 0 0 1.5px #1a2729}
+td.heat{background:color-mix(in srgb,var(--c) calc(var(--h)*55%),transparent);font-weight:600}
+#segplot{position:relative;margin-top:8px}#segplot svg{display:block;width:100%}#segplot text{font:12px var(--font);fill:var(--muted)}#segplot text.an{font-weight:500;font-size:13px;fill:var(--fg);cursor:pointer;text-decoration:underline;text-decoration-color:#9fb0ae}#segplot text.sl{fill:#fff;font-weight:600;font-size:11.5px}#segplot text.sl.dark{fill:#13252a}
+.vck{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:8px}.vck svg,#vcsc svg,.vcbox svg{display:block;width:100%}.srcpop{font:12.5px/1.4 var(--font);display:flex;flex-direction:column;gap:3px}.srcpop .sp-h{margin-top:4px;font-weight:600;color:var(--muted)}.srcpop .srcbtn{align-self:flex-start;margin-top:2px}.srcpop .sp-u{font-size:11px;color:var(--muted);word-break:break-all}
+.ihl{cursor:pointer}.ihl.dim{opacity:.4}.ihl:hover{text-decoration:underline}
+.ihg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:8px}.ihc{border:1px solid var(--line);border-left:5px solid;border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:3px}.ihc b{font-size:13px}.ihn{font-size:22px;font-weight:700}.ihc .btn{align-self:flex-start;margin-top:4px}
+.stt{font-weight:600;fill:var(--fg)!important}.stc{font-size:11px!important;fill:#1a2729!important}#vcstrip svg,#vcbars svg{display:block;width:100%;overflow:visible}#vcstrip text,#vcbars text{font:11.5px var(--font);fill:var(--muted)}#vcstrip,#vcbars{margin-top:4px}
+.vck text,#vcsc text,.vcbox text{font:11.5px var(--font);fill:var(--muted)}
+.vcgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin-top:10px}.vcc{border:1px solid var(--line);border-radius:8px;padding:10px;display:grid;gap:6px;min-width:0}.vcc.out{border-style:dashed}.vch{display:flex;gap:8px;align-items:flex-start}.vch .sw{margin-top:3px;width:14px;height:14px}.vch b{display:block}.vch span{color:var(--muted);font-size:12.5px}.vcc p{margin:0;font-size:12.5px}.vcc dl{display:grid;grid-template-columns:auto 1fr;gap:1px 10px;margin:0;font-size:12px}.vcc dt{color:var(--muted)}.vcc dd{margin:0;text-align:right}
+.head select#vck,.head select#vct,.head select#vcon{padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:#fff}
+.vcm{margin-top:8px;font-size:13px}.vcm summary{cursor:pointer;color:var(--accent);font-weight:500}.vcm ol{margin:6px 0 0;padding-left:20px;display:grid;gap:3px;max-width:90ch}
+.vcbox{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:6px}.vcbox h4{margin:0 0 2px;font-size:12.5px}.bxl{font-weight:600;fill:var(--fg)!important}.vcd{cursor:pointer}.vcd:hover{stroke:#111;stroke-width:2}
+tr.goto{cursor:pointer}td.srcs{white-space:nowrap}a.src{color:#1d5fb4;font-weight:600;text-decoration:none;margin-right:4px}a.src:hover{text-decoration:underline}a.srcbtn{display:inline-block;padding:3px 10px;border-radius:6px;background:#1d5fb4;color:#fff!important;font-weight:600;text-decoration:none}a.srcbtn:hover{background:#174d93}td.muted,.muted{color:var(--muted)}tr.goto:hover td{background:var(--bg)}
+.tmaps{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;margin-top:10px}.tm{margin:0;border:1px solid var(--line);border-radius:8px;padding:10px;min-width:0}.tm figcaption{display:flex;justify-content:space-between;font-size:13.5px}.tm figcaption span{color:var(--muted);font-size:12.5px}.tmkey{display:flex;flex-wrap:wrap;gap:3px 12px;font-size:12px;color:var(--muted);margin:4px 0 6px}.tmkey span{display:inline-flex;gap:5px;align-items:center}.tmsvg svg{display:block;width:100%}.tml{font:600 11px var(--font)}
+.agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:10px}.ag{margin:0;border:1px solid var(--line);border-radius:8px;padding:8px;min-width:0}.ag figcaption{display:flex;justify-content:space-between;gap:6px;flex-wrap:wrap;font-size:12.5px;margin-bottom:4px}.ag figcaption span{color:var(--muted)}.agsvg svg{display:block;width:100%}.agc{cursor:pointer;stroke:#fff;stroke-width:.5}.agc.hz{stroke:#1a2729;stroke-width:1.2}.agc:hover{stroke:#111;stroke-width:2}.agt{font:11px var(--font);fill:var(--muted)}
+.pd.big{width:13px;height:13px;border-width:2.5px}
 .sw.good{background:#1e9e5a}.sw.okay{background:#2b7fd4}.sw.notsug{background:#e39a0b}.sw.rej{background:#b3261e}
 #sizegroup label{font-size:12px;color:var(--muted)}#minsq{width:72px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;font-size:13px}
+.top1 a.btn{text-decoration:none;color:inherit;display:inline-block}
+.btn.small{font-size:12.5px;padding:4px 9px}
+.top1{margin-top:10px;background:var(--accent-soft);border-radius:8px;padding:12px;display:grid;gap:8px}.tp-h{display:flex;gap:10px;align-items:center}.tp-n{font-size:18px;font-weight:600}
+.star{color:#d4950a;font-size:26px;line-height:1;-webkit-text-stroke:1px #111}.star.sm{font-size:15px;width:22px;text-align:center}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px 12px;margin:0}.facts dt{font-size:12px;color:var(--muted)}.facts dd{margin:0;font-weight:600;font-variant-numeric:tabular-nums}
+#clplot{position:relative;margin-top:6px}#clplot svg{display:block;width:100%}#clplot text{font:12px var(--font);fill:var(--muted)}#clplot text.st{font-size:20px;fill:#d4950a;stroke:#111;stroke-width:.8}
+tr.bestrow td{background:var(--accent-soft);font-weight:600}.flag{background:var(--warn-bg);color:var(--warn-fg);padding:1px 6px;border-radius:9px;font-size:12px}
+.topstar{position:absolute;transform:translate(-50%,-50%);font-size:30px;line-height:1;color:#f0ad12;-webkit-text-stroke:1.2px #111;pointer-events:none}
+.ramp{display:flex;margin-top:3px}.ramp i{flex:1;height:10px;min-width:30px}.rl{display:flex;justify-content:space-between;margin-top:1px}.pd.vf{background:#fff;border:2px dashed #111}
+.ptag{font:600 11px var(--font);padding:1px 4px;box-shadow:none;border:1px solid #888}
 .pd{width:10px;height:10px;border-radius:50%;background:#7b8a8c;border:1px solid #111;display:inline-block;margin:0 6px;flex:none}.bd{width:0;height:13px;border-left:2px dashed #556467;display:inline-block}
 .ovkey{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12.5px;color:var(--muted);align-items:center}.ovkey span{display:inline-flex;gap:5px;align-items:center}.tk{width:3px;height:13px;background:#1a2729;display:inline-block}
+.blegend .ln.ring{width:12px;height:12px;border:2.5px solid;border-radius:50%;border-top-style:solid}
 .blegend{background:#fff;border:1px solid var(--line);border-radius:6px;padding:7px 10px;max-width:250px;font:12.5px/1.35 var(--font);color:var(--fg);box-shadow:0 1px 5px rgba(0,0,0,.2)}
 .blegend .bl-t{font-weight:600;font-size:13.5px;margin-bottom:3px}.blegend .bl-r{display:flex;align-items:center;gap:7px}.blegend .bl-n{color:var(--muted);font-size:12px;margin-top:3px}
 .ln{width:22px;flex:none;border-top:3px solid #111}.ln.ward{border-top:2px dashed #1d4ed8}.ln.est{border-top:3px dashed #111}
@@ -80,7 +107,9 @@ button,select,input{font:inherit;color:inherit}
 .tw{overflow:auto;max-height:430px;margin-top:8px;border:1px solid var(--line);border-radius:6px}
 table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:5px 10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
 th{background:#eef1f0;font-weight:600;position:sticky;top:0}th button{all:unset;cursor:pointer}th button:focus-visible{outline:2px solid var(--accent)}
-td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}tr.link,tr.cellrow{cursor:pointer}tr.link:hover td,tr.cellrow:hover td{background:var(--bg)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}tr.link,tr.cellrow,tr.houserow{cursor:pointer}tr.houserow:hover td{background:var(--bg)}
+.sw.good{background:#1e9e5a}.sw.okay{background:#2b7fd4}.sw.notsug{background:#e39a0b}.sw.rej{background:#b3261e}
+tr.link,tr.cellrow{cursor:pointer}tr.link:hover td,tr.cellrow:hover td{background:var(--bg)}
 .tag{display:inline-flex;align-items:center;gap:5px}
 .note{color:var(--muted);font-size:12.5px;margin:8px 0 0;max-width:80ch}
 .empty{background:var(--panel);border:1px dashed #9fb0ae;border-radius:8px;padding:22px;text-align:center}
@@ -98,6 +127,7 @@ td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}tr.link,tr.cellrow{
       <p id="qerr" class="msg err" role="alert" hidden></p>
       <div class="group"><button class="btn primary" type="submit" id="qgo">Run clustering</button><button class="btn" type="button" id="ccancel">Cancel</button></div>
     </form>
+    <div class="group" style="margin-top:8px"><button class="btn small" id="dlTemplate" type="button">Blank template</button><button class="btn small" id="dlChecklist" type="button">Area checklist</button></div>
     <p id="savewarn" class="msg warn" hidden style="margin-top:8px">This browser is not saving your uploads, so they will be gone after a refresh. Try opening this file in Chrome or Edge.</p>
   </div>
   <div id="listhead"><h3 id="listcount"></h3><input id="q" type="search" placeholder="Filter areas" aria-label="Filter areas"></div>
@@ -105,11 +135,13 @@ td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}tr.link,tr.cellrow{
 </aside>
 <main>
   <div class="toolbar">
-    <div class="group"><span>Classify by</span><div class="seg" id="method"><button type="button" data-v="buyer">Buyer fit</button><button type="button" data-v="bands">Price bands</button><button type="button" data-v="kmeans">K-means</button></div></div>
+    <div class="group"><span>Classify by</span><div class="seg" id="method"><button type="button" data-v="clusters">Clusters</button><button type="button" data-v="segments">Price segments</button><button type="button" data-v="buyer">Buyer fit</button><button type="button" data-v="bands">Price bands</button><button type="button" data-v="kmeans">K-means</button></div></div>
+    <div class="group" id="segtypegroup"><span>Property type</span><div class="seg" id="segtype"><button type="button" data-v="all">All</button><button type="button" data-v="apt">Apartments</button><button type="button" data-v="house">Villas and houses</button></div></div>
     <div class="group" id="sizegroup"><label for="minsq">Spacious from</label><input id="minsq" type="number" min="0" step="50" value="1600"><span>sqft</span></div>
     <div class="group" id="metricgroup"><span>Cluster by</span><div class="seg" id="metric"><button type="button" data-v="price">Total price</button><button type="button" data-v="ppsf">Price per sqft</button></div></div>
     <div class="group" id="scalegroup"><span>Price gaps</span><div class="seg" id="scale"><button type="button" data-v="log" title="A move from 1 Cr to 2 Cr counts the same as 10 Cr to 20 Cr">Proportional</button><button type="button" data-v="raw" title="Every rupee counts the same, so very expensive homes dominate">Raw rupees</button></div></div>
-    <div class="group"><span>Map shows</span><div class="seg" id="view"><button type="button" data-v="grid">Grid</button><button type="button" data-v="pies">Projects</button></div></div>
+    <div class="group"><span>Colour by</span><div class="seg" id="colorby"><button type="button" data-v="class">Budget</button><button type="button" data-v="type">Property type</button></div></div>
+    <div class="group"><span>Map shows</span><div class="seg" id="view"><button type="button" data-v="grid">Grid</button><button type="button" data-v="pies">Projects</button><button type="button" data-v="price">Price map</button></div></div>
     <div class="group" id="cellgroup"><span>Grid size</span><div class="seg" id="cell"><button type="button" data-v="250">250 m</button><button type="button" data-v="500">500 m</button><button type="button" data-v="1000">1 km</button></div></div>
     <div class="group" id="chips"></div>
     <button type="button" class="btn" id="whole">Whole 9 km area</button>
@@ -133,12 +165,14 @@ const HQ=[17.4350636,78.3505964],RADIUS_KM=9,AREAS=[{"name": "Gachibowli", "km":
 const GROUPS={
   buyer:{names:['Good','Okay','Not suggested','Reject'],cls:['good','okay','notsug','rej'],color:['#1e9e5a','#2b7fd4','#e39a0b','#b3261e']},
   bands:{names:['Low','Medium','High'],cls:['low','med','high'],color:['#00909e','#e39a0b','#a8327e']},
+  clusters:{names:[],cls:[],color:[]},
+  segments:{names:['Budget apartment','Mid-range apartment','Luxury apartment','Budget villa or house','Mid-range villa or house','Luxury villa or house'],cls:['sa0','sa1','sa2','sh0','sh1','sh2'],color:['#2a78d6','#1baf7a','#008300','#eda100','#eb6834','#e87ba4']},
   kmeans:{names:['Low','Medium','High'],cls:['low','med','high'],color:['#00909e','#e39a0b','#a8327e']}};
-let BUDGET=GROUPS.buyer.names,BCLASS=GROUPS.buyer.cls,BCOLOR=GROUPS.buyer.color;
+let BUDGET=GROUPS.segments.names,BCLASS=GROUPS.segments.cls,BCOLOR=GROUPS.segments.color;
 function setGroups(m){BUDGET=GROUPS[m].names;BCLASS=GROUPS[m].cls;BCOLOR=GROUPS[m].color}
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const state={data:{},selected:null,metric:'price',scale:'log',show:[true,true,true,true],minSqft:1600,sort:{key:'price',dir:-1},tq:'',pending:null,view:'grid',cell:500,method:'buyer'};
+const state={data:{},selected:null,metric:'price',scale:'log',show:[true,true,true,true,true,true],minSqft:1600,sort:{key:'price',dir:-1},tq:'',pending:null,view:'grid',cell:500,method:'clusters',vcK:'auto',vcOn:'price',vcType:'all',ihColor:'decision',ihOnly:'all',segType:'all',colorBy:'class',showType:[true,true,true,true,true]};
 
 /* ---------- formatting ---------- */
 const inr=n=>Math.round(n).toLocaleString('en-IN');
@@ -184,8 +218,53 @@ const LOW_BELOW=2e7,HIGH_ABOVE=6e7;
 /* Below 2 Cr is Low. 2 Cr up to and including 6 Cr is Medium. Above 6 Cr is High. */
 const bandOf=p=>p<LOW_BELOW?0:p<=HIGH_ABOVE?1:2;
 const BAND_TEXT=['below ₹2 Cr','₹2 Cr to ₹6 Cr','above ₹6 Cr'];
+const TYPE_NAMES=['Apartment','Villa','Independent house','House or villa (not specified)','Builder floor and other'];
+const TYPE_COLOR=['#2563c9','#1a9e5c','#e0750b','#c23a87','#8f6a14'];
+/* Penthouses and studios count as apartments. The source's combined "House/Villa" stays separate, because it could be either. */
+function typeIdx(t){
+  t=String(t||'').toLowerCase();
+  if(/house\s*\/\s*villa|villa\s*\/\s*house/.test(t))return 3;
+  if(/penthouse|apartment|flat|studio/.test(t))return 0;
+  if(/villa|bungalow|row ?house/.test(t))return 1;
+  if(/independent|house/.test(t))return 2;
+  if(/apartment|flat|penthouse|studio/.test(t))return 0;
+  return 4;
+}
+const byType=()=>state.colorBy==='type';
 const usingBands=()=>state.method==='bands';
 const usingBuyer=()=>state.method==='buyer';
+const usingSeg=()=>state.method==='segments';
+const usingVC=()=>state.method==='clusters';
+const catMode=()=>usingBuyer()||usingSeg()||usingVC();
+/* Price segments: natural breaks (optimal one-dimensional k-means, the Jenks method) on the log of total price,
+   found separately for apartments and for villas and houses, using every uploaded area together so that a tier
+   means the same price range in every area. */
+const SEG_GROUPS=['Apartments','Villas and houses'];
+const segGroup=r=>[1,2,3].includes(typeIdx(r.type))?1:0;
+function naturalBreaks(vals,k){
+  const x=[...vals].sort((a,b)=>a-b),n=x.length;
+  if(new Set(x).size<k)return null;
+  const P=[0],Q=[0];x.forEach((v,i)=>{P.push(P[i]+v);Q.push(Q[i]+v*v)});
+  const cost=(i,j)=>{const s=P[j+1]-P[i],q=Q[j+1]-Q[i],m=j-i+1;return q-s*s/m};
+  const D=[...Array(k)].map(()=>new Array(n).fill(Infinity)),B=[...Array(k)].map(()=>new Array(n).fill(0));
+  for(let j=0;j<n;j++)D[0][j]=cost(0,j);
+  for(let c=1;c<k;c++)for(let j=c;j<n;j++)for(let i=c;i<=j;i++){const v=D[c-1][i-1]+cost(i,j);if(v<D[c][j]){D[c][j]=v;B[c][j]=i}}
+  const starts=[];let j=n-1;for(let c=k-1;c>0;c--){const i=B[c][j];starts.unshift(i);j=i-1}
+  return starts.map(i=>x[i]);
+}
+let SEG=null;
+function computeSegments(){
+  const rows=Object.values(state.data).flatMap(d=>d.rows.filter(r=>r.price>0));
+  SEG=SEG_GROUPS.map((name,g)=>{
+    const rs=rows.filter(r=>segGroup(r)===g),lv=rs.map(r=>Math.log(r.price));
+    let cuts=rs.length>=6?naturalBreaks(lv,3):null,borrowed=false;
+    return{name,n:rs.length,cuts,borrowed};
+  });
+  if(!SEG[1].cuts&&SEG[0].cuts){SEG[1].cuts=SEG[0].cuts;SEG[1].borrowed=true}
+  if(!SEG[0].cuts&&SEG[1].cuts){SEG[0].cuts=SEG[1].cuts;SEG[0].borrowed=true}
+  rows.forEach(r=>{const g=segGroup(r),c=SEG[g].cuts;r.seg=c?g*3+(Math.log(r.price)>=c[1]?2:Math.log(r.price)>=c[0]?1:0):null});
+  SEG.forEach((G,g)=>{G.tiers=[0,1,2].map(t=>{const v=rows.filter(r=>r.seg===g*3+t).map(r=>r.price);return{n:v.length,min:v.length?Math.min(...v):null,max:v.length?Math.max(...v):null,median:v.length?medianOf(v):null}})});
+}
 const fixedRules=()=>state.method!=='kmeans';
 const BUDGET_LIMIT=1.5e7,OKAY_UP_TO=1.55e7,REJECT_ABOVE=2e7;
 /* Above 2 Cr: Reject. Above 1.55 Cr up to 2 Cr: Not suggested. Under 1.5 Cr and a spacious 3 BHK: Good. Everything else up to 1.55 Cr: Okay. */
@@ -194,8 +273,14 @@ function buyerClass(r){
   if(r.price>OKAY_UP_TO)return 2;
   return r.price<BUDGET_LIMIT&&r.bhk===3&&r.sqft>=state.minSqft?0:1;
 }
-const groupName=k=>usingBuyer()?BUDGET[k]:`${BUDGET[k]} budget`;
+const groupName=k=>catMode()?BUDGET[k]:`${BUDGET[k]} budget`;
+function segRange(k){
+  if(!SEG)return'';const G=SEG[Math.floor(k/3)],t=G.tiers&&G.tiers[k%3];if(!t||!t.n)return'none in the uploaded areas';
+  return `${money(t.min)} to ${money(t.max)}`;
+}
 function ruleText(k){
+  if(usingVC())return VC&&VC.groups[k]?VC.groups[k].desc:'';
+  if(usingSeg())return segRange(k);
   if(usingBuyer())return[`3 BHK, ${inr(state.minSqft)}+ sqft, under ₹1.5 Cr`,`₹1.5 Cr to ₹1.55 Cr, or cheaper but not a 3 BHK of ${inr(state.minSqft)}+ sqft`,'Above ₹1.55 Cr, up to ₹2 Cr','Above ₹2 Cr, over budget'][k];
   return usingBands()?'average · '+BAND_TEXT[k]:'centroid';
 }
@@ -219,15 +304,15 @@ function inRings(lat,lon,rings){
 }
 /* The outline of each uploaded area, plus the chosen area's border if it has no file yet. */
 function ringSets(){
-  const sets=Object.values(state.data).filter(d=>d.grid&&d.grid.hull).map(d=>[d.grid.hull]);
+  const sets=[];
   const a=state.selected;
-  if(a&&a!=='__all'&&!(state.data[a]&&state.data[a].grid&&state.data[a].grid.hull)&&BORDERS[a])sets.push(BORDERS[a].rings);
+  if(a&&a!=='__all'&&!(TERR&&TERR.by[a])&&BORDERS[a])sets.push(BORDERS[a].rings);
   return sets;
 }
 function areaRings(name){
   if(!name||name==='__all')return null;
-  const d=state.data[name];
-  if(d&&d.grid&&d.grid.hull)return[d.grid.hull];
+  const t=TERR&&TERR.by[name];
+  if(t)return[[[t.s,t.w],[t.s,t.e],[t.nn,t.e],[t.nn,t.w]]];
   return BORDERS[name]?BORDERS[name].rings:null;
 }
 /* One entry per project at its real location. A project's band comes from the average price of its listings. */
@@ -235,7 +320,8 @@ function buildProjects(d){
   const map_=new Map();
   d.rows.forEach(r=>{if(r.lat==null)return;const k=r.name+'|'+r.lat+'|'+r.lon;if(!map_.has(k))map_.set(k,{name:r.name,lat:r.lat,lon:r.lon,rows:[],cellId:r.cellId});map_.get(k).rows.push(r)});
   d.grid.projects=[...map_.values()];
-  d.grid.projects.forEach(q=>{q.avg=avg(q.rows.map(r=>r.price));q.b=null});
+  const areaName=Object.keys(state.data).find(k=>state.data[k]===d);d.grid.projects.forEach(q=>q.area=areaName);
+  d.grid.projects.forEach(q=>{q.avg=avg(q.rows.map(r=>r.price));q.b=null;const c=[0,0,0,0,0];q.rows.forEach(r=>c[typeIdx(r.type)]++);q.ti=c.indexOf(Math.max(...c));q.typeCounts=c});
 }
 function computeGrid(d){
   d.rows.forEach(r=>{r.km=r.lat!=null?haversine(HQ[0],HQ[1],r.lat,r.lon):null;r.ready=readyLabel(r.status);r.cellId=null;r.cellB=null});
@@ -259,6 +345,17 @@ function computeGrid(d){
   d.grid.hull=hullOf(cells);
   buildProjects(d);
   const groupStats=()=>BUDGET.map((_,k)=>{const g=cells.filter(c=>c.b===k),v=g.map(c=>c.value);return{n:g.length,listings:g.reduce((t,c)=>t+c.rows.length,0),centroid:g.length?avg(v):null,min:Math.min(...v),max:Math.max(...v)}});
+  if(usingSeg()||usingVC()){
+    if(!cells.length)return;
+    /* A square takes the segment most of its listings belong to; ties go to the higher-priced segment. */
+    const mode=rs=>{const c=new Map();rs.forEach(r=>{if(r.b!=null)c.set(r.b,(c.get(r.b)||0)+1)});let b=null,bn=-1;c.forEach((v,k)=>{if(v>bn||(v===bn&&k%3>b%3)){bn=v;b=k}});return b};
+    /* With a property type chosen, a square is coloured only by that type's listings, and squares without it stay empty. */
+    const pick=r=>!usingSeg()||state.segType==='all'||segGroup(r)===(state.segType==='house'?1:0);
+    cells.forEach(c=>{c.b=mode(c.rows.filter(pick));c.rows.forEach(r=>r.cellB=c.b)});
+    d.grid.stats=groupStats();
+    d.grid.projects.forEach(q=>q.b=mode(q.rows.filter(pick)));
+    return;
+  }
   if(usingBuyer()){
     if(!cells.length)return;
     cells.forEach(c=>{c.b=Math.min(...c.rows.map(r=>r.b));c.rows.forEach(r=>r.cellB=c.b)});
@@ -283,12 +380,14 @@ function computeGrid(d){
 }
 function computeCluster(d){
   if(usingBuyer())d.rows.forEach(r=>r.b=buyerClass(r));
+  if(usingSeg())d.rows.forEach(r=>r.b=r.seg);
+  if(usingVC())d.rows.forEach(r=>r.b=r.vc);
   computeGrid(d);
   const m=state.metric,idx=[];
   d.rows.forEach((r,i)=>{r.b=null;if(r[m]>0)idx.push(i)});
   if(fixedRules()){
     d.unclustered=d.rows.length-idx.length;
-    idx.forEach(i=>d.rows[i].b=usingBuyer()?buyerClass(d.rows[i]):bandOf(d.rows[i].price));
+    idx.forEach(i=>d.rows[i].b=usingVC()?d.rows[i].vc:usingSeg()?d.rows[i].seg:usingBuyer()?buyerClass(d.rows[i]):bandOf(d.rows[i].price));
     const stats=BUDGET.map((_,k)=>{const v=d.rows.filter(r=>r.b===k).map(r=>r.price);return{n:v.length,centroid:v.length?avg(v):null,min:Math.min(...v),max:Math.max(...v)}});
     d.cluster={stats,iterations:0,metric:'price',scale:state.scale,total:idx.length};
     return;
@@ -300,7 +399,183 @@ function computeCluster(d){
   const stats=[0,1,2].map(k=>{const v=idx.filter((_,j)=>res.assign[j]===k).map(i=>d.rows[i][m]);return{n:v.length,centroid:res.centroids[k],min:Math.min(...v),max:Math.max(...v)}});
   d.cluster={stats,iterations:res.iterations,metric:m,scale:state.scale,total:idx.length};
 }
-const recomputeAll=()=>Object.values(state.data).forEach(computeCluster);
+const recomputeAll=()=>{computeSegments();computeVC();if(usingVC())setGroups('clusters');if(state.show.length!==BUDGET.length)state.show=BUDGET.map(()=>true);Object.values(state.data).forEach(computeCluster);computeTerritory()};
+/* ---------- Cluster analysis (the method from the reference video, applied to property listings) ----------
+   1. Every listing becomes a set of numbers: total price, area, price per sqft, BHK, distance from Infosys, villa or house.
+   2. Outliers in total price or price per sqft (beyond 1.5 times the interquartile range) are set apart into their own groups,
+      so a few extreme homes do not distort the main clusters.
+   3. The remaining features are standardised (mean 0, standard deviation 1) so each counts equally.
+   4. K-means runs for 2 to 6 clusters, ten k-means++ starts each with fixed seeds; the number of clusters with the best
+      silhouette score is kept.
+   5. Each cluster is profiled and named from its typical values. */
+const VC_PALETTE=['#2a78d6','#eb6834','#1baf7a','#eda100','#e87ba4','#008300','#6250d6','#e34948'],VC_OUT=['#4a5560','#8a5a2b','#6f42c1'];
+let VC=null;
+function seeded(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const d2=(a,b)=>{let t=0;for(let i=0;i<a.length;i++){const e=a[i]-b[i];t+=e*e}return t};
+function kmRun(X,k,seed){
+  const R=seeded(seed),n=X.length,C=[X[Math.floor(R()*n)].slice()];
+  while(C.length<k){const D=X.map(x=>Math.min(...C.map(c=>d2(x,c)))),S=D.reduce((a,b)=>a+b,0);let r=R()*S,i=0;for(;i<n;i++){r-=D[i];if(r<=0)break}C.push(X[Math.min(i,n-1)].slice())}
+  let L=new Array(n).fill(-1);
+  for(let it=0;it<300;it++){
+    let ch=false;const NL=X.map((x,i)=>{let b=0,bv=Infinity;for(let c=0;c<k;c++){const v=d2(x,C[c]);if(v<bv){bv=v;b=c}}if(b!==L[i])ch=true;return b});L=NL;
+    if(!ch)break;
+    for(let c=0;c<k;c++){const m=X.filter((_,i)=>L[i]===c);if(m.length)C[c]=C[c].map((_,j)=>m.reduce((t,x)=>t+x[j],0)/m.length)}
+  }
+  return{L,C,inertia:X.reduce((t,x,i)=>t+d2(x,C[L[i]]),0)};
+}
+function silhouette(X,L,k){
+  const n=X.length,size=new Array(k).fill(0);L.forEach(l=>size[l]++);let tot=0;
+  for(let i=0;i<n;i++){
+    const sum=new Array(k).fill(0);for(let j=0;j<n;j++)if(j!==i)sum[L[j]]+=Math.sqrt(d2(X[i],X[j]));
+    if(size[L[i]]<=1)continue;const a=sum[L[i]]/(size[L[i]]-1);let b=Infinity;for(let c=0;c<k;c++)if(c!==L[i]&&size[c])b=Math.min(b,sum[c]/size[c]);
+    tot+=(b-a)/Math.max(a,b);
+  }
+  return tot/n;
+}
+const qtile=(v,p)=>{const x=[...v].sort((a,b)=>a-b),i=(x.length-1)*p,lo=Math.floor(i),hi=Math.ceil(i);return x[lo]+(x[hi]-x[lo])*(i-lo)};
+function computeVC(){
+  if(state.vcOn==='price')return computeVCPrice();
+  const rows=Object.entries(state.data).flatMap(([a,d])=>d.rows.filter(r=>r.price>0&&r.sqft>0).map(r=>{r.vc=null;r.km=r.lat!=null?haversine(HQ[0],HQ[1],r.lat,r.lon):null;r._area=a;return r}));
+  Object.values(state.data).forEach(d=>d.rows.forEach(r=>{if(!(r.price>0&&r.sqft>0))r.vc=null}));
+  VC={rows,ks:[],groups:[],k:0};
+  if(rows.length<8){GROUPS.clusters={names:[],cls:[],color:[]};return}
+  const P=rows.map(r=>r.price),S=rows.map(r=>r.price/r.sqft),fence=v=>{const q1=qtile(v,.25),q3=qtile(v,.75),iq=q3-q1;return[q1-1.5*iq,q3+1.5*iq]};
+  const [pl,ph]=fence(P),[sl,sh]=fence(S);VC.fences={pl,ph,sl,sh};
+  const outP=r=>r.price<pl||r.price>ph,outS=r=>r.price/r.sqft<sl||r.price/r.sqft>sh;
+  const inl=rows.filter(r=>!outP(r)&&!outS(r));
+  const med=v=>{const x=v.filter(z=>z!=null);return x.length?medianOf(x):0};
+  const mb=med(inl.map(r=>r.bhk)),mk=med(inl.map(r=>r.km));
+  const raw=[['Total price',r=>r.price],['Area',r=>r.sqft],['Price per sqft',r=>r.price/r.sqft],['BHK',r=>r.bhk??mb],['Distance from Infosys',r=>r.km??mk],['Villa or house',r=>[1,2,3].includes(typeIdx(r.type))?1:0]];
+  const cols=[],used=[];
+  raw.forEach(([n,f])=>{const v=inl.map(f),mu=avg(v),sd=Math.sqrt(avg(v.map(x=>(x-mu)**2)));if(sd>0){cols.push(v.map(x=>(x-mu)/sd));used.push(n)}});
+  const X=inl.map((_,i)=>cols.map(c=>c[i]));VC.used=used;VC.inliers=inl.length;
+  let best=null;
+  for(let k=2;k<=Math.min(6,X.length-1);k++){
+    let run=null;for(let s=0;s<10;s++){const r=kmRun(X,k,42+s);if(!run||r.inertia<run.inertia-1e-9)run=r}
+    const sil=silhouette(X,run.L,k);VC.ks.push({k,inertia:run.inertia,sil});
+    VC.runs=VC.runs||{};VC.runs[k]={sil,run};
+    if(!best||sil>best.sil+1e-12)best={k,sil,run};
+  }
+  VC.bestK=best.k;
+  if(state.vcK!=='auto'&&VC.runs[state.vcK])best={k:+state.vcK,...VC.runs[state.vcK]};
+  VC.k=best.k;VC.sil=best.sil;
+  // order clusters from cheapest to dearest by median price
+  const byC=[...Array(best.k).keys()].map(c=>({c,m:medianOf(inl.filter((_,i)=>best.run.L[i]===c).map(r=>r.price))})).sort((a,b)=>a.m-b.m),rank={};byC.forEach((o,i)=>rank[o.c]=i);
+  inl.forEach((r,i)=>r.vc=rank[best.run.L[i]]);
+  const overall={price:medianOf(inl.map(r=>r.price)),sqft:medianOf(inl.map(r=>r.sqft)),ppsf:medianOf(inl.map(r=>r.price/r.sqft)),km:mk};
+  const TIERS={2:['Affordable','Premium'],3:['Affordable','Mid-range','Premium'],4:['Affordable','Value','Upper mid-range','Premium'],5:['Entry','Affordable','Mid-range','Upper mid-range','Premium'],6:['Entry','Affordable','Value','Mid-range','Upper mid-range','Premium']}[best.k];
+  const profile=(rs)=>{const ps=rs.map(r=>r.price),sq=rs.map(r=>r.sqft),pp=rs.map(r=>r.price/r.sqft),bk=rs.map(r=>r.bhk).filter(x=>x),km=rs.map(r=>r.km).filter(x=>x!=null),hs=rs.filter(r=>[1,2,3].includes(typeIdx(r.type))).length;
+    const ar=new Map();rs.forEach(r=>ar.set(r._area,(ar.get(r._area)||0)+1));const ready=rs.filter(r=>r.ready==='Yes').length;
+    return{n:rs.length,price:medianOf(ps),pmin:Math.min(...ps),pmax:Math.max(...ps),sqft:medianOf(sq),ppsf:medianOf(pp),bhk:bk.length?medianOf(bk):null,km:km.length?medianOf(km):null,house:hs/rs.length,ready:ready/rs.length,areas:[...ar.entries()].sort((a,b)=>b[1]-a[1])}};
+  const groups=[];
+  for(let c=0;c<best.k;c++){
+    const rs=inl.filter(r=>r.vc===c),P_=profile(rs);
+    const size=P_.sqft>1.2*overall.sqft?'large':P_.sqft<.85*overall.sqft?'compact':'';
+    const kind=P_.house>.5?'villas and houses':P_.house>.2?'homes (apartments with some houses)':'apartments';
+    const where=P_.km!=null&&overall.km?(P_.km<.8*overall.km?', close to Infosys':P_.km>1.25*overall.km?', farther from Infosys':''):'';
+    const nm=`${TIERS[c]} ${size?size+' ':''}${kind}${where}`;
+    const traits=[];
+    traits.push(`${P_.ppsf>1.15*overall.ppsf?'high':P_.ppsf<.87*overall.ppsf?'low':'typical'} price per sqft (₹${inr(P_.ppsf)})`);
+    if(P_.bhk)traits.push(`mostly ${P_.bhk%1?P_.bhk:P_.bhk.toFixed(0)} BHK`);
+    if(P_.km!=null)traits.push(`about ${P_.km.toFixed(1)} km from Infosys`);
+    traits.push(`${Math.round(P_.ready*100)}% ready to move`);
+    groups.push({...P_,name:nm,desc:`Typically ${money(P_.price)} for ${inr(P_.sqft)} sqft: ${traits.join(', ')}. Mostly in ${P_.areas.slice(0,2).map(a=>a[0]).join(' and ')}.`,outlier:false});
+  }
+  // outlier groups, as in the video: one feature alone, the other alone, or both
+  const OUTS=[['Very high or very low price (outliers)',r=>outP(r)&&!outS(r)],['Unusual price per sqft (outliers)',r=>!outP(r)&&outS(r)],['Extreme price and price per sqft (outliers)',r=>outP(r)&&outS(r)]];
+  OUTS.forEach(([nm,f],o)=>{const rs=rows.filter(f);if(!rs.length)return;const idx=groups.length;rs.forEach(r=>r.vc=idx);const P_=profile(rs);
+    groups.push({...P_,name:nm,desc:`Set apart before clustering because ${o===0?'the total price is far outside the usual range':o===1?'the price per sqft is far outside the usual range':'both total price and price per sqft are far outside the usual range'}. Typically ${money(P_.price)} for ${inr(P_.sqft)} sqft. Check these before showing them.`,outlier:true,oc:o})});
+  VC.groups=groups;
+  GROUPS.clusters={names:groups.map(g=>g.name),cls:groups.map((g,i)=>'vc'+i),color:groups.map((g,i)=>g.outlier?VC_OUT[g.oc]:VC_PALETTE[i%VC_PALETTE.length])};
+  VCCOL=GROUPS.clusters.color;let st=document.getElementById('vcstyle');if(!st){st=document.createElement('style');st.id='vcstyle';document.head.appendChild(st)}
+  st.textContent=GROUPS.clusters.color.map((c,i)=>`.sw.vc${i}{background:${c}${groups[i].outlier?';box-shadow:0 0 0 1.5px #fff,0 0 0 3px '+c:''}}`).join('');
+}
+/* Price clustering: every listing with a price, grouped on total price alone. Prices are compared on a log scale, so a
+   ₹50 L gap counts for more between ₹1 Cr homes than between ₹10 Cr homes. K-means is run for 2 to 8 clusters and the
+   number is picked at the elbow: the point where adding another cluster stops making the groups much tighter. */
+/* The buyer's rules for independent houses: up to ₹1.5 Cr good, up to ₹1.55 Cr okay, up to ₹2 Cr not suggested, above that rejected. */
+const IH_RULES=[{key:'good',label:'Good',short:'Good',max:1.5e7,color:'#1e9e5a',note:'up to ₹1.5 Cr: good and affordable, suggest to the buyer'},{key:'okay',label:'Okay',short:'Okay',max:1.55e7,color:'#2b7fd4',note:'₹1.5 Cr to ₹1.55 Cr: okay to suggest'},{key:'not',label:'Not suggested',short:'Not suggested',max:2e7,color:'#e39a0b',note:'₹1.55 Cr to ₹2 Cr: over budget'},{key:'reject',label:'Rejected',short:'Rejected',max:Infinity,color:'#b3261e',note:'above ₹2 Cr: too expensive'}];
+const ihRule=r=>typeIdx(r.type)===2&&r.price>0?IH_RULES.find(x=>r.price<=x.max):null;
+let VCCOL=[];
+const VC_TYPES={all:{label:'All property types',of:'all listings',test:()=>true},apt:{label:'Apartments',of:'apartments',test:r=>typeIdx(r.type)===0},ih:{label:'Independent houses',of:'independent houses',test:r=>typeIdx(r.type)===2},villa:{label:'Villas',of:'villas',test:r=>[1,3].includes(typeIdx(r.type))}};
+function computeVCPrice(){
+  const T=VC_TYPES[state.vcType]||VC_TYPES.all;
+  Object.values(state.data).forEach(d=>d.rows.forEach(r=>r.vc=null));
+  const all=Object.entries(state.data).flatMap(([a,d])=>d.rows.filter(r=>r.price>0&&T.test(r)).map(r=>{r.km=r.lat!=null?haversine(HQ[0],HQ[1],r.lat,r.lon):null;r._area=a;return r}));
+  /* Outliers are removed once, before clustering: a total price beyond 1.5 times the interquartile range from the middle half. */
+  const P_=all.map(r=>r.price),q1=qtile(P_,.25),q3=qtile(P_,.75),fl=q1-1.5*(q3-q1),fh=q3+1.5*(q3-q1);
+  const rows=all.length>=8?all.filter(r=>r.price>=fl&&r.price<=fh):all,removed=all.filter(r=>!rows.includes(r));
+  VC={rows,allRows:all,removed,fence:[fl,fh],ks:[],groups:[],k:0,priceOnly:true,used:['Total price'],inliers:rows.length,typeOf:T.of,typeKey:state.vcType};
+  if(rows.length<8){GROUPS.clusters={names:[],cls:[],color:[]};return}
+  const lv=rows.map(r=>Math.log(r.price)),mu=avg(lv),sd=Math.sqrt(avg(lv.map(x=>(x-mu)**2)))||1,X=lv.map(x=>[(x-mu)/sd]);
+  const I=[{k:1,inertia:X.reduce((t,x)=>t+x[0]*x[0],0)}];VC.runs={};
+  for(let k=2;k<=Math.min(8,X.length-1);k++){
+    let run=null;for(let s=0;s<10;s++){const r=kmRun(X,k,42+s);if(!run||r.inertia<run.inertia-1e-9)run=r}
+    const sil=silhouette(X,run.L,k);VC.ks.push({k,inertia:run.inertia,sil});VC.runs[k]={sil,run};I.push({k,inertia:run.inertia});
+  }
+  // elbow: the k farthest below the straight line joining the first and last points of the inertia curve
+  const a0=I[0],a1=I[I.length-1],dist=p=>Math.abs((a1.inertia-a0.inertia)*p.k-(a1.k-a0.k)*p.inertia+a1.k*a0.inertia-a1.inertia*a0.k);
+  VC.bestK=I.slice(1).reduce((b,p)=>dist(p)>dist(b)?p:b,I[1]).k;
+  const k=state.vcK!=='auto'&&VC.runs[state.vcK]?+state.vcK:VC.bestK,best={k,...VC.runs[k]};
+  VC.k=k;VC.sil=best.sil;
+  const byC=[...Array(k).keys()].map(c=>({c,m:medianOf(rows.filter((_,i)=>best.run.L[i]===c).map(r=>r.price))})).sort((a,b)=>a.m-b.m),rank={};byC.forEach((o,i)=>rank[o.c]=i);
+  rows.forEach((r,i)=>r.vc=rank[best.run.L[i]]);
+  const TIERS={2:['Low price','High price'],3:['Low price','Mid-range price','High price'],4:['Low price','Lower mid-range','Upper mid-range','High price'],
+    5:['Low price','Lower mid-range','Mid-range price','Upper mid-range','High price'],6:['Very low price','Low price','Lower mid-range','Upper mid-range','High price','Very high price'],
+    7:['Very low price','Low price','Lower mid-range','Mid-range price','Upper mid-range','High price','Very high price'],8:['Lowest price','Very low price','Low price','Lower mid-range','Upper mid-range','High price','Very high price','Highest price']}[k];
+  const groups=[];
+  for(let c=0;c<k;c++){
+    const rs=rows.filter(r=>r.vc===c),wq=rs.filter(r=>r.sqft>0),ps=rs.map(r=>r.price),bk=rs.map(r=>r.bhk).filter(x=>x),km=rs.map(r=>r.km).filter(x=>x!=null),hs=rs.filter(r=>[1,2,3].includes(typeIdx(r.type))).length;
+    const ar=new Map();rs.forEach(r=>ar.set(r._area,(ar.get(r._area)||0)+1));
+    const G={n:rs.length,price:medianOf(ps),pmin:Math.min(...ps),pmax:Math.max(...ps),sqft:wq.length?medianOf(wq.map(r=>r.sqft)):null,ppsf:wq.length?medianOf(wq.map(r=>r.price/r.sqft)):null,bhk:bk.length?medianOf(bk):null,km:km.length?medianOf(km):null,house:hs/rs.length,ready:rs.filter(r=>r.ready==='Yes').length/rs.length,areas:[...ar.entries()].sort((a,b)=>b[1]-a[1])};
+    const t=[];if(G.sqft)t.push(`${inr(G.sqft)} sqft`);if(G.bhk)t.push(`mostly ${G.bhk%1?G.bhk:G.bhk.toFixed(0)} BHK`);if(G.ppsf)t.push(`₹${inr(G.ppsf)} per sqft`);if(G.km!=null)t.push(`about ${G.km.toFixed(1)} km from Infosys`);
+    t.push(`${Math.round(G.ready*100)}% ready to move`);if(hs)t.push(`${Math.round(G.house*100)}% villas or houses`);
+    G.centre=Math.exp(avg(rs.map(r=>Math.log(r.price))));G.tier=TIERS[c];
+    groups.push({...G,name:`${TIERS[c]}, ${money(G.pmin)} to ${money(G.pmax)}`,desc:`Priced ${money(G.pmin)} to ${money(G.pmax)}, typically ${money(G.price)}. ${t.join(', ').replace(/^./,x=>x.toUpperCase())}.`,outlier:false});
+  }
+  VC.groups=groups;
+  GROUPS.clusters={names:groups.map(g=>g.name),cls:groups.map((g,i)=>'vc'+i),color:groups.map((g,i)=>VC_PALETTE[i%VC_PALETTE.length])};
+  VCCOL=GROUPS.clusters.color;let st=document.getElementById('vcstyle');if(!st){st=document.createElement('style');st.id='vcstyle';document.head.appendChild(st)}
+  st.textContent=GROUPS.clusters.color.map((c,i)=>`.sw.vc${i}{background:${c}}`).join('');
+}
+/* Territories: the map is cut into 250 m squares. Each square with listings belongs to the area most of its listings come from
+   (a tie goes to the nearer area centre), and empty squares next to an area join it, two squares deep. No square has two owners,
+   so area borders can never overlap. */
+const TERR_M=250,AREA_PALETTE=['#0f766e','#7c3aed','#be123c','#4d7c0f','#a16207','#1e40af','#9d174d','#155e75','#713f12','#3f3f46'];
+let TERR=null;
+const areaColor=a=>{const n=Object.keys(state.data).sort((x,y)=>x.localeCompare(y)),i=n.indexOf(a);return AREA_PALETTE[(i<0?0:i)%AREA_PALETTE.length]};
+function areaCentre(a){const x=AREAS.find(v=>v.name===a);if(x)return[x.lat,x.lon];const rs=(state.data[a]?.rows||[]).filter(r=>r.lat!=null);return rs.length?[avg(rs.map(r=>r.lat)),avg(rs.map(r=>r.lon))]:HQ}
+function computeTerritory(){
+  const {dLat,dLon}=gridStep(TERR_M),key=(i,j)=>i+','+j,votes=new Map();
+  Object.entries(state.data).forEach(([a,d])=>d.rows.forEach(r=>{if(r.lat==null)return;const k=key(Math.floor((r.lat-HQ[0])/dLat),Math.floor((r.lon-HQ[1])/dLon));if(!votes.has(k))votes.set(k,new Map());const v=votes.get(k);v.set(a,(v.get(a)||0)+1)}));
+  const own=new Map();
+  votes.forEach((v,k)=>{const top=Math.max(...v.values()),tied=[...v.keys()].filter(a=>v.get(a)===top).sort();const [i,j]=k.split(',').map(Number),cy=HQ[0]+(i+.5)*dLat,cx=HQ[1]+(j+.5)*dLon;
+    tied.sort((x,y)=>{const c1=areaCentre(x),c2=areaCentre(y);return haversine(...c1,cy,cx)-haversine(...c2,cy,cx)||x.localeCompare(y)});own.set(k,{a:tied[0],listed:true})});
+  /* Fill out each uploaded area to its official ward or estimated border. Squares already taken by another area's listings stay
+     with that area, and smaller areas are filled first, so a large ward cannot swallow a neighbour. */
+  const fills=Object.keys(state.data).filter(a=>BORDERS[a]&&BORDERS[a].rings).map(a=>{const f=BORDERS[a].rings.flat();return{a,rings:BORDERS[a].rings,s:Math.min(...f.map(p=>p[0])),n:Math.max(...f.map(p=>p[0])),w:Math.min(...f.map(p=>p[1])),e:Math.max(...f.map(p=>p[1]))}}).sort((x,y)=>(x.n-x.s)*(x.e-x.w)-(y.n-y.s)*(y.e-y.w));
+  fills.forEach(F=>{for(let i=Math.floor((F.s-HQ[0])/dLat);i<=Math.ceil((F.n-HQ[0])/dLat);i++)for(let j=Math.floor((F.w-HQ[1])/dLon);j<=Math.ceil((F.e-HQ[1])/dLon);j++){
+    const k=key(i,j);if(own.has(k))continue;const cy=HQ[0]+(i+.5)*dLat,cx=HQ[1]+(j+.5)*dLon;
+    if(haversine(HQ[0],HQ[1],cy,cx)>RADIUS_KM||!inRings(cy,cx,F.rings))continue;own.set(k,{a:F.a,listed:false})}});
+  for(let step=0;step<2;step++){
+    const add=new Map();
+    own.forEach((o,k)=>{const [i,j]=k.split(',').map(Number);for(let di=-1;di<=1;di++)for(let dj=-1;dj<=1;dj++){const n=key(i+di,j+dj);if(own.has(n)||add.has(n))continue;
+      const cy=HQ[0]+(i+di+.5)*dLat,cx=HQ[1]+(j+dj+.5)*dLon;if(haversine(HQ[0],HQ[1],cy,cx)>RADIUS_KM)continue;
+      const c=new Map();for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++){const m=own.get(key(i+di+a,j+dj+b));if(m)c.set(m.a,(c.get(m.a)||0)+1)}
+      const top=Math.max(...c.values());add.set(n,{a:[...c.keys()].filter(x=>c.get(x)===top).sort()[0],listed:false})}});
+    add.forEach((v,k)=>own.set(k,v));
+  }
+  const by={};
+  own.forEach((o,k)=>{const [i,j]=k.split(',').map(Number);if(!by[o.a])by[o.a]={cells:[],edges:[],n:0,s:90,w:180,nn:-90,e:-180,topCell:null};const A=by[o.a];
+    const s0=HQ[0]+i*dLat,w0=HQ[1]+j*dLon,n0=s0+dLat,e0=w0+dLon;A.cells.push([[s0,w0],[s0,e0],[n0,e0],[n0,w0]]);
+    A.s=Math.min(A.s,s0);A.w=Math.min(A.w,w0);A.nn=Math.max(A.nn,n0);A.e=Math.max(A.e,e0);if(!A.topCell||n0>A.topCell[0])A.topCell=[n0,(w0+e0)/2];
+    const other=(a,b)=>{const m=own.get(key(a,b));return!m||m.a!==o.a};
+    if(other(i+1,j))A.edges.push([[n0,w0],[n0,e0]]);if(other(i-1,j))A.edges.push([[s0,w0],[s0,e0]]);
+    if(other(i,j+1))A.edges.push([[s0,e0],[n0,e0]]);if(other(i,j-1))A.edges.push([[s0,w0],[n0,w0]]);});
+  Object.entries(by).forEach(([a,A])=>{const ls=[];own.forEach((o,k)=>{if(o.a===a&&o.listed){const [i,j]=k.split(',').map(Number);ls.push([HQ[0]+(i+.5)*dLat,HQ[1]+(j+.5)*dLon])}});A.labelAt=ls.length?[avg(ls.map(p=>p[0])),avg(ls.map(p=>p[1]))]:A.topCell});
+  TERR={own,by};
+}
+const listingTerritory=r=>{if(!TERR||r.lat==null)return null;const {dLat,dLon}=gridStep(TERR_M),o=TERR.own.get(Math.floor((r.lat-HQ[0])/dLat)+','+Math.floor((r.lon-HQ[1])/dLon));return o?o.a:null};
 
 /* ---------- reading uploaded files ---------- */
 const isSold=st=>/\bsold\b/i.test(String(st??''));
@@ -369,6 +644,18 @@ async function onFiles(list){
   for(const file of files){
     try{
       const parsed=toRows(await readFile(file));
+      const acol=Object.keys((parsed.rows[0]&&parsed.rows[0].raw)||{}).find(k=>['area','area name','locality','location area','sub locality','sublocality'].includes(norm(k)));
+      if(acol){
+        const known=v=>{const t=String(v||'').trim();if(!t)return'';const hit=AREAS.find(a=>a.name.toLowerCase()===t.toLowerCase());return hit?hit.name:(detectArea(t)||t)};
+        const groups=new Map();parsed.rows.forEach(r=>{const n=known(r.raw[acol]);if(!groups.has(n))groups.set(n,[]);groups.get(n).push(r)});
+        if(groups.size>1){
+          /* A file listing several areas becomes one upload per area, so each gets its own border. */
+          let first=true;
+          groups.forEach((rows,n)=>{const listed=AREAS.some(a=>a.name===n)||!!state.data[n];
+            state.queue.push({...parsed,rows,sold:first?parsed.sold:0,old:first?parsed.old:0,skipped:first?parsed.skipped:0,file:`${file.name} · ${n||'no area given'}`,area:listed?n:(n?'__other':''),other:listed?'':n});first=false});
+          continue;
+        }
+      }
       state.queue.push({...parsed,file:file.name,area:detectArea(file.name)||(files.length===1&&state.selected&&state.selected!=='__all'&&!state.data[state.selected]?state.selected:''),other:''});
     }catch(e){errors.push(`${file.name}: ${e.message||'could not be read.'}`)}
   }
@@ -385,10 +672,11 @@ function renderQueue(){
   $('confirm').hidden=!q.length;if(!q.length)return;
   $('queue').innerHTML=q.map((x,i)=>{
     const off=leftOut(x),no=x.rows.filter(r=>r.lat==null).length,out=x.rows.filter(r=>r.lat!=null&&haversine(HQ[0],HQ[1],r.lat,r.lon)>RADIUS_KM).length,ex=x.area&&state.data[x.area];
-    const notes=[];if(no)notes.push(`${no} listings have no location, so they stay off the map.`);if(out)notes.push(`${out} listings are outside the 9 km circle but are still clustered.`);if(ex)notes.push(`Replaces the ${ex.rows.length} listings already uploaded for ${x.area}.`);
+    const notes=[];if(no)notes.push(`${no} listings have no location, so they stay off the map.`);if(out)notes.push(`${out} listings are outside the 9 km circle but are still clustered.`);if(ex&&x.mode!=='add')notes.push(`Replaces the ${ex.rows.length} listings already uploaded for ${x.area}.`);if(ex&&x.mode==='add')notes.push(`Adds to the ${ex.rows.length} listings already uploaded for ${x.area}, skipping exact repeats.`);
     return `<div class="qrow" data-i="${i}"><div class="qhead"><b>${esc(x.file)}</b><button type="button" class="qx" data-x="${i}" aria-label="Remove ${esc(x.file)}">Remove</button></div>
     <p class="msg">${x.rows.length.toLocaleString('en-IN')} listings kept.${off?` Left out: ${esc(off)}.`:''}</p>
     <label>Area<select data-area="${i}" aria-label="Area for ${esc(x.file)}">${areaOptions(x.area)}</select></label>
+    ${ex?`<label>This area already has data<select data-mode="${i}" aria-label="Replace or add for ${esc(x.file)}"><option value="replace"${x.mode!=='add'?' selected':''}>Replace it</option><option value="add"${x.mode==='add'?' selected':''}>Add to it (new properties found)</option></select></label>`:''}
     ${x.area==='__other'?`<label>Area name<input data-other="${i}" type="text" autocomplete="off" value="${esc(x.other)}"></label>`:''}
     ${notes.length?`<p class="msg warn">${esc(notes.join(' '))}</p>`:''}</div>`}).join('');
   $('qgo').textContent=q.length>1?`Run clustering on ${q.length} files`:'Run clustering';
@@ -397,15 +685,15 @@ function renderQueue(){
 /* ---------- saved data (kept in this browser only) ---------- */
 let dbp=null;
 function db(){if(dbp)return dbp;dbp=new Promise((ok,bad)=>{try{const r=indexedDB.open('infosys-clusters',1);r.onupgradeneeded=()=>r.result.createObjectStore('areas');r.onsuccess=()=>ok(r.result);r.onerror=()=>bad(r.error)}catch(e){bad(e)}});return dbp}
-async function saveArea(name,d){try{const c=await db();await new Promise((ok,bad)=>{const t=c.transaction('areas','readwrite');t.objectStore('areas').put({file:d.file,skipped:d.skipped,rows:d.rows,columns:d.columns,nameCol:d.nameCol,sold:d.sold,old:d.old,at:d.at},name);t.oncomplete=ok;t.onerror=bad})}catch(e){$('savewarn').hidden=false}}
-async function deleteArea(name){try{const c=await db();await new Promise((ok,bad)=>{const t=c.transaction('areas','readwrite');t.objectStore('areas').delete(name);t.oncomplete=ok;t.onerror=bad})}catch(e){}}
+async function saveArea(name,d){return;try{const c=await db();await new Promise((ok,bad)=>{const t=c.transaction('areas','readwrite');t.objectStore('areas').put({file:d.file,skipped:d.skipped,rows:d.rows,columns:d.columns,nameCol:d.nameCol,sold:d.sold,old:d.old,at:d.at},name);t.oncomplete=ok;t.onerror=bad})}catch(e){$('savewarn').hidden=false}}
+async function deleteArea(name){return;try{const c=await db();await new Promise((ok,bad)=>{const t=c.transaction('areas','readwrite');t.objectStore('areas').delete(name);t.oncomplete=ok;t.onerror=bad})}catch(e){}}
 async function loadAll(){try{const c=await db();await new Promise((ok,bad)=>{const s=c.transaction('areas').objectStore('areas'),q=s.openCursor();q.onsuccess=()=>{const u=q.result;if(u){const v=u.value,keep=v.rows.filter(r=>!isSold(r.status)&&!isOldPrice(r.raw));
           v.sold=(v.sold||0)+v.rows.filter(r=>isSold(r.status)).length;v.old=(v.old||0)+v.rows.filter(r=>!isSold(r.status)&&isOldPrice(r.raw)).length;v.rows=keep;state.data[u.key]=v;u.continue()}else ok()};q.onerror=bad})}catch(e){}}
 
 /* ---------- map ---------- */
 const setToolbarVar=()=>document.documentElement.style.setProperty('--tb',document.querySelector('.toolbar').offsetHeight+'px');setToolbarVar();
 const map=L.map('map',{zoomSnap:.25,zoomDelta:.5}).setView(HQ,12);
-L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',{subdomains:'abc',maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, tiles by <a href="https://www.openstreetmap.fr/">OpenStreetMap France</a>'}).addTo(map);
+L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',{subdomains:'abc',maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, tiles by <a href="https://www.openstreetmap.fr/">OpenStreetMap France</a>',opacity:.55}).addTo(map);
 L.control.scale({imperial:false}).addTo(map);
 const WHOLE=L.latLng(HQ).toBounds(RADIUS_KM*2000);
 const circle=L.circle(HQ,{radius:RADIUS_KM*1000,color:'#0c5f68',weight:2.5,dashArray:'8 6',fillColor:'#0c5f68',fillOpacity:.05,interactive:false}).addTo(map);
@@ -444,63 +732,121 @@ const pieLayer=L.layerGroup().addTo(map);
 const gridPane=map.createPane('grid');gridPane.style.zIndex=390;
 const gridLines=L.layerGroup().addTo(map),gridCells=L.layerGroup().addTo(map);
 const tagPane=map.createPane('tags');tagPane.style.zIndex=650;
+const tintPane=map.createPane('tags-tint');tintPane.style.zIndex=385;tintPane.style.pointerEvents='none';
 const borderPane=map.createPane('border');borderPane.style.zIndex=395;borderPane.style.pointerEvents='none';
 const borderLayer=L.layerGroup().addTo(map),cellLabels=L.layerGroup().addTo(map);
+const tintRenderer=L.canvas({pane:'tags-tint'}),gridRenderer=L.canvas({pane:'tags-tint'});
 const legend=L.control({position:'topright'});
 legend.onAdd=()=>{const e=L.DomUtil.create('div','blegend');L.DomEvent.disableClickPropagation(e);e.hidden=true;return e};legend.addTo(map);
 function cellPx(){
   const {dLon}=gridStep(state.cell),pa=map.latLngToLayerPoint([HQ[0],HQ[1]]),pb=map.latLngToLayerPoint([HQ[0],HQ[1]+dLon]);
   return Math.abs(pb.x-pa.x);
 }
+/* Each uploaded area is drawn as a circle: centred on the middle of its listings and wide enough for most of them (85%).
+   Where two circles would overlap, both shrink in proportion until they just touch, so areas never overlap. */
+function areaCircles(){
+  const names=Object.keys(state.data),C={};
+  names.forEach(n=>{const pts=state.data[n].rows.filter(r=>r.lat!=null);if(!pts.length)return;
+    const md=v=>{const x=[...v].sort((a,b)=>a-b),k=x.length;return(x[(k-1)>>1]+x[k>>1])/2};
+    const c=[md(pts.map(r=>r.lat)),md(pts.map(r=>r.lon))],ds=pts.map(r=>haversine(c[0],c[1],r.lat,r.lon)*1000).sort((a,b)=>a-b);
+    C[n]={c,r:Math.max(400,ds[Math.min(ds.length-1,Math.floor(.85*(ds.length-1)))]),n:pts.length}});
+  const ks=Object.keys(C);
+  for(let it=0;it<5;it++)for(let i=0;i<ks.length;i++)for(let j=i+1;j<ks.length;j++){const A=C[ks[i]],B=C[ks[j]],d=haversine(A.c[0],A.c[1],B.c[0],B.c[1])*1000;
+    if(A.r+B.r>d){const f=Math.max(.05,d*.98)/(A.r+B.r);A.r*=f;B.r*=f}}
+  ks.forEach(n=>{const A=C[n];A.inside=state.data[n].rows.filter(r=>r.lat!=null&&haversine(A.c[0],A.c[1],r.lat,r.lon)*1000<=A.r).length});
+  return C;
+}
 function drawBorder(){
   borderLayer.clearLayers();
+  const CIRC=areaCircles();
   const box=legend.getContainer(),a=state.selected,uploaded=Object.keys(state.data).filter(n=>state.data[n].grid&&state.data[n].grid.hull);
-  uploaded.forEach(n=>{
-    const h=state.data[n].grid.hull,sel=n===a;
-    L.polygon(h,{pane:'border',color:'#111',weight:sel?4:2,fill:false,interactive:false}).addTo(borderLayer);
-    const top=h.reduce((t,p)=>p[0]>t[0]?p:t,h[0]);
-    L.marker(top,{pane:'tags',title:`Focus on ${n}`,icon:L.divIcon({className:'',iconSize:[0,0],html:`<div class="atag${sel?' sel':''}">${esc(n)}</div>`})}).on('click',()=>select(n)).addTo(borderLayer);
+  const hqp=map.latLngToContainerPoint(HQ),placedTags=[{x:hqp.x+30,y:hqp.y,w:84}];
+  Object.keys(state.data).sort((x,y)=>state.data[y].rows.length-state.data[x].rows.length).forEach(n=>{
+    const K=CIRC[n];if(!K)return;
+    const sel=n===a,col=areaColor(n),focus=!a||a==='__all'||sel;
+    L.circle(K.c,{pane:'border',radius:K.r,color:col,weight:sel?3.5:2.5,opacity:focus?1:.6,fillColor:col,fillOpacity:focus?.1:.04,interactive:false}).addTo(borderLayer);
+    let pt=map.latLngToContainerPoint([L.latLng(K.c).toBounds(K.r*2).getNorth(),K.c[1]]);const tw=n.length*7.2+16,th=22;
+    for(let k=0;k<6&&placedTags.some(q=>Math.abs(q.x-pt.x)<(q.w+tw)/2&&Math.abs(q.y-pt.y)<th);k++)pt=L.point(pt.x,pt.y+th+2);
+    placedTags.push({x:pt.x,y:pt.y,w:tw});
+    L.marker(map.containerPointToLatLng(pt),{pane:'tags',title:`Focus on ${n}`,icon:L.divIcon({className:'',iconSize:[0,0],html:`<div class="atag" style="background:${col}${sel?';outline:2px solid #fff;box-shadow:0 0 0 4px '+col:''}">${esc(n)}</div>`})}).on('click',()=>select(n)).addTo(borderLayer);
   });
   if(!a||a==='__all'){
-    if(uploaded.length){box.innerHTML=`<div class="bl-t">${uploaded.length} uploaded area${uploaded.length>1?'s':''}</div><div class="bl-r"><i class="ln"></i>Each area's outer border</div>${state.view==='grid'?'<div class="bl-r"><i class="pd"></i>Each dot is one project</div>':''}<div class="bl-n">Click an area's name to focus on it.</div>`;box.hidden=false}
+    if(uploaded.length){box.innerHTML=`<div class="bl-t">${uploaded.length} uploaded area${uploaded.length>1?'s':''}</div>${uploaded.sort((x,y)=>x.localeCompare(y)).map(n=>`<div class="bl-r"><i class="ln" style="border-top-color:${areaColor(n)}"></i>${esc(n)} · ${state.data[n].rows.length} listings</div>`).join('')}<div class="bl-n">Each circle holds most of that area's listings. Circles never overlap.</div>${state.view==='grid'?'<div class="bl-r"><i class="pd"></i>Each dot is one project</div>':''}<div class="bl-n">Click an area's name to focus on it.</div>`;box.hidden=false}
     else box.hidden=true;
     return;
   }
   const d=state.data[a],b=BORDERS[a],hasHull=d&&d.grid&&d.grid.hull;
   let rows=`<div class="bl-t">${esc(a)}</div>`;
   if(hasHull){
-    rows+=`<div class="bl-r"><i class="ln"></i>Outer border of its clustered grids</div>`;
-    if(b&&b.kind==='ward'){
-      b.rings.forEach(r=>L.polygon(r,{pane:'border',color:'#1d4ed8',weight:2,fill:false,dashArray:'3 5',interactive:false}).addTo(borderLayer));
-      const located=d.rows.filter(r=>r.lat!=null),inside=located.filter(r=>inRings(r.lat,r.lon,b.rings)).length;
-      rows+=`<div class="bl-r"><i class="ln ward"></i>Official ${esc(b.label)}</div><div class="bl-n">${inside} of ${located.length} listings are inside the official ward</div>`;
-    }
+    const K=CIRC[a],located=d.rows.filter(r=>r.lat!=null).length;
+    if(K)rows+=`<div class="bl-r"><i class="ln ring" style="border-color:${areaColor(a)}"></i>Area circle, radius ${(K.r/1000).toFixed(1)} km</div><div class="bl-n">${K.inside} of ${located} mapped listings sit inside it</div>`;
   }else if(b){
     const est=b.kind==='est';
     b.rings.forEach(r=>L.polygon(r,{pane:'border',color:'#111',weight:3,fill:false,interactive:false,dashArray:est?'8 7':null}).addTo(borderLayer));
     rows+=est?`<div class="bl-r"><i class="ln est"></i>Estimated border</div><div class="bl-n">Halfway to neighbouring areas, not an official boundary. Upload this area's file to replace it with its grids.</div>`:`<div class="bl-r"><i class="ln"></i>Official ${esc(b.label)}</div><div class="bl-n">Upload this area's file to fill its grids</div>`;
   }else{box.hidden=true;return}
-  if(hasHull&&state.view==='grid')rows+='<div class="bl-r"><i class="pd"></i>Each dot is one project</div>';
+  if(hasHull&&state.view==='grid'&&usingVC())rows+=`<div class="bl-n">The circle is cut into ${state.cell>=1000?state.cell/1000+' km':state.cell+' m'} squares. A coloured square takes the price cluster most of its listings are in; click it to list them.</div>`;
+  if(hasHull&&state.view==='grid')rows+='<div class="bl-r"><i class="pd"></i>Each dot is one project</div>'+(usingSeg()&&!byType()?'<div class="bl-r"><i class="pd big"></i>Villa or house (thick ring)</div>':'');
   box.innerHTML=rows;box.hidden=false;
 }
 function drawCellLabels(){cellLabels.clearLayers()}
 map.on('zoomend',drawCellLabels);
+map.on('zoomend',()=>{if(TERR)drawBorder()});
 const dotPane=map.createPane('dots');dotPane.style.zIndex=645;
-const projectDots=L.layerGroup().addTo(map);
+const projectDots=L.layerGroup().addTo(map),DOTS_FROM_ZOOM=14;
 function dotTip(q){
+  return dotTipArea(q)+(q.area?`<br><span style="color:${areaColor(q.area)};font-weight:600">● ${esc(q.area)}</span>`:'');
+}
+function dotTipArea(q){
+  const tl=q.typeCounts?q.typeCounts.map((c,i)=>c?`${c} ${TYPE_NAMES[i].toLowerCase()}`:'').filter(Boolean).join(' · '):'';
+  return dotTipBase(q)+(tl?`<br>${tl}`:'');
+}
+function dotTipBase(q){
   if(!usingBuyer())return `<b>${esc(q.name)}</b><br>${money(q.avg)} average · ${q.rows.length} listing${q.rows.length>1?'s':''}<br>${q.b==null?'Not classified':BUDGET[q.b]+' budget'}`;
   const ps=q.rows.map(r=>r.price),lo=Math.min(...ps),hi=Math.max(...ps);
   return `<b>${esc(q.name)}</b><br>Best: ${BUDGET[q.b]}<br>${money(lo)}${hi>lo?' to '+money(hi):''} · ${q.rows.length} listing${q.rows.length>1?'s':''}<br>${classCounts(q.rows).map(x=>x.c+' '+x.n).join(' · ')}`;
 }
+const listingMarkers=new Map();
+const ihDecide=()=>usingVC()&&VC&&VC.typeKey==='ih'&&state.ihColor==='decision';
+function ihShow(k){state.ihOnly=k;state.ihColor='decision';if(!usingVC()){state.method='clusters';recomputeAll()}state.show=state.show.map(()=>true);state.view='grid';selectAll();
+  const pts=VC.rows.filter(r=>r.lat!=null&&ihRule(r)&&(k==='all'||ihRule(r).key===k)).map(r=>[r.lat,r.lon]);if(pts.length){settleMap();map.fitBounds(L.latLngBounds(pts).pad(.3),{maxZoom:15,animate:false})}document.querySelector('main').scrollTop=0}
+const ihLegend=L.control({position:'bottomright'});ihLegend.onAdd=()=>{const e=L.DomUtil.create('div','blegend');L.DomEvent.disableClickPropagation(e);e.hidden=true;return e};ihLegend.addTo(map);ihLegend.getContainer().addEventListener('click',e=>{const t=e.target.closest('[data-ihmap]');if(t)ihShow(t.dataset.ihmap)});
+function drawIhLegend(){
+  const box=ihLegend.getContainer();if(!ihDecide()){box.hidden=true;return}
+  const rs=(VC.allRows||VC.rows).filter(r=>ihRule(r)),off=rs.filter(r=>r.lat==null).length,outl=rs.filter(r=>r.lat!=null&&r.vc==null).length;
+  box.innerHTML=`<div class="bl-t">Independent houses · buyer decision</div>${IH_RULES.map(R=>{const n=rs.filter(r=>ihRule(r).key===R.key),on=n.filter(r=>r.lat!=null&&r.vc!=null).length;return `<div class="bl-r ihl${state.ihOnly!=='all'&&state.ihOnly!==R.key?' dim':''}" data-ihmap="${R.key}"><i class="pd" style="background:${R.color};width:12px;height:12px"></i>${esc(R.label)} · ${n.length}${on<n.length?` (${on} on map)`:''}</div>`}).join('')}<div class="bl-n">${esc('Good up to ₹1.5 Cr · Okay to ₹1.55 Cr · Not suggested to ₹2 Cr · Rejected above')}</div>${off?`<div class="bl-n">${off} house${off>1?'s have':' has'} no map position.</div>`:''}${outl?`<div class="bl-n">${outl} price outlier${outl>1?'s are':' is'} removed and not shown.</div>`:''}${state.ihOnly!=='all'?'<div class="bl-r ihl" data-ihmap="all"><b>Show all houses</b></div>':''}`;
+  box.hidden=false;
+}
+function drawListingDots(){
+  listingMarkers.clear();
+  const radius=map.getZoom()>=15?6:map.getZoom()>=13?4.5:3.5,byLoc=new Map();
+  Object.entries(state.data).forEach(([a,d])=>d.rows.forEach((r,ri)=>{
+    if(r.lat==null||r.vc==null||!state.show[r.vc])return;
+    const k=r.lat+','+r.lon,n=byLoc.get(k)||0;byLoc.set(k,n+1);
+    /* listings at the same address are fanned out a few metres so each one can be clicked */
+    const ang=n*2.39996,rad=n?6*Math.sqrt(n):0,la=r.lat+rad*Math.cos(ang)/111320,lo=r.lon+rad*Math.sin(ang)/(111320*Math.cos(r.lat*Math.PI/180));
+    const g=VC.groups[r.vc],isH=[1,2,3].includes(typeIdx(r.type)),D=ihDecide()?ihRule(r):null;
+    if(D&&state.ihOnly!=='all'&&D.key!==state.ihOnly)return;
+    const col=D?D.color:BCOLOR[r.vc];
+    const m=L.circleMarker([la,lo],{pane:'dots',radius:D?radius+3:isH?radius+1.5:radius,color:g.outlier?'#111':'#fff',weight:D?2:isH?2.5:1.2,dashArray:g.outlier?'2 2':null,fillColor:col,fillOpacity:.95})
+      .bindTooltip(`<b>${esc(r.name)}</b><br>${money(r.price)} · ${r.bhk??'?'} BHK · ${inr(r.sqft)} sqft · ${esc(r.type||'')}<br>${D?`<span style="color:${D.color};font-weight:700">● ${esc(D.label)}</span> (${esc(D.note)})<br>`:''}<span style="color:${BCOLOR[r.vc]};font-weight:600">● ${esc(g.name)}</span><br>Source: ${srcLinks(r).length?esc([...new Set(srcLinks(r).map(l=>l.site))].join(', ')):'none given'}<br>${esc(a)} · click for the source link${srcLinks(r).length>1?'s':''}`,{direction:'top'}).addTo(projectDots);
+    m.bindPopup(()=>srcPopup(r,a),{maxWidth:320,autoPan:true});
+    m.on('click',()=>openSheet({area:a,rid:ri},true));listingMarkers.set(r,m);
+  }));
+  drawIhLegend();
+}
 function drawProjectDots(){
   projectDots.clearLayers();
   if(state.view!=='grid')return;
+  if(usingVC()&&VC&&VC.groups.length){drawListingDots();return}
+  if(map.getZoom()<DOTS_FROM_ZOOM&&!byType())return;
   const radius=map.getZoom()>=13?5:3.5;
   Object.entries(state.data).forEach(([a,d])=>{
     if(!d.grid||!d.grid.projects)return;
     [...d.grid.projects].sort((x,y)=>(y.b??9)-(x.b??9)).forEach(q=>{
-      if(q.b!=null&&!state.show[q.b])return;
-      const dot=L.circleMarker([q.lat,q.lon],{pane:'dots',radius:usingBuyer()&&q.b===0?radius+1.5:radius,color:'#111',weight:1,fillColor:q.b==null?'#7b8a8c':BCOLOR[q.b],fillOpacity:1})
+      if(usingSeg()&&state.segType!=='all'&&q.b==null)return;
+      if(byType()?!state.showType[q.ti]:(q.b!=null&&!state.show[q.b]))return;
+      const dot=L.circleMarker([q.lat,q.lon],{pane:'dots',areaRing:areaColor(a),radius:(byType()||usingSeg())&&q.ti!==0?radius+2:(usingBuyer()&&q.b===0?radius+1.5:radius),color:areaColor(a),weight:(byType()||usingSeg())&&q.ti!==0?3:2,fillColor:byType()?TYPE_COLOR[q.ti]:(q.b==null?'#7b8a8c':BCOLOR[q.b]),fillOpacity:1})
         .bindTooltip(dotTip(q),{direction:'top',offset:[0,-4]}).addTo(projectDots);
       attachSheet(dot,{area:a,loc:q.lat+','+q.lon});
     });
@@ -510,6 +856,21 @@ map.on('zoomend',drawProjectDots);
 function drawGrid(){
   gridLines.clearLayers();gridCells.clearLayers();
   if(state.view!=='grid')return;
+  if(usingVC()){
+    /* Each area's circle is divided into grid squares. A square with listings takes the colour of the price cluster most of
+       them belong to; click it to list them. Squares without listings are outlined only. */
+    const {dLat,dLon}=gridStep(state.cell),CIRC=areaCircles();
+    Object.keys(state.data).forEach(a=>{const K=CIRC[a],d=state.data[a];if(!K||!d.grid)return;
+      const inC=(la,lo)=>haversine(K.c[0],K.c[1],la,lo)*1000<=K.r,dl=K.r/M_PER_DEG,dn=dl/Math.cos(K.c[0]*Math.PI/180);
+      const i0=Math.floor((K.c[0]-dl-HQ[0])/dLat),i1=Math.ceil((K.c[0]+dl-HQ[0])/dLat),j0=Math.floor((K.c[1]-dn-HQ[1])/dLon),j1=Math.ceil((K.c[1]+dn-HQ[1])/dLon),rects=[];
+      for(let i=i0;i<i1;i++)for(let j=j0;j<j1;j++){const s0=HQ[0]+i*dLat,w0=HQ[1]+j*dLon;if(!inC(s0+dLat/2,w0+dLon/2))continue;rects.push([[s0,w0],[s0,w0+dLon],[s0+dLat,w0+dLon],[s0+dLat,w0],[s0,w0]])}
+      if(rects.length)L.polyline(rects,{pane:'grid',color:areaColor(a),weight:.8,opacity:.55,interactive:false}).addTo(gridLines);
+      d.grid.cells.forEach(c=>{c._rect=null;if(ihDecide()||c.b==null||!state.show[c.b])return;const [[s0,w0],[n0,e0]]=c.bounds;if(!inC((s0+n0)/2,(w0+e0)/2))return;
+        c._rect=L.rectangle([[s0,w0],[n0,e0]],{pane:'grid',color:'#ffffff',weight:1.2,opacity:.9,fillColor:BCOLOR[c.b],fillOpacity:.45}).addTo(gridCells);
+        attachSheet(c._rect,{area:a,cell:c.r+','+c.c})});
+    });
+    return;
+  }
   const {dLat,dLon}=gridStep(state.cell),Rm=RADIUS_KM*1000,n=Math.ceil(Rm/state.cell);
   if(!state.selected||state.selected==='__all'){
     const style={pane:'grid',color:'#0c5f68',weight:.6,opacity:.35,interactive:false};
@@ -527,14 +888,25 @@ function drawGrid(){
     for(let i=Math.floor((Math.min(...la)-HQ[0])/dLat);i<=Math.ceil((Math.max(...la)-HQ[0])/dLat);i++){const v=HQ[0]+i*dLat,c=cuts(0,v);for(let k=0;k+1<c.length;k+=2)L.polyline([[v,c[k]],[v,c[k+1]]],line).addTo(gridLines)}
     for(let i=Math.floor((Math.min(...lo)-HQ[1])/dLon);i<=Math.ceil((Math.max(...lo)-HQ[1])/dLon);i++){const v=HQ[1]+i*dLon,c=cuts(1,v);for(let k=0;k+1<c.length;k+=2)L.polyline([[c[k],v],[c[k+1],v]],line).addTo(gridLines)}
   });
+  /* Every grid square whose centre lies inside an area's territory is outlined in that area's colour, so each area shows its own grid. */
+  if(TERR){
+    const lines=new Map();
+    Object.keys(state.data).forEach(a=>{
+      const T=TERR.by[a];if(!T)return;
+      const i0=Math.floor((T.s-HQ[0])/dLat),i1=Math.ceil((T.nn-HQ[0])/dLat),j0=Math.floor((T.w-HQ[1])/dLon),j1=Math.ceil((T.e-HQ[1])/dLon),rects=[];
+      for(let i=i0;i<i1;i++)for(let j=j0;j<j1;j++){const s0=HQ[0]+i*dLat,w0=HQ[1]+j*dLon;if(listingTerritory({lat:s0+dLat/2,lon:w0+dLon/2})!==a)continue;rects.push([[s0,w0],[s0,w0+dLon],[s0+dLat,w0+dLon],[s0+dLat,w0],[s0,w0]])}
+      if(rects.length)L.polyline(rects,{renderer:gridRenderer,color:areaColor(a),weight:.7,opacity:state.selected===a||state.selected==='__all'||!state.selected?.3:.15,interactive:false}).addTo(gridLines);
+    });
+  }
   const names=Object.keys(state.data);
   const byCell=new Map();
-  names.forEach(a=>state.data[a].grid.cells.forEach(c=>{c._rect=null;if(c.b!=null&&!state.show[c.b])return;const k=c.r+','+c.c;if(!byCell.has(k))byCell.set(k,[]);byCell.get(k).push({a,c})}));
+  names.forEach(a=>state.data[a].grid.cells.forEach(c=>{c._rect=null;if(usingSeg()&&state.segType!=='all'&&c.b==null)return;if(!byType()&&c.b!=null&&!state.show[c.b])return;const k=c.r+','+c.c;if(!byCell.has(k))byCell.set(k,[]);byCell.get(k).push({a,c})}));
   /* Two areas can share a square, so it is split into side-by-side strips and neither hides the other. */
   byCell.forEach(list=>list.forEach(({a,c},i)=>{
     const [[s0,w0],[n0,e0]]=c.bounds,w=(e0-w0)/list.length;
-    const col=c.b==null?'#7b8a8c':BCOLOR[c.b],m=state.data[a].grid.metric;
-    c._rect=L.rectangle([[s0,w0+i*w],[n0,w0+(i+1)*w]],{pane:'grid',color:col,weight:1,opacity:.95,fillColor:col,fillOpacity:state.selected==='__all'||!state.selected?.5:(a===state.selected?.55:.28)}).addTo(gridCells);
+    const col=byType()?'#a9b5b3':(c.b==null?'#7b8a8c':BCOLOR[c.b]),m=state.data[a].grid.metric;
+    const hz=usingSeg()&&c.b>=3;
+    c._rect=L.rectangle([[s0,w0+i*w],[n0,w0+(i+1)*w]],{pane:'grid',color:hz?'#1a2729':'#ffffff',weight:hz?1.8:1.5,dashArray:hz?'4 3':null,opacity:.9,fillColor:col,fillOpacity:usingVC()?.16:byType()?.22:(state.selected==='__all'||!state.selected?.62:(a===state.selected?.72:.3))}).addTo(gridCells);
     attachSheet(c._rect,{area:a,cell:c.r+','+c.c});
   }));
 }
@@ -544,10 +916,10 @@ function drawPies(){
   const names=Object.keys(state.data);
   names.forEach(area=>{
     const groups=new Map();
-    state.data[area].rows.forEach(r=>{if(r.b==null||r.lat==null||!state.show[r.b])return;const k=r.lat+','+r.lon;if(!groups.has(k))groups.set(k,[]);groups.get(k).push(r)});
+    state.data[area].rows.forEach(r=>{if(r.b==null||r.lat==null||(byType()?!state.showType[typeIdx(r.type)]:!state.show[r.b]))return;const k=r.lat+','+r.lon;if(!groups.has(k))groups.set(k,[]);groups.get(k).push(r)});
     groups.forEach(rows=>{
-      const cnt=[0,0,0];rows.forEach(r=>cnt[r.b]++);let a=0;const stops=[];
-      cnt.forEach((c,k)=>{if(!c)return;const e=a+c/rows.length*360;stops.push(`${BCOLOR[k]} ${a}deg ${e}deg`);a=e});
+      const cnt=byType()?[0,0,0,0,0]:BUDGET.map(()=>0),pal=byType()?TYPE_COLOR:BCOLOR;rows.forEach(r=>cnt[byType()?typeIdx(r.type):r.b]++);let a=0;const stops=[];
+      cnt.forEach((c,k)=>{if(!c)return;const e=a+c/rows.length*360;stops.push(`${pal[k]} ${a}deg ${e}deg`);a=e});
       const size=Math.min(30,12+3*Math.sqrt(rows.length));
       const names=[...new Set(rows.map(r=>r.name))];
       attachSheet(L.marker([rows[0].lat,rows[0].lon],{icon:L.divIcon({className:'',html:`<div class="pie" style="background:conic-gradient(${stops.join(',')})"></div>`,iconSize:[size,size]}),title:`${names[0]}: ${rows.length} listings`,zIndexOffset:500}).addTo(pieLayer),{area,loc:rows[0].lat+','+rows[0].lon});
@@ -580,8 +952,8 @@ function renderList(){
 /* ---------- results ---------- */
 function tileHTML(s,k,total,m){
   return `<div class="tile"><div class="t"><i class="sw ${BCLASS[k]}"></i>${groupName(k)}</div>
-  <div class="big">${usingBuyer()?`${s.n} listing${s.n===1?'':'s'}`:fmtV(s.centroid,m)}</div><div class="cap">${esc(ruleText(k))}</div>
-  <dl>${usingBuyer()?`<dt>Average</dt><dd>${fmtV(s.centroid,m)}</dd><dt>Share</dt><dd>${total?Math.round(s.n/total*100):0}%</dd>`:`<dt>Listings</dt><dd>${s.n} (${total?Math.round(s.n/total*100):0}%)</dd>`}<dt>Lowest</dt><dd>${fmtV(s.min,m)}</dd><dt>Highest</dt><dd>${fmtV(s.max,m)}</dd></dl>${s.n?`<button class="btn rec" type="button" data-rec="listing:${k}">View ${s.n} records</button>`:''}</div>`;
+  <div class="big">${catMode()?`${s.n} listing${s.n===1?'':'s'}`:fmtV(s.centroid,m)}</div><div class="cap">${esc(ruleText(k))}</div>
+  <dl>${catMode()?`<dt>Average</dt><dd>${fmtV(s.centroid,m)}</dd><dt>Share</dt><dd>${total?Math.round(s.n/total*100):0}%</dd>`:`<dt>Listings</dt><dd>${s.n} (${total?Math.round(s.n/total*100):0}%)</dd>`}<dt>Lowest</dt><dd>${fmtV(s.min,m)}</dd><dt>Highest</dt><dd>${fmtV(s.max,m)}</dd></dl>${s.n?`<button class="btn rec" type="button" data-rec="listing:${k}">View ${s.n} records</button>`:''}</div>`;
 }
 function niceTicks(lo,hi,log){
   if(log){const out=[];for(let e=Math.floor(Math.log10(lo));e<=Math.ceil(Math.log10(hi));e++)for(const m of[1,2,5]){const v=m*10**e;if(v>=lo*.98&&v<=hi*1.02)out.push(v)}return out}
@@ -605,7 +977,7 @@ function drawStrip(hostId,pts,stats,m,log,ariaLabel){
   axisTicks(lo,hi,log).forEach(t=>{const x=X(t);s+=`<line x1="${x}" x2="${x}" y1="${P.t}" y2="${H-P.b}" ${isBandLine(t)?'stroke="#556467" stroke-dasharray="4 3"':'stroke="#e6eae8"'}/><text x="${x}" y="${H-P.b+18}" text-anchor="middle">${esc(m==='ppsf'?'₹'+inr(t):money(t).replace(/\.?0+ Cr$/,' Cr'))}</text>`});
   s+=`<line x1="${P.l}" x2="${W-P.r}" y1="${H-P.b}" y2="${H-P.b}" stroke="#b9c3c1"/>`;
   pts.forEach((p,i)=>{if(!state.show[p.b])return;s+=`<circle data-tip="${esc(p.tip)}" cx="${X(p.v).toFixed(1)}" cy="${(y0+hash(i)*yh).toFixed(1)}" r="${p.r||3.5}" fill="${BCOLOR[p.b]}" fill-opacity=".7" stroke="#fff" stroke-width=".6"/>`});
-  stats.forEach((c,k)=>{if(!c.n||usingBuyer())return;const x=X(c.centroid),txt=`${BUDGET[k]}: ${fmtV(c.centroid,m)}`,anchor=x<90?'start':x>W-90?'end':'middle';
+  stats.forEach((c,k)=>{if(!c.n||catMode())return;const x=X(c.centroid),txt=`${BUDGET[k]}: ${fmtV(c.centroid,m)}`,anchor=x<90?'start':x>W-90?'end':'middle';
     s+=`<line x1="${x}" x2="${x}" y1="${P.t-6}" y2="${H-P.b}" stroke="#1a2729" stroke-width="2"/><text class="cn" x="${x}" y="${P.t-11}" text-anchor="${anchor}">${esc(txt)}</text>`});
   host.innerHTML=s+'</svg>';
 }
@@ -619,15 +991,15 @@ function drawGridChart(d){
 }
 function buyerGridHTML(g,head){
   const rows=g.cells.filter(c=>state.show[c.b]).sort((x,y)=>x.b-y.b||y.rows.filter(r=>r.b===0).length-x.rows.filter(r=>r.b===0).length);
-  return `<section class="card">${head}<p class="note">A square takes the colour of the best property inside it, so the buyer can see where suitable homes exist. Its other properties may rank lower, and the counts show the full mix.</p>
+  return `<section class="card">${head}<p class="note">${usingSeg()?'A square takes the segment most of its listings belong to. The counts show the full mix inside it.':'A square takes the colour of the best property inside it, so the buyer can see where suitable homes exist. Its other properties may rank lower, and the counts show the full mix.'}</p>
   <div class="tw" style="max-height:300px"><table><thead><tr><th>Cell</th><th>Best inside</th>${BUDGET.map((n,k)=>`<th class="n"><span class="tag"><i class="sw ${BCLASS[k]}"></i>${n}</span></th>`).join('')}<th class="n">From Infosys</th><th>Projects</th></tr></thead><tbody>
   ${rows.map(c=>{const t=[...new Set(c.rows.map(r=>r.name))];return `<tr class="cellrow" tabindex="0" data-cell="${c.r},${c.c}"><td>${esc(c.id)}</td><td><span class="tag"><i class="sw ${BCLASS[c.b]}"></i>${BUDGET[c.b]}</span></td>${BUDGET.map((_,k)=>`<td class="n">${c.rows.filter(r=>r.b===k).length}</td>`).join('')}<td class="n">${c.km.toFixed(1)} km</td><td>${esc(t.slice(0,3).join(', '))}${t.length>3?` and ${t.length-3} more`:''}</td></tr>`}).join('')}
   </tbody></table></div></section>`;
 }
 function gridHTML(a,d){
   const g=d.grid,m=g.metric,sz=g.size>=1000?(g.size/1000)+' km':g.size+' m';
-  const head=`<div class="head"><div><h2>${esc(a)}: ${usingBuyer()?'grid cells for the buyer':'grid cells by budget'}</h2><p class="sub">${g.cells.length} filled cells of ${sz} × ${sz}${usingBuyer()?'':`, by average ${metricName(m)}`} · ${g.projects?g.projects.length:0} projects</p></div>${g.stats?'<div class="group"><button class="btn" id="dlg" type="button">Download grid (CSV)</button></div>':''}</div>`;
-  if(usingBuyer()&&g.stats)return buyerGridHTML(g,head);
+  const head=`<div class="head"><div><h2>${esc(a)}: ${usingSeg()?'grid cells by price segment':usingBuyer()?'grid cells for the buyer':'grid cells by budget'}</h2><p class="sub">${g.cells.length} filled cells of ${sz} × ${sz}${catMode()?'':`, by average ${metricName(m)}`} · ${g.projects?g.projects.length:0} projects</p></div>${g.stats?'<div class="group"><button class="btn" id="dlg" type="button">Download grid (CSV)</button></div>':''}</div>`;
+  if(catMode()&&g.stats)return buyerGridHTML(g,head);
   if(!g.stats)return `<section class="card">${head}<p class="note">${g.cells.length} filled cell${g.cells.length===1?'':'s'} at this size is not enough to form Low, Medium and High groups. Try a smaller grid size.</p></section>`;
   const tile=(s,k)=>`<div class="tile"><div class="t"><i class="sw ${BCLASS[k]}"></i>${BUDGET[k]} budget cells</div><div class="big">${fmtV(s.centroid,m)}</div><div class="cap">${usingBands()?'average · '+BAND_TEXT[k]:'centroid'}</div><dl><dt>Grid cells</dt><dd>${s.n}</dd><dt>Listings inside</dt><dd>${s.listings}</dd><dt>Lowest cell</dt><dd>${fmtV(s.min,m)}</dd><dt>Highest cell</dt><dd>${fmtV(s.max,m)}</dd></dl>${s.listings?`<button class="btn rec" type="button" data-rec="grid:${k}">View ${s.listings} records</button>`:''}</div>`;
   const rows=g.cells.filter(c=>state.show[c.b]).sort((x,y)=>y.value-x.value);
@@ -660,7 +1032,7 @@ function renderTable(d){
 /* One row per area on a shared price axis, so areas compare directly. The bar on the right shows how each area's cells split. */
 function drawOverview(){
   const host=$('ovplot');if(!host)return;
-  const grid=state.view==='grid'&&!usingBuyer(),m=state.metric,log=state.scale==='log',names=Object.keys(state.data).sort((a,b)=>a.localeCompare(b));
+  const grid=state.view==='grid'&&!catMode(),m=state.metric,log=state.scale==='log',names=Object.keys(state.data).sort((a,b)=>a.localeCompare(b));
   const rows=names.map(n=>{
     const d=state.data[n],c=grid?d.grid:d.cluster;
     if(!c||!c.stats)return{n,pts:[],stats:null};
@@ -680,7 +1052,7 @@ function drawOverview(){
     o+=`<text class="an${sel?' sel':''}" data-sel="${esc(r.n)}" x="4" y="${cy+4}" tabindex="0" role="button"><title>Focus on ${esc(r.n)}</title>${esc(short)}</text>`;
     r.pts.forEach((p,k)=>{if(state.show[p.b])o+=`<circle data-tip="${esc(p.tip)}" cx="${X(p.v).toFixed(1)}" cy="${(cy-rowH*.3+hash(k+i*31)*rowH*.6).toFixed(1)}" r="${p.r}" fill="${BCOLOR[p.b]}" fill-opacity=".72" stroke="#fff" stroke-width=".7"/>`});
     if(r.stats){
-      r.stats.forEach((c,k)=>{if(!c.n||usingBuyer())return;const x=X(c.centroid).toFixed(1);o+=`<line data-tip="${esc(`${r.n} ${BUDGET[k]} ${usingBands()?'average':'centroid'}: ${fmtV(c.centroid,m)}`)}" x1="${x}" x2="${x}" y1="${cy-rowH*.4}" y2="${cy+rowH*.4}" stroke="#1a2729" stroke-width="2.5"/>`});
+      r.stats.forEach((c,k)=>{if(!c.n||catMode())return;const x=X(c.centroid).toFixed(1);o+=`<line data-tip="${esc(`${r.n} ${BUDGET[k]} ${usingBands()?'average':'centroid'}: ${fmtV(c.centroid,m)}`)}" x1="${x}" x2="${x}" y1="${cy-rowH*.4}" y2="${cy+rowH*.4}" stroke="#1a2729" stroke-width="2.5"/>`});
       const tot=r.stats.reduce((t,c)=>t+c.n,0);let bx=mx;const bw=Mw-4;
       r.stats.forEach((c,k)=>{const w=c.n/tot*bw;if(w>0){o+=`<rect data-tip="${esc(`${r.n}: ${c.n} ${BUDGET[k]} ${grid?'cells':'listings'} (${Math.round(c.n/tot*100)}%)`)}" x="${(bx+(k?1:0)).toFixed(1)}" y="${cy-11}" width="${Math.max(1,w-(k?1:0)).toFixed(1)}" height="10" rx="3" fill="${BCOLOR[k]}"/>`}bx+=w});
       if(!narrow)o+=`<text class="cnt" x="${mx}" y="${cy+13}">${r.stats.map((c,k)=>BUDGET[k][0]+' '+c.n).join(' · ')}</text>`;
@@ -690,30 +1062,30 @@ function drawOverview(){
 }
 function compareHTML(){
   const names=Object.keys(state.data).sort((a,b)=>a.localeCompare(b));if(!names.length)return'';
-  const m=state.metric,grid=state.view==='grid'&&!usingBuyer(),cw=fixedRules()?'average':'centroid';
+  const m=state.metric,grid=state.view==='grid'&&!catMode(),cw=fixedRules()?'average':'centroid';
   const totalL=names.reduce((t,n)=>t+state.data[n].rows.length,0),totalC=names.reduce((t,n)=>t+(state.data[n].grid?state.data[n].grid.cells.length:0),0);
   return `<section class="card"><div class="head"><div><h2>All uploaded areas</h2><p class="sub">${names.length} area${names.length>1?'s':''} · ${totalL.toLocaleString('en-IN')} listings · ${totalC} filled grid cells · ${names.reduce((t,n)=>t+(state.data[n].grid&&state.data[n].grid.projects?state.data[n].grid.projects.length:0),0)} projects</p></div>
-  <div class="ovkey">${BUDGET.map((n,k)=>`<span><i class="sw ${BCLASS[k]}"></i>${n}</span>`).join('')}${usingBuyer()?'<span><i class="bd"></i>₹1.55 Cr and ₹2 Cr limits</span>':`<span><i class="tk"></i>${usingBands()?'Group average':'Centroid'}</span>${usingBands()?'<span><i class="bd"></i>₹2 Cr and ₹6 Cr cut-offs</span>':''}`}${grid?'<span>Bigger dot, more listings</span>':''}</div></div>
+  <div class="ovkey">${BUDGET.map((n,k)=>`<span><i class="sw ${BCLASS[k]}"></i>${n}</span>`).join('')}${usingSeg()?'':usingBuyer()?'<span><i class="bd"></i>₹1.55 Cr and ₹2 Cr limits</span>':`<span><i class="tk"></i>${usingBands()?'Group average':'Centroid'}</span>${usingBands()?'<span><i class="bd"></i>₹2 Cr and ₹6 Cr cut-offs</span>':''}`}${grid?'<span>Bigger dot, more listings</span>':''}</div></div>
   <div id="ovplot"></div>
-  <div class="tw" style="max-height:none;margin-top:12px"><table><thead><tr><th>Area</th><th class="n">Listings</th>${BUDGET.map((n,k)=>`<th class="n"><span class="tag"><i class="sw ${BCLASS[k]}"></i>${n}${usingBuyer()?'':' '+cw}</span></th>`).join('')}</tr></thead><tbody>
-  ${names.map(n=>{const d=state.data[n],c=grid?d.grid:d.cluster;return `<tr class="link" data-a="${esc(n)}" tabindex="0"><td>${esc(n)}</td><td class="n">${d.rows.length}</td>${c&&c.stats?c.stats.map(s=>`<td class="n">${usingBuyer()?s.n:`${fmtV(s.centroid,m)} (${s.n})`}</td>`).join(''):`<td class="n" colspan="${BUDGET.length}">Too few values to form 3 groups</td>`}</tr>`}).join('')}
-  </tbody></table></div><p class="note">${usingBuyer()?'Numbers are listings. The same buyer rules apply to every area.':usingBands()?'The same price bands apply to every area, so Low, Medium and High mean the same everywhere.':'Each area is clustered on its own, so "High" means high for that area. A High home in one area can cost less than a Medium home in another.'}${usingBuyer()?'':` Numbers in brackets are ${grid?'grid cell':'listing'} counts.`}</p></section>`;
+  <div class="tw" style="max-height:none;margin-top:12px"><table><thead><tr><th>Area</th><th class="n">Listings</th>${BUDGET.map((n,k)=>`<th class="n"><span class="tag"><i class="sw ${BCLASS[k]}"></i>${n}${catMode()?'':' '+cw}</span></th>`).join('')}</tr></thead><tbody>
+  ${names.map(n=>{const d=state.data[n],c=grid?d.grid:d.cluster;return `<tr class="link" data-a="${esc(n)}" tabindex="0"><td>${esc(n)}</td><td class="n">${d.rows.length}</td>${c&&c.stats?c.stats.map(s=>`<td class="n">${catMode()?s.n:`${fmtV(s.centroid,m)} (${s.n})`}</td>`).join(''):`<td class="n" colspan="${BUDGET.length}">Too few values to form 3 groups</td>`}</tr>`}).join('')}
+  </tbody></table></div><p class="note">${usingSeg()?'Numbers are listings. The same price cut-offs apply to every area.':usingBuyer()?'Numbers are listings. The same buyer rules apply to every area.':usingBands()?'The same price bands apply to every area, so Low, Medium and High mean the same everywhere.':'Each area is clustered on its own, so "High" means high for that area. A High home in one area can cost less than a Medium home in another.'}${catMode()?'':` Numbers in brackets are ${grid?'grid cell':'listing'} counts.`}</p></section>`;
 }
 function renderResults(){
   const R=$('results'),a=state.selected,d=state.data[a],up=Object.keys(state.data).length;
-  let h=compareHTML();
+  let h=vcHTML()+segmentsHTML()+typeMapsHTML()+areaGridsHTML()+housesHTML()+clientHTML()+visitHTML()+compareHTML();
   const gh=d&&d.grid?gridHTML(a,d):'';
-  if(!usingBuyer())h+=gh;
+  if(!catMode())h+=gh;
   if(d&&d.cluster){
     const c=d.cluster,m=c.metric;
-    h+=`<section class="card"><div class="head"><div><h2>${esc(a)}: ${usingBuyer()?'properties for the buyer':'listing clusters'}</h2><p class="sub">${esc(d.file)} · ${d.rows.length} listings kept${leftOut(d)?` · Left out: ${esc(leftOut(d))}`:''}</p></div>
+    h+=`<section class="card"><div class="head"><div><h2>${esc(a)}: ${usingSeg()?'listings by price segment':usingBuyer()?'properties for the buyer':'listing clusters'}</h2><p class="sub">${esc(d.file)} · ${d.rows.length} listings kept${leftOut(d)?` · Left out: ${esc(leftOut(d))}`:''}</p></div>
       <div class="group"><button class="btn" id="dl" type="button">Download results (CSV)</button><button class="btn" id="rm" type="button">Remove this data</button></div></div>
       <div class="tiles" style="margin-top:12px">${c.stats.map((s,k)=>tileHTML(s,k,c.total,m)).join('')}</div>
-      <h3 style="margin-top:16px">Every listing by ${metricName(m)}${usingBuyer()?', with the ₹1.55 Cr and ₹2 Cr limits':`, with ${usingBands()?"each group's average":'the three centroids'}`}</h3><div id="chart"></div>
-      <p class="note">${usingBuyer()?`Buyer budget ₹1.5 Cr. Good means a 3 BHK of at least ${inr(state.minSqft)} sqft under ₹1.5 Cr. Okay is ₹1.5 Cr to ₹1.55 Cr, or under ₹1.5 Cr without meeting that. Not suggested is above ₹1.55 Cr, up to ₹2 Cr. Reject is above ₹2 Cr.`:usingBands()?"Each listing is classified by its own total price: Low below ₹2 Cr, Medium from ₹2 Cr to ₹6 Cr, High above ₹6 Cr.":`Centroid method (k-means, k = 3): each listing joins its nearest centroid, each centroid moves to the average of its listings, and this repeats until nothing changes. It settled after ${c.iterations} rounds, using ${c.scale==='log'?'proportional price gaps, so a few very expensive homes do not push nearly everything into Low. Centroids are geometric averages':'raw rupee gaps'}.`}${d.unclustered?` ${d.unclustered} listings have no ${metricName(m)} and were left out.`:''}</p></section>
+      <h3 style="margin-top:16px">Every listing by ${metricName(m)}${usingSeg()?', coloured by segment':usingBuyer()?', with the ₹1.55 Cr and ₹2 Cr limits':`, with ${usingBands()?"each group's average":'the three centroids'}`}</h3><div id="chart"></div>
+      <p class="note">${usingSeg()?segNote():usingBuyer()?`Buyer budget ₹1.5 Cr. Good means a 3 BHK of at least ${inr(state.minSqft)} sqft under ₹1.5 Cr. Okay is ₹1.5 Cr to ₹1.55 Cr, or under ₹1.5 Cr without meeting that. Not suggested is above ₹1.55 Cr, up to ₹2 Cr. Reject is above ₹2 Cr.`:usingBands()?"Each listing is classified by its own total price: Low below ₹2 Cr, Medium from ₹2 Cr to ₹6 Cr, High above ₹6 Cr.":`Centroid method (k-means, k = 3): each listing joins its nearest centroid, each centroid moves to the average of its listings, and this repeats until nothing changes. It settled after ${c.iterations} rounds, using ${c.scale==='log'?'proportional price gaps, so a few very expensive homes do not push nearly everything into Low. Centroids are geometric averages':'raw rupee gaps'}.`}${d.unclustered?` ${d.unclustered} listings have no ${metricName(m)} and were left out.`:''}</p></section>
       <section class="card"><div class="head"><h2>Listings</h2><div class="group"><span id="tcount" class="sub"></span><input id="tq" type="search" placeholder="Filter by project" aria-label="Filter listings by project" style="width:180px" value="${esc(state.tq)}"></div></div>
-      <div class="tw"><table><thead><tr>${[['name','Project'],['cellId','Grid cell'],['b',usingBuyer()?'Buyer fit':'Budget'],['bhk','BHK',1],['sqft','Area (sqft)',1],['ppsf','Price per sqft',1],['price','Total price',1],['ready','Ready to move'],['km','From Infosys',1]].map(([k,t,n])=>`<th class="${n?'n':''}" aria-sort="${state.sort.key===k?(state.sort.dir>0?'ascending':'descending'):'none'}"><button type="button" data-s="${k}">${t}${state.sort.key===k?(state.sort.dir>0?' ▲':' ▼'):''}</button></th>`).join('')}</tr></thead><tbody id="tbody"></tbody></table></div></section>`;
-    if(usingBuyer())h+=gh;
+      <div class="tw"><table><thead><tr>${[['name','Project'],['cellId','Grid cell'],['b',usingSeg()?'Segment':usingBuyer()?'Buyer fit':'Budget'],['bhk','BHK',1],['sqft','Area (sqft)',1],['ppsf','Price per sqft',1],['price','Total price',1],['ready','Ready to move'],['km','From Infosys',1]].map(([k,t,n])=>`<th class="${n?'n':''}" aria-sort="${state.sort.key===k?(state.sort.dir>0?'ascending':'descending'):'none'}"><button type="button" data-s="${k}">${t}${state.sort.key===k?(state.sort.dir>0?' ▲':' ▼'):''}</button></th>`).join('')}</tr></thead><tbody id="tbody"></tbody></table></div></section>`;
+    if(catMode())h+=gh;
   }else if(d){
     h+=`<div class="empty"><h2>${esc(a)}</h2><p>This file has fewer than three different ${metricName(state.metric)} values, so it cannot form Low, Medium and High groups.</p><p><button class="btn" id="rm" type="button">Remove this data</button></p></div>`;
   }else if(a&&a!=='__all'){
@@ -722,25 +1094,383 @@ function renderResults(){
     h+=`<div class="empty"><h2>No files uploaded yet</h2><p>Upload your first area's file on the left. Files need a price column; a <i>lat-lon</i> column places the listings on the grid.</p></div>`;
   }
   R.innerHTML=h;
+  drawVC();drawSegPlot();drawTypeMaps();drawAreaGrids();drawClusterPlot();
   drawOverview();if(d&&d.grid)drawGridChart(d);if(d&&d.cluster){drawChart(d);renderTable(d)}
 }
-function renderAll(){renderList();renderResults();drawPies();drawGrid();drawBorder();drawCellLabels();drawProjectDots();layout();refreshSheet();
-  $('metricgroup').hidden=fixedRules();$('scalegroup').hidden=fixedRules();$('sizegroup').hidden=!usingBuyer();
+/* Cluster analysis: every listing of every type is grouped on all its features, the group that suits the buyer best is
+   chosen, and the strongest suitable listing in that group becomes the Top 1. Same input always gives the same result. */
+const VERIFY_BELOW=.6;
+const FEATURES=[['price','Total price',1,r=>r.price],['sqft','Area',1,r=>r.sqft],['ppsf','Price per sqft',1,r=>r.ppsf],['bhk','BHK',0,r=>r.bhk],['km','Distance from Infosys',0,r=>r.km],['age','Building age',0,(r,g)=>g('age_years')],['amen','Amenities',0,(r,g)=>g('total amenities')],['orr','ORR connectivity',0,(r,g)=>g('orr connectivity')],['air','Airport distance',0,(r,g)=>g('airport distance')],['house','Property type',0,r=>r.type?(/villa|house|bungalow/i.test(r.type)?1:0):null]];
+const medianOf=v=>{const m=[...v].sort((a,b)=>a-b);return(m[(m.length-1)>>1]+m[m.length>>1])/2};
+function runKMeans(X){
+  const dist=(a,b)=>{let t=0;for(let i=0;i<a.length;i++)t+=(a[i]-b[i])**2;return t};
+  const mean=X[0].map((_,j)=>X.reduce((t,x)=>t+x[j],0)/X.length);
+  let i0=0,bd=Infinity;X.forEach((x,i)=>{const e=dist(x,mean);if(e<bd){bd=e;i0=i}});
+  const C=[X[i0]];
+  while(C.length<3){let bi=0,bv=-1;X.forEach((x,i)=>{const e=Math.min(...C.map(c=>dist(x,c)));if(e>bv){bv=e;bi=i}});C.push(X[bi])}
+  let L=null,C2=C.map(c=>[...c]);
+  for(let it=0;it<300;it++){
+    const l=X.map(x=>{let b=0,bv=Infinity;C2.forEach((c,k)=>{const e=dist(x,c);if(e<bv){bv=e;b=k}});return b});
+    if(L&&l.every((v,i)=>v===L[i]))break;
+    L=l;
+    C2=C2.map((c,k)=>{const m=X.filter((_,i)=>l[i]===k);return m.length?c.map((_,j)=>m.reduce((t,x)=>t+x[j],0)/m.length):c});
+  }
+  return L;
+}
+function analyseScope(){
+  const a=state.selected,names=a&&a!=='__all'&&state.data[a]?[a]:Object.keys(state.data).sort((x,y)=>x.localeCompare(y));
+  const items=[];
+  names.forEach(n=>{
+    const d=state.data[n],isH=r=>[1,2,3].includes(typeIdx(r.type));
+    /* Unusually cheap means under 60% of the typical price per sqft for the same kind of home in this area. */
+    const med=k=>{const v=d.rows.filter(r=>isH(r)===k).map(r=>r.ppsf).filter(x=>x>0);return v.length>=5?medianOf(v):null},mh=med(true),ma=med(false);
+    d.rows.forEach(r=>{const m=isH(r)?mh:ma;items.push({r,area:n,cls:buyerClass(r),verify:!!(m&&r.ppsf>0&&r.ppsf<VERIFY_BELOW*m)})});
+  });
+  const A={names,items,scopeName:names.length===1?names[0]:'all uploaded areas',used:[],clusters:null,best:null,top:null};
+  if(items.length<3)return A;
+  const col=[];
+  FEATURES.forEach(([key,label,lg,get])=>{
+    const raw=items.map(({r})=>{const g=k=>{if(!r.raw)return null;for(const x in r.raw)if(norm(x)===norm(k))return num(r.raw[x]);return null};const v=get(r,g);return v==null||!isFinite(v)?null:v});
+    const v=raw.map(x=>(['price','sqft','ppsf','bhk'].includes(key)&&!(x>0))?null:x);
+    const have=v.filter(x=>x!=null);if(have.length<.5*v.length)return;
+    const t=v.map(x=>x==null?null:(lg?Math.log(x):x)),m=medianOf(t.filter(x=>x!=null)),f=t.map(x=>x==null?m:x),mu=avg(f),sd=Math.sqrt(avg(f.map(x=>(x-mu)**2)));
+    if(!(sd>0))return;col.push(f.map(x=>(x-mu)/sd));A.used.push(label);
+  });
+  if(!col.length)return A;
+  const L=runKMeans(items.map((_,i)=>col.map(c=>c[i])));
+  items.forEach((it,i)=>it.group=L[i]);
+  const stats=[0,1,2].map(k=>{const g=items.filter(i=>i.group===k),gv=(f)=>{const v=g.map(i=>i.r[f]).filter(x=>x!=null&&x>0);return v.length?medianOf(v):null};return{k,n:g.length,good:g.filter(i=>i.cls===0).length,okay:g.filter(i=>i.cls===1).length,price:gv('price'),sqft:gv('sqft'),ppsf:gv('ppsf'),km:gv('km')}});
+  const minN=Math.max(10,Math.round(.05*items.length)),big=stats.filter(c=>c.n>=minN),pool=big.length?big:stats;
+  const order=[...pool].sort((x,y)=>(y.good/Math.max(1,y.n)-x.good/Math.max(1,x.n))||((y.good+y.okay)/Math.max(1,y.n)-(x.good+x.okay)/Math.max(1,x.n))||(x.k-y.k));
+  A.clusters=[...order,...stats.filter(c=>!pool.includes(c))];A.best=order[0].k;
+  const g=items.filter(i=>i.group===A.best),tier=g.some(i=>i.cls===0)?0:g.some(i=>i.cls===1)?1:null;
+  if(tier==null)return A;
+  let cand=g.filter(i=>i.cls===tier);
+  const generic=n=>/unnamed/i.test(n)||/^(independent house|villa|house|house\/villa|apartment|flat)s?$/i.test(String(n).trim());
+  const named=cand.filter(i=>!generic(i.r.name));if(named.length)cand=named;
+  const ok=cand.filter(i=>!i.verify);A.allFlagged=!ok.length;A.flaggedOut=cand.length-ok.length;if(ok.length)cand=ok;
+  const relOf=it=>{if(!it.r.raw)return'';for(const x in it.r.raw)if(norm(x)==='reliability')return String(it.r.raw[x]||'');return''};
+  const rated=cand.filter(i=>relOf(i)&&!/^lower/i.test(relOf(i)));if(rated.length)cand=rated;
+  const pct=(vals,high)=>vals.map(x=>{let w=0,t=-1;vals.forEach(y=>{if(y===x)t++;else if(high?y<x:y>x)w++});return(w+.5*t)/Math.max(1,vals.length-1)});
+  const amenGet=it=>{if(!it.r.raw)return null;for(const x in it.r.raw)if(norm(x)==='total amenities')return num(it.r.raw[x]);return null};
+  const parts=[pct(cand.map(i=>i.r.sqft),true),pct(cand.map(i=>i.r.ppsf),false),pct(cand.map(i=>i.r.km),false),pct(cand.map(i=>i.r.price),false)];
+  const am=cand.map(amenGet),haveAm=am.filter(x=>x!=null);
+  if(haveAm.length>=.5*am.length){const m=medianOf(haveAm);parts.push(pct(am.map(x=>x==null?m:x),true))}
+  cand.forEach((c,i)=>{c.score=avg(parts.map(p=>p[i]))});
+  const rd=c=>c.r.ready==='Yes'||/ready/i.test(c.r.status||'')?1:0;
+  cand.sort((x,y)=>(y.score-x.score)||(rd(y)-rd(x))||(x.r.price-y.r.price)||x.r.name.localeCompare(y.r.name));
+  A.top=cand[0];A.top.rel=relOf(cand[0]);A.candidates=cand.length;A.tier=tier;A.runnersUp=cand.slice(1,3);
+  return A;
+}
+function visitStops(A){
+  const map_=new Map(),topKey=A.top?A.top.r.name+'|'+A.top.r.lat+'|'+A.top.r.lon:null;let noLoc=0;
+  A.items.forEach(i=>{const r=i.r;if(r.price>OKAY_UP_TO)return;if(r.lat==null){noLoc++;return}const k=r.name+'|'+r.lat+'|'+r.lon;if(k===topKey)return;if(!map_.has(k))map_.set(k,{key:k,name:r.name,area:i.area,lat:r.lat,lon:r.lon,rows:[],verify:false});const q=map_.get(k);q.rows.push(r);if(i.verify)q.verify=true});
+  const left=[...map_.values()],out=[];let la=HQ[0],lo=HQ[1];
+  while(left.length){let bi=0,bd=Infinity;left.forEach((q,i)=>{const e=haversine(la,lo,q.lat,q.lon);if(e<bd){bd=e;bi=i}});const q=left.splice(bi,1)[0];q.stop=out.length+1;q.leg=bd;la=q.lat;lo=q.lon;out.push(q)}
+  return{stops:out,noLoc};
+}
+let visited={};try{visited=JSON.parse(localStorage.getItem('visited')||'{}')}catch(e){}
+function saveCSV(name,lines){
+  const url=URL.createObjectURL(new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'}));
+  const link=document.createElement('a');link.href=url;link.download=name;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
+const csvCell=v=>{const s=String(v??'');return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s};
+const GROUP_NAME=['A','B','C'],GROUP_COLOR=['#0c5f68','#a56bbd','#9aa5a3'];
+const rawOf=(r,k)=>{if(!r.raw)return'';for(const x in r.raw)if(norm(x)===norm(k))return String(r.raw[x]||'');return''};
+function typeTableHTML(A){
+  const g=new Map();A.items.forEach(i=>{const k=i.r.type||'Not stated';if(!g.has(k))g.set(k,[]);g.get(k).push(i)});
+  const rows=[...g.entries()].sort((a,b)=>b[1].length-a[1].length).map(([k,v])=>{const ps=v.map(i=>i.r.price),pp=v.map(i=>i.r.ppsf).filter(x=>x>0),sq=v.map(i=>i.r.sqft).filter(x=>x>0);
+    return `<tr><td>${esc(k)}</td><td class="n">${v.length}</td><td class="n">${money(medianOf(ps))}</td><td class="n">${sq.length?inr(medianOf(sq)):'–'}</td><td class="n">${pp.length?'₹'+inr(medianOf(pp)):'–'}</td>${BUDGET_NAME.map((_,c)=>`<td class="n">${v.filter(i=>i.cls===c).length}</td>`).join('')}</tr>`}).join('');
+  return `<h3 style="margin-top:14px">By property type</h3><div class="tw" style="max-height:none;margin-top:6px"><table><thead><tr><th>Type</th><th class="n">Listings</th><th class="n">Typical price</th><th class="n">Typical sqft</th><th class="n">Typical ₹/sqft</th>${BUDGET_NAME.map(n=>`<th class="n">${n}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+function areaGridsHTML(){
+  const names=Object.keys(state.data).sort((x,y)=>x.localeCompare(y));if(!names.length||!TERR)return'';
+  const sz=state.cell>=1000?(state.cell/1000)+' km':state.cell+' m';
+  return `<section class="card"><div class="head"><div><h2>Area grids</h2><p class="sub">Each area's ${sz} squares, coloured by ${usingSeg()?'price segment':catMode()?'buyer fit':'budget group'} · faint shading is the area's territory · click a square to see it on the map</p></div>
+  <div class="ovkey">${BUDGET.map((n,k)=>`<span><i class="sw ${BCLASS[k]}"></i>${esc(n)}</span>`).join('')}</div></div>
+  <div class="agrid">${names.map(n=>`<figure class="ag" data-ag="${esc(n)}"><figcaption><b style="color:${areaColor(n)}">${esc(n)}</b><span>${plural(state.data[n].rows.length,'listing','listings')} · ${plural(state.data[n].grid?state.data[n].grid.cells.length:0,'square','squares')}</span></figcaption><div class="agsvg" data-agsvg="${esc(n)}"></div></figure>`).join('')}</div></section>`;
+}
+function drawAreaGrids(){
+  document.querySelectorAll('[data-agsvg]').forEach(host=>{
+    const a=host.dataset.agsvg,T=TERR&&TERR.by[a],d=state.data[a];if(!T||!d||!d.grid)return;
+    const W=Math.max(220,host.clientWidth),kx=Math.cos(HQ[0]*Math.PI/180),spanX=(T.e-T.w)*kx,spanY=T.nn-T.s,pad=10;
+    const sc=(W-2*pad)/Math.max(spanX,spanY*.9,1e-6),H=Math.round(spanY*sc+2*pad+18);
+    const X=lon=>pad+(lon-T.w)*kx*sc,Y=lat=>pad+(T.nn-lat)*sc;
+    let o=`<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="${esc(a)}: grid squares coloured by segment">`;
+    o+=T.cells.map(c=>{const [[s0,w0],,[n0,e0]]=c;return `<rect x="${X(w0).toFixed(1)}" y="${Y(n0).toFixed(1)}" width="${(X(e0)-X(w0)).toFixed(1)}" height="${(Y(s0)-Y(n0)).toFixed(1)}" fill="${areaColor(a)}" fill-opacity=".1"/>`}).join('');
+    o+=d.grid.cells.filter(c=>c.b!=null&&state.show[c.b]).map(c=>{const [[s0,w0],[n0,e0]]=c.bounds;const tip=`${a}, cell ${c.id}: ${c.rows.length} listing${c.rows.length>1?'s':''}, average ${money(c.value)} · ${BUDGET[c.b]}`;
+      return `<rect data-tip="${esc(tip)}" data-agcell="${c.r},${c.c}" x="${(X(w0)+1).toFixed(1)}" y="${(Y(n0)+1).toFixed(1)}" width="${Math.max(1,X(e0)-X(w0)-2).toFixed(1)}" height="${Math.max(1,Y(s0)-Y(n0)-2).toFixed(1)}" rx="${usingSeg()&&c.b>=3?(Math.min(X(e0)-X(w0),Y(s0)-Y(n0))/2-1).toFixed(1):2}" fill="${BCOLOR[c.b]}" class="agc${usingSeg()&&c.b>=3?' hz':''}"/>`}).join('');
+    o+=`<path d="${T.edges.map(([p,q])=>`M${X(p[1]).toFixed(1)},${Y(p[0]).toFixed(1)}L${X(q[1]).toFixed(1)},${Y(q[0]).toFixed(1)}`).join('')}" stroke="${areaColor(a)}" stroke-width="2" fill="none" stroke-linecap="square"/>`;
+    const km=1/111.32*sc;o+=`<line x1="${pad}" x2="${(pad+km).toFixed(1)}" y1="${H-8}" y2="${H-8}" stroke="#556467" stroke-width="2"/><text x="${(pad+km+4).toFixed(1)}" y="${H-4}" class="agt">1 km</text>`;
+    host.innerHTML=o+'</svg>';
+  });
+}
+function typeMapsHTML(){
+  if(!usingSeg()||!SEG||!TERR||!Object.keys(state.data).length)return'';
+  return `<section class="card"><div class="head"><div><h2>Price clusters by property type</h2><p class="sub">Each map colours a square only by that type's listings, so apartments and villas or houses never mix · ${state.cell>=1000?(state.cell/1000)+' km':state.cell+' m'} squares · click a square to open it</p></div></div>
+  <div class="tmaps">${SEG.map((G,g)=>`<figure class="tm" data-tm="${g}"><figcaption><b>${esc(G.name)}</b><span>${G.n} listings</span></figcaption><div class="tmkey">${[0,1,2].map(t=>{const k=g*3+t,T=G.tiers[t];return `<span><i class="sw ${BCLASS[k]}"></i>${esc(BUDGET[k].split(' ')[0])}: ${T.n?esc(money(T.min)+' to '+money(T.max)):'none'} (${T.n})</span>`}).join('')}</div><div class="tmsvg" data-tmsvg="${g}"></div></figure>`).join('')}</div></section>`;
+}
+function drawTypeMaps(){
+  if(!TERR)return;
+  const areas=Object.keys(state.data).filter(a=>TERR.by[a]);if(!areas.length)return;
+  const T=areas.map(a=>TERR.by[a]),S=Math.min(...T.map(t=>t.s)),Nn=Math.max(...T.map(t=>t.nn)),Wm=Math.min(...T.map(t=>t.w)),Em=Math.max(...T.map(t=>t.e)),kx=Math.cos(HQ[0]*Math.PI/180);
+  const mode=rs=>{const c=new Map();rs.forEach(r=>{if(r.seg!=null)c.set(r.seg,(c.get(r.seg)||0)+1)});let b=null,bn=-1;c.forEach((v,k)=>{if(v>bn||(v===bn&&k%3>b%3)){bn=v;b=k}});return b};
+  document.querySelectorAll('[data-tmsvg]').forEach(host=>{
+    const g=+host.dataset.tmsvg,W=Math.max(260,host.clientWidth),pad=8,sc=(W-2*pad)/Math.max((Em-Wm)*kx,1e-6),H=Math.round((Nn-S)*sc+2*pad+16);
+    const X=lon=>pad+(lon-Wm)*kx*sc,Y=lat=>pad+(Nn-lat)*sc;
+    let o=`<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="${esc(SEG[g].name)}: price segment of each grid square">`;
+    areas.forEach(a=>{const t=TERR.by[a];o+=t.cells.map(c=>{const [[s0,w0],,[n0,e0]]=c;return `<rect x="${X(w0).toFixed(1)}" y="${Y(n0).toFixed(1)}" width="${(X(e0)-X(w0)+.3).toFixed(1)}" height="${(Y(s0)-Y(n0)+.3).toFixed(1)}" fill="${areaColor(a)}" fill-opacity=".06"/>`}).join('')});
+    areas.forEach(a=>{const d=state.data[a];if(!d.grid)return;d.grid.cells.forEach(c=>{const rs=c.rows.filter(r=>segGroup(r)===g),b=mode(rs);if(b==null)return;const [[s0,w0],[n0,e0]]=c.bounds;
+      o+=`<rect class="agc" data-tip="${esc(`${a}, cell ${c.id}: ${rs.length} ${g?'villa or house':'apartment'} listing${rs.length>1?'s':''}, mostly ${BUDGET[b].toLowerCase()}`)}" data-tmcell="${esc(a)}|${c.r},${c.c}|${g}" x="${(X(w0)+1).toFixed(1)}" y="${(Y(n0)+1).toFixed(1)}" width="${Math.max(1,X(e0)-X(w0)-2).toFixed(1)}" height="${Math.max(1,Y(s0)-Y(n0)-2).toFixed(1)}" rx="${b>=3?(Math.min(X(e0)-X(w0),Y(s0)-Y(n0))/2-1).toFixed(1):2}" fill="${BCOLOR[b]}"${b>=3?' class="agc hz"':''}/>`})});
+    areas.forEach(a=>{const t=TERR.by[a];o+=`<path d="${t.edges.map(([p,q])=>`M${X(p[1]).toFixed(1)},${Y(p[0]).toFixed(1)}L${X(q[1]).toFixed(1)},${Y(q[0]).toFixed(1)}`).join('')}" stroke="${areaColor(a)}" stroke-width="1.6" fill="none"/>`;
+    });
+    const hq0=[X(HQ[1]),Y(HQ[0])],placed=[{x:hq0[0]+22,y:hq0[1],w:58}];areas.slice().sort((x,y)=>state.data[y].rows.length-state.data[x].rows.length).forEach(a=>{const t=TERR.by[a],c=t.labelAt;let x=X(c[1]),y=Y(c[0]);const w=a.length*6.4+8;
+      for(let k=0;k<6&&placed.some(q=>Math.abs(q.x-x)<(q.w+w)/2&&Math.abs(q.y-y)<14);k++)y+=15;placed.push({x,y,w});
+      o+=`<text x="${x.toFixed(1)}" y="${(y+4).toFixed(1)}" text-anchor="middle" class="tml" fill="${areaColor(a)}" paint-order="stroke" stroke="#fff" stroke-width="3">${esc(a)}</text>`;});
+    const hq=[X(HQ[1]),Y(HQ[0])];if(hq[0]>0&&hq[0]<W&&hq[1]>0&&hq[1]<H)o+=`<rect x="${(hq[0]-4).toFixed(1)}" y="${(hq[1]-4).toFixed(1)}" width="8" height="8" transform="rotate(45 ${hq[0].toFixed(1)} ${hq[1].toFixed(1)})" fill="#111"/><text x="${(hq[0]+7).toFixed(1)}" y="${(hq[1]+4).toFixed(1)}" class="tml">Infosys</text>`;
+    const km=1/111.32*sc;o+=`<line x1="${pad}" x2="${(pad+km).toFixed(1)}" y1="${H-6}" y2="${H-6}" stroke="#556467" stroke-width="2"/><text x="${(pad+km+4).toFixed(1)}" y="${H-2}" class="agt">1 km</text>`;
+    host.innerHTML=o+'</svg>';
+  });
+}
+function ihHTML(){
+  const rs=(VC.allRows||VC.rows).filter(r=>ihRule(r)),tot=rs.length;if(!tot)return'';
+  return `<h3 style="margin-top:14px">Independent houses for the buyer (budget ₹1.5 Cr)</h3><p class="note" style="margin-top:2px">Each house is checked against the buyer's rules. The dotted lines on the chart above mark ₹1.5 Cr, ₹1.55 Cr and ₹2 Cr. On the map, each house is coloured by its decision${rs.filter(r=>r.lat==null).length?`; ${rs.filter(r=>r.lat==null).length} house${rs.filter(r=>r.lat==null).length>1?'s have':' has'} no map position and appear${rs.filter(r=>r.lat==null).length>1?'':'s'} only in the lists`:''}.</p>
+  <div class="ihg">${IH_RULES.map(R=>{const n=rs.filter(r=>ihRule(r).key===R.key).length;return `<div class="ihc" style="border-left-color:${R.color}"><b>${esc(R.label)}</b><span class="ihn">${n}</span><span class="sub">${esc(R.note)}</span>${n?`<div class="group"><button class="btn small" type="button" data-ihmap="${R.key}">Show on map</button><button class="btn small" type="button" data-ihlist="${R.key}">List ${n} house${n>1?'s':''}</button></div>`:''}</div>`}).join('')}</div>
+  <div class="group" style="margin-top:8px"><button class="btn small" type="button" data-ihmap="all">Show all houses on the map</button></div>`;
+}
+function vcHTML(){
+  if(!VC||!VC.groups.length)return Object.keys(state.data).length?`<section class="card"><div class="head"><div><h2>Cluster analysis</h2><p class="note">${VC&&VC.priceOnly?`Only ${VC.rows.length} ${esc(VC.typeOf)} have a price; at least 8 are needed to find clusters.`:'Upload at least 8 listings with a price and size to run the cluster analysis.'}</p></div>${VC&&VC.priceOnly?`<div class="group"><label for="vct" class="sub">Property type</label><select id="vct">${Object.entries(VC_TYPES).map(([k,v])=>`<option value="${k}"${state.vcType===k?' selected':''}>${v.label}</option>`).join('')}</select></div>`:''}</div></section>`:'';
+  const f=VC.fences,main=VC.groups.filter(g=>!g.outlier),outs=VC.groups.filter(g=>g.outlier);
+  const card=(g,i)=>`<div class="vcc${g.outlier?' out':''}"><div class="vch"><i class="sw vc${i}"></i><div><b>${g.outlier?'':'Cluster '+(i+1)+': '}${esc(g.name)}</b><span>${g.n} listings</span></div></div>
+    <p>${esc(g.desc)}</p>
+    <dl><dt>Price range</dt><dd>${money(g.pmin)} to ${money(g.pmax)}</dd><dt>Typical size</dt><dd>${g.sqft?inr(g.sqft)+' sqft':'–'}${g.bhk?` · ${g.bhk%1?g.bhk:g.bhk.toFixed(0)} BHK`:''}</dd><dt>Villas and houses</dt><dd>${Math.round(g.house*100)}%</dd><dt>Areas</dt><dd>${g.areas.slice(0,3).map(a=>`${esc(a[0])} ${a[1]}`).join(', ')}</dd></dl>
+    <div class="group"><button class="btn small" type="button" data-vcshow="${i}">Show on map</button><button class="btn small" type="button" data-vclist="${i}">List its ${g.n} listings</button></div></div>`;
+  return `<section class="card"><div class="head"><div><h2>Cluster analysis: ${VC.k} clusters${outs.length?` and ${outs.length} outlier group${outs.length>1?'s':''}`:''}</h2><p class="sub">${VC.rows.length} listings from ${plural(Object.keys(state.data).length,'area','areas')} · ${VC.priceOnly&&VC.removed.length?`${VC.removed.length} price outliers removed · `:''}grouped on ${esc(VC.used.join(', '))}</p></div><div class="group"><label for="vcon" class="sub">Cluster on</label><select id="vcon"><option value="price"${state.vcOn==='price'?' selected':''}>Price only</option><option value="all"${state.vcOn==='all'?' selected':''}>Price, size and location</option></select>${state.vcOn==='price'?`<label for="vct" class="sub">Property type</label><select id="vct">${Object.entries(VC_TYPES).map(([k,v])=>`<option value="${k}"${state.vcType===k?' selected':''}>${v.label} (${Object.values(state.data).reduce((t,d)=>t+d.rows.filter(r=>r.price>0&&v.test(r)).length,0)})</option>`).join('')}</select>`:''}${state.vcOn==='price'&&state.vcType==='ih'?`<label for="ihc" class="sub">Colour houses on the map by</label><select id="ihc"><option value="decision"${state.ihColor==='decision'?' selected':''}>Buyer decision</option><option value="cluster"${state.ihColor==='cluster'?' selected':''}>Price cluster</option></select>`:''}<label for="vck" class="sub">Number of clusters</label><select id="vck">${['auto',...VC.ks.map(x=>x.k)].map(v=>`<option value="${v}"${String(state.vcK)===String(v)?' selected':''}>${v==='auto'?`${VC.priceOnly?'Elbow':'Best fit'} (${VC.bestK})`:v}</option>`).join('')}</select><button class="btn" type="button" id="vcall">Show all clusters on the map</button></div></div>
+  ${VC.priceOnly?`<details class="vcm"><summary>How these clusters were found</summary><ol>
+    <li>Outliers are removed once: ${VC.removed.length?`${VC.removed.length} of the ${VC.allRows.length} ${esc(VC.typeOf)} have a total price outside ${money(Math.max(0,VC.fence[0]))} to ${money(VC.fence[1])} (1.5 times the interquartile range) and are left out. <button class="btn small" type="button" data-vcout="1">List the ${VC.removed.length} removed</button>`:`none of the ${VC.allRows.length} ${esc(VC.typeOf)} is outside ${money(Math.max(0,VC.fence[0]))} to ${money(VC.fence[1])} (1.5 times the interquartile range).`} The other ${VC.rows.length} are clustered.</li>
+    <li>Prices are compared on a log scale, so a ₹50 L gap counts for more between ₹1 Cr homes than between ₹10 Cr homes.</li>
+    <li>K-means groups the prices into 2 to 8 clusters. The elbow chart shows how tight the groups are for each number.</li>
+    <li>${VC.bestK} clusters is the elbow: after that, extra clusters make the groups only a little tighter.${VC.k!==VC.bestK?` You are viewing ${VC.k} clusters instead.`:''} Silhouette score ${VC.sil.toFixed(2)} (closer to 1 means more distinct). Clusters are numbered from cheapest to dearest.</li></ol></details>`:`<details class="vcm"><summary>How these clusters were found</summary><ol>
+    <li>Each listing is described by ${esc(VC.used.join(', ').toLowerCase())}.</li>
+    <li>Outliers are set apart first: total price outside ${money(Math.max(0,f.pl))} to ${money(f.ph)}, or price per sqft outside ₹${inr(Math.max(0,f.sl))} to ₹${inr(f.sh)} (1.5 times the interquartile range). They get their own groups.</li>
+    <li>The other ${VC.inliers} listings are standardised so every feature counts equally, then grouped with k-means for 2 to 6 clusters.</li>
+    <li>${VC.bestK} clusters gave the best silhouette score (${VC.ks.find(x=>x.k===VC.bestK).sil.toFixed(2)}; closer to 1 means more distinct clusters).${VC.k!==VC.bestK?` You are viewing ${VC.k} clusters instead (score ${VC.sil.toFixed(2)}).`:''} Clusters are numbered from cheapest to dearest.</li></ol></details>`}
+  ${VC.priceOnly?`<h3 style="margin-top:12px">${VC.k} price clusters of ${esc(VC.typeOf)} found by K-means</h3><p class="note" style="margin-top:2px">Every dot is one listing, placed by its total price (log scale) and coloured by its cluster. The ◆ marks each cluster's K-means centre; dashed lines are where one cluster ends and the next begins. Hover a dot for details, click to open it.</p><div id="vcstrip"></div><div id="vcbars"></div>${VC.typeKey==='ih'?ihHTML():''}`:''}
+  <div class="vck"><div><h3>Inertia (elbow)</h3><div id="vcel"></div></div><div><h3>Silhouette score</h3><div id="vcsil"></div></div></div>
+  <div class="vcgrid">${main.map((g,i)=>card(g,i)).join('')}</div>
+  ${outs.length?`<h3 style="margin-top:14px">Outlier groups</h3><div class="vcgrid">${outs.map(g=>card(g,VC.groups.indexOf(g))).join('')}</div>`:''}
+  <h3 style="margin-top:14px">Each listing by total price and area</h3><p class="note" style="margin-top:2px">Every dot is one listing, coloured by its cluster. Click a dot to open it.</p><div id="vcsc"></div>
+  <h3 style="margin-top:14px">How the clusters differ</h3><p class="note" style="margin-top:2px">Each box spans the middle half of a cluster's listings; the line inside is the typical value.</p><div class="vcbox" id="vcbox"></div></section>`;
+}
+function vcLine(host,vals,key,fmt,label){
+  const el=$(host);if(!el)return;const W=Math.max(240,el.clientWidth),H=150,P={l:44,r:12,t:10,b:28},ks=vals.map(v=>v.k),ys=vals.map(v=>v[key]);
+  const y0=Math.min(...ys),y1=Math.max(...ys),X=k=>P.l+(k-ks[0])/((ks[ks.length-1]-ks[0])||1)*(W-P.l-P.r),Y=v=>H-P.b-(v-y0)/((y1-y0)||1)*(H-P.t-P.b);
+  let o=`<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="${esc(label)}">`;
+  [y0,(y0+y1)/2,y1].forEach(v=>{o+=`<line x1="${P.l}" x2="${W-P.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="#e6eae8"/><text x="${P.l-6}" y="${Y(v)+4}" text-anchor="end">${fmt(v)}</text>`});
+  o+=`<polyline fill="none" stroke="#2a78d6" stroke-width="2" points="${vals.map(v=>X(v.k)+','+Y(v[key])).join(' ')}"/>`;
+  vals.forEach(v=>{const on=v.k===VC.k;o+=`<circle cx="${X(v.k)}" cy="${Y(v[key])}" r="${on?6:4}" fill="${on?'#111':'#2a78d6'}" stroke="#fff" stroke-width="1.5" data-tip="${esc(`k = ${v.k}: ${label.toLowerCase()} ${fmt(v[key])}${on?' (chosen)':''}`)}"/><text x="${X(v.k)}" y="${H-8}" text-anchor="middle">${v.k}</text>`});
+  el.innerHTML=o+'</svg>';
+}
+/* colours and visibility for the cluster charts: the clusters' own, even when the map is classified another way */
+const vcOn_=i=>usingVC()?state.show[i]!==false:true;
+function drawStrip(){
+  const el=$('vcstrip');if(!el||!VC.priceOnly)return;
+  const W=Math.max(320,el.clientWidth),P={l:16,r:16},G=VC.groups.map((g,i)=>({g,i})).filter(x=>vcOn_(x.i)),rs=VC.rows.filter(r=>r.vc!=null&&vcOn_(r.vc));
+  if(!rs.length){el.innerHTML='';$('vcbars').innerHTML='';return}
+  const lo=Math.min(...VC.rows.map(r=>r.price))*.92,hi=Math.max(...VC.rows.map(r=>r.price))*1.08,X=v=>P.l+(Math.log(v)-Math.log(lo))/(Math.log(hi)-Math.log(lo))*(W-P.l-P.r);
+  // beeswarm: each dot goes to the free spot nearest the middle line
+  const R=4.2,gap=2*R+1.2,placed=[],dots=[...rs].sort((a,b)=>a.price-b.price).map(r=>{const x=X(r.price);let y=0;
+    for(let k=0;k<400;k++){const t=k===0?0:(k%2?1:-1)*Math.ceil(k/2)*gap*.55;if(!placed.some(q=>Math.hypot(q.x-x,q.y-t)<gap)){y=t;break}}
+    placed.push({x,y});return{r,x,y}});
+  const ext=Math.max(R+2,...dots.map(d=>Math.abs(d.y)))+R+4;
+  // cluster labels in as many rows as needed so neighbours never overlap
+  const LH=40,lab=G.map(({g,i})=>{const a=X(g.pmin),b=X(g.pmax),c=(a+b)/2,w=Math.max(ctx.measureText(g.tier+' · '+g.n).width,ctx.measureText(`${money(g.pmin)} to ${money(g.pmax)}`).width)+22;return{g,i,a,b,c,w,row:0}});
+  lab.forEach((L_,k)=>{L_.x=Math.min(W-P.r-L_.w/2,Math.max(P.l+L_.w/2,L_.c));while(lab.slice(0,k).some(o=>o.row===L_.row&&Math.abs(o.x-L_.x)<(o.w+L_.w)/2))L_.row++});
+  const rows=Math.max(1,...lab.map(l=>l.row+1)),top=rows*LH+8,mid=top+ext,base=mid+ext+6,H=base+34;
+  let o=`<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="${VC.k} K-means price clusters: ${esc(G.map(({g})=>`${g.tier} ${money(g.pmin)} to ${money(g.pmax)}, ${g.n} listings`).join('; '))}">`;
+  // a soft band behind each cluster, from its cheapest to its dearest listing
+  lab.forEach(L_=>{const col=VCCOL[L_.i];o+=`<rect x="${(L_.a-R-2).toFixed(1)}" y="${top}" width="${(L_.b-L_.a+2*R+4).toFixed(1)}" height="${(base-top).toFixed(1)}" rx="6" fill="${col}" fill-opacity=".1" stroke="${col}" stroke-opacity=".5"/>`;
+    const ly=L_.row*LH+14;o+=`<line x1="${L_.x.toFixed(1)}" x2="${L_.c.toFixed(1)}" y1="${ly+19}" y2="${top}" stroke="${col}" stroke-opacity=".6"/><text x="${L_.x.toFixed(1)}" y="${ly}" text-anchor="middle" class="stt"><tspan fill="${col}">●</tspan> ${esc(L_.g.tier)} · ${L_.g.n}</text><text x="${L_.x.toFixed(1)}" y="${ly+15}" text-anchor="middle">${esc(money(L_.g.pmin))} to ${esc(money(L_.g.pmax))}</text>`});
+  // where one cluster ends and the next begins
+  for(let c=0;c+1<VC.groups.length;c++){const a=VC.groups[c].pmax,b=VC.groups[c+1].pmin,cut=Math.sqrt(a*b),x=X(cut);
+    o+=`<line x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${top-4}" y2="${base}" stroke="#1a2729" stroke-width="1.2" stroke-dasharray="4 3"/><text x="${x.toFixed(1)}" y="${base+28}" text-anchor="middle" class="stc">split ≈ ${esc(money(cut))}</text>`}
+  if(VC.typeKey==='ih')IH_RULES.slice(0,3).forEach(R=>{const x=X(R.max);if(x<P.l||x>W-P.r)return;o+=`<line x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${top-6}" y2="${base}" stroke="${R.color}" stroke-width="2" stroke-dasharray="1 3" stroke-linecap="round"/><text x="${(x+4).toFixed(1)}" y="${top+12+IH_RULES.indexOf(R)*12}" class="stc">${esc(money(R.max))}</text>`});
+  // price axis
+  o+=`<line x1="${P.l}" x2="${W-P.r}" y1="${base}" y2="${base}" stroke="#c9d1cf"/>`;
+  niceTicks(lo,hi,true).forEach(t=>{const x=X(t);if(x<P.l||x>W-P.r)return;o+=`<line x1="${x}" x2="${x}" y1="${base}" y2="${base+4}" stroke="#c9d1cf"/><text x="${x}" y="${base+15}" text-anchor="middle">${esc(money(t).replace(/\.?0+ Cr$/,' Cr'))}</text>`});
+  dots.forEach(({r,x,y})=>{const ri=state.data[r._area].rows.indexOf(r),g=VC.groups[r.vc],isH=[1,2,3].includes(typeIdx(r.type));
+    o+=`<circle class="vcd" data-vcl="${esc(r._area)}|${ri}" data-tip="${esc(`${r.name}, ${r._area}: ${money(r.price)}${r.sqft?`, ${inr(r.sqft)} sqft`:''}${r.bhk?`, ${r.bhk} BHK`:''} · Cluster ${r.vc+1}, ${g.tier} · Source: ${srcLinks(r).length?[...new Set(srcLinks(r).map(l=>l.site))].join(', '):'none given'}`)}" cx="${x.toFixed(1)}" cy="${(mid+y).toFixed(1)}" r="${R}" fill="${VCCOL[r.vc]}" stroke="${isH?'#111':'#fff'}" stroke-width="${isH?1.3:.8}"/>`});
+  G.forEach(({g,i})=>{const x=X(g.centre);o+=`<path d="M${x.toFixed(1)},${mid-9}l7,9l-7,9l-7,-9z" fill="#111" stroke="#fff" stroke-width="1.5" data-tip="${esc(`Cluster ${i+1} K-means centre: ${money(g.centre)}`)}"/>`});
+  el.innerHTML=o+'</svg>';
+  // how many listings each cluster holds
+  const mx=Math.max(...G.map(({g})=>g.n)),LW=Math.min(210,W*.36),BW=Math.max(40,W-LW-190);
+  let b=`<svg viewBox="0 0 ${W} ${G.length*28+6}" height="${G.length*28+6}" role="img" aria-label="Listings in each price cluster">`;
+  G.forEach(({g,i},k)=>{const y=k*28+3,w=Math.max(4,g.n/mx*BW);b+=`<text x="${LW-8}" y="${y+15}" text-anchor="end" class="stt">Cluster ${i+1}: ${esc(g.tier)}</text><rect x="${LW}" y="${y+3}" width="${w.toFixed(1)}" height="16" rx="4" fill="${VCCOL[i]}" data-tip="${esc(`${g.n} listings, ${money(g.pmin)} to ${money(g.pmax)}, typically ${money(g.price)}`)}"/><text x="${(LW+w+6).toFixed(1)}" y="${y+15}">${g.n} listings · typically ${esc(money(g.price))}</text>`});
+  $('vcbars').innerHTML=`<h4 style="margin:10px 0 2px;font-size:12.5px">Listings in each cluster</h4>`+b+'</svg>';
+}
+function drawVC(){
+  if(!VC||!VC.groups.length||!$('vcsc'))return;
+  drawStrip();
+  vcLine('vcel',VC.ks,'inertia',v=>Math.round(v).toLocaleString('en-IN'),'Inertia');vcLine('vcsil',VC.ks,'sil',v=>v.toFixed(2),'Silhouette score');
+  // scatter
+  const el=$('vcsc'),W=Math.max(320,el.clientWidth),H=300,P={l:58,r:14,t:10,b:40},rs=VC.rows.filter(r=>r.sqft>0);
+  const ps=rs.map(r=>r.price),qs=rs.map(r=>r.sqft),x0=Math.min(...ps),x1=Math.max(...ps),y0=Math.min(...qs),y1=Math.max(...qs);
+  const X=v=>P.l+(Math.log(v)-Math.log(x0))/((Math.log(x1)-Math.log(x0))||1)*(W-P.l-P.r),Y=v=>H-P.b-(Math.log(v)-Math.log(y0))/((Math.log(y1)-Math.log(y0))||1)*(H-P.t-P.b);
+  let o=`<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Each listing's total price against area, coloured by cluster">`;
+  niceTicks(x0,x1,true).forEach(t=>{o+=`<line x1="${X(t)}" x2="${X(t)}" y1="${P.t}" y2="${H-P.b}" stroke="#eef1f0"/><text x="${X(t)}" y="${H-P.b+16}" text-anchor="middle">${esc(money(t).replace(/\.?0+ Cr$/,' Cr'))}</text>`});
+  niceTicks(y0,y1,true).forEach(t=>{o+=`<line x1="${P.l}" x2="${W-P.r}" y1="${Y(t)}" y2="${Y(t)}" stroke="#eef1f0"/><text x="${P.l-6}" y="${Y(t)+4}" text-anchor="end">${inr(t)}</text>`});
+  o+=`<text x="${(P.l+W-P.r)/2}" y="${H-4}" text-anchor="middle">Total price</text><text x="12" y="${(P.t+H-P.b)/2}" transform="rotate(-90 12 ${(P.t+H-P.b)/2})" text-anchor="middle">Area (sqft)</text>`;
+  rs.forEach(r=>{if(r.vc==null||!vcOn_(r.vc))return;const ri=state.data[r._area].rows.indexOf(r),g=VC.groups[r.vc],isH=[1,2,3].includes(typeIdx(r.type));
+    o+=`<circle class="vcd" data-vcl="${esc(r._area)}|${ri}" data-tip="${esc(`${r.name}, ${r._area}: ${money(r.price)}, ${inr(r.sqft)} sqft · ${g.name}`)}" cx="${X(r.price).toFixed(1)}" cy="${Y(r.sqft).toFixed(1)}" r="${isH?5:3.6}" fill="${VCCOL[r.vc]}" fill-opacity=".8" stroke="${g.outlier||isH?'#111':'#fff'}" stroke-width="${isH?1.4:.7}"/>`});
+  el.innerHTML=o+'</svg>';
+  // box plots per feature
+  const feats=[['Total price',r=>r.price,true,money],['Price per sqft',r=>r.price/r.sqft,true,v=>'₹'+inr(v)],['Area (sqft)',r=>r.sqft,true,v=>inr(v)],['Distance from Infosys (km)',r=>r.km,false,v=>v.toFixed(1)]];
+  $('vcbox').innerHTML=feats.map(([nm,f,lg,fmt],fi)=>`<div><h4>${esc(nm)}</h4><div id="vcb${fi}"></div></div>`).join('');
+  feats.forEach(([nm,f,lg,fmt],fi)=>{
+    const host=$('vcb'+fi),W2=Math.max(240,host.clientWidth),rowH=22,G=VC.groups.map((g,i)=>({g,i,v:VC.rows.filter(r=>r.vc===i).map(f).filter(x=>x!=null&&x>0&&isFinite(x)).sort((a,b)=>a-b)})).filter(x=>x.v.length),H2=G.length*rowH+26,L2=34,R2=10;
+    const all=G.flatMap(x=>x.v),lo=Math.min(...all),hi=Math.max(...all),t=v=>lg?Math.log(v):v,XX=v=>L2+(t(v)-t(lo))/((t(hi)-t(lo))||1)*(W2-L2-R2);
+    let b=`<svg viewBox="0 0 ${W2} ${H2}" height="${H2}" role="img" aria-label="${esc(nm)} by cluster">`;
+    G.forEach((x,j)=>{const y=6+j*rowH+rowH/2,q1=qtile(x.v,.25),q2=qtile(x.v,.5),q3=qtile(x.v,.75);
+      b+=`<text x="4" y="${y+4}" class="bxl">${x.g.outlier?'O'+(x.i-VC.k+1):'C'+(x.i+1)}</text><line x1="${XX(x.v[0])}" x2="${XX(x.v[x.v.length-1])}" y1="${y}" y2="${y}" stroke="${VCCOL[x.i]}" stroke-width="1.5"/><rect data-tip="${esc(`${x.g.name}: middle half ${fmt(q1)} to ${fmt(q3)}, typical ${fmt(q2)}`)}" x="${XX(q1)}" y="${y-7}" width="${Math.max(2,XX(q3)-XX(q1))}" height="14" rx="3" fill="${VCCOL[x.i]}" fill-opacity=".85"/><line x1="${XX(q2)}" x2="${XX(q2)}" y1="${y-8}" y2="${y+8}" stroke="#111" stroke-width="2"/>`});
+    const tk=lg?niceTicks(lo,hi,true):[lo,(lo+hi)/2,hi];tk.forEach(v=>{b+=`<text x="${XX(v)}" y="${H2-4}" text-anchor="middle" class="bxt">${esc(String(fmt(v)).replace(/\.?0+ Cr$/,' Cr'))}</text>`});
+    host.innerHTML=b+'</svg>';
+  });
+}
+function segNote(){
+  return `Natural breaks (the Jenks method, an exact one-dimensional k-means) split prices into budget, mid-range and luxury, separately for apartments and for villas and houses, across all uploaded areas.${SEG&&SEG.some(G=>G.borrowed)?` There are too few ${SEG.find(G=>G.borrowed).name.toLowerCase()} to set their own cut-offs, so they use the other group's.`:''}`;
+}
+function segmentsHTML(){
+  if(!usingSeg()||!SEG||!Object.keys(state.data).length)return'';
+  const names=Object.keys(state.data).sort((a,b)=>a.localeCompare(b));
+  const head=`<tr><th>Segment</th><th class="n">Price range</th><th class="n">Typical price</th><th class="n">Listings</th>${names.map(n=>`<th class="n">${esc(n)}</th>`).join('')}</tr>`;
+  const rows=BUDGET.map((nm,k)=>{const G=SEG[Math.floor(k/3)],t=G.tiers[k%3];
+    const per=names.map(n=>state.data[n].rows.filter(r=>r.seg===k).length),mx=Math.max(1,...per);
+    return `<tr><td><span class="tag"><i class="sw ${BCLASS[k]}"></i>${esc(nm)}</span></td><td class="n">${t.n?esc(money(t.min)+' to '+money(t.max)):'–'}</td><td class="n">${t.n?money(t.median):'–'}</td><td class="n">${t.n}</td>${per.map(c=>`<td class="n heat" style="--h:${(c/mx).toFixed(2)};--c:${BCOLOR[k]}">${c||'–'}</td>`).join('')}</tr>`}).join('');
+  return `<section class="card"><div class="head"><div><h2>Price segments across ${names.length} area${names.length>1?'s':''}</h2><p class="sub">${Object.values(state.data).reduce((t,d)=>t+d.rows.length,0).toLocaleString('en-IN')} listings · cut-offs shared by every area</p></div></div>
+  <div id="segplot"></div>
+  <div class="tw" style="max-height:none;margin-top:10px"><table><thead>${head}</thead><tbody>${rows}</tbody></table></div>
+  <p class="note">${segNote()} Darker shading in an area's column means more of its listings fall in that segment.</p></section>`;
+}
+/* One row per area: each area's share of every segment, apartments then villas and houses. */
+function drawSegPlot(){
+  const host=$('segplot');if(!host||!SEG)return;
+  const names=Object.keys(state.data).sort((a,b)=>a.localeCompare(b)),W=Math.max(320,host.clientWidth),Lw=W<620?92:140,rowH=34,top=8,H=top+names.length*rowH+30,bw=W-Lw-12;
+  let o=`<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Share of each price segment in every area">`;
+  names.forEach((n,i)=>{
+    const rs=state.data[n].rows.filter(r=>r.seg!=null),tot=rs.length||1,y=top+i*rowH;let x=Lw;
+    o+=`<text class="an" data-sel="${esc(n)}" x="4" y="${y+17}">${esc(n.length>(W<620?12:19)?n.slice(0,W<620?11:18)+'…':n)}</text>`;
+    BUDGET.forEach((nm,k)=>{const c=rs.filter(r=>r.seg===k).length,w=c/tot*bw;if(!c)return;o+=`<rect data-tip="${esc(`${n}: ${c} ${nm.toLowerCase()} listings (${Math.round(c/tot*100)}%)`)}" x="${(x+1).toFixed(1)}" y="${y+4}" width="${Math.max(1,w-2).toFixed(1)}" height="20" rx="3" fill="${BCOLOR[k]}"/>`;if(w>34)o+=`<text x="${(x+w/2).toFixed(1)}" y="${y+18}" text-anchor="middle" class="${k%3===0?'sl dark':'sl'}">${Math.round(c/tot*100)}%</text>`;x+=w});
+  });
+  o+=`<text x="${Lw}" y="${H-8}">0%</text><text x="${W-12}" y="${H-8}" text-anchor="end">100% of each area's listings</text>`;
+  host.innerHTML=o+'</svg>';
+}
+/* Every independent house and villa in scope, with its price segment and buyer fit, ready to show a buyer. */
+const plural=(n,one,many)=>`${n} ${n===1?one:many}`;
+function housesHTML(){
+  const a=state.selected,names=a&&a!=='__all'&&state.data[a]?[a]:Object.keys(state.data).sort((x,y)=>x.localeCompare(y));
+  const hs=names.flatMap(n=>state.data[n].rows.filter(r=>[1,2,3].includes(typeIdx(r.type))).map(r=>({r,n}))).sort((x,y)=>x.r.price-y.r.price);
+  if(!hs.length)return names.length?`<section class="card"><h2>Independent houses and villas</h2><p class="note">No villas or independent houses in ${esc(names.length===1?names[0]:'the uploaded areas')} yet.</p></section>`:'';
+  const SN=GROUPS.segments.names,SC=GROUPS.segments.cls,fitCls=['good','okay','notsug','rej'];
+  const by=t=>hs.filter(h=>typeIdx(h.r.type)===t).length,mapped=hs.filter(h=>h.r.lat!=null).length;
+  const rows=hs.map((h,i)=>{const r=h.r,f=buyerClass(r),link=rawOf(r,'source url');
+    return `<tr${r.lat!=null?` class="houserow" tabindex="0" data-hloc="${esc(h.n)}|${r.lat},${r.lon}"`:''}><td>${esc(r.type)}</td><td>${esc(r.name)}</td><td>${esc(h.n)}</td><td class="n">${r.bhk??'–'}</td><td class="n">${r.sqft?inr(r.sqft):'–'}</td><td class="n">${money(r.price)}</td><td class="n">${r.ppsf?'₹'+inr(r.ppsf):'–'}</td><td>${r.seg!=null?`<span class="tag"><i class="sw ${SC[r.seg]}"></i>${esc(SN[r.seg].replace(' villa or house',''))}</span>`:'–'}</td><td><span class="tag"><i class="sw ${fitCls[f]}"></i>${BUDGET_NAME[f]}</span></td><td>${esc(r.ready)}</td><td>${r.lat!=null?'Show':'<span class="sub">No location</span>'}</td><td>${link?`<a href="${esc(link)}" target="_blank" rel="noopener">Open</a>`:'–'}</td></tr>`}).join('');
+  return `<section class="card"><div class="head"><div><h2>Independent houses and villas: ${esc(names.length===1?names[0]:'all uploaded areas')}</h2><p class="sub">${plural(by(2),'independent house','independent houses')} · ${plural(by(1),'villa','villas')}${by(3)?` · ${by(3)} house or villa (not specified)`:''} · ${mapped} of ${hs.length} on the map</p></div>
+  <div class="group"><button class="btn primary" id="showHouses" type="button">Show only houses on the map</button><button class="btn" id="dlHouses" type="button">Download (CSV)</button></div></div>
+  <p class="note">Segments compare each home with other villas and houses only, using natural breaks on all uploaded listings. Buyer fit uses the ₹1.5 Cr budget, 3 BHK and ${inr(state.minSqft)}+ sqft rules. Click a row to see it on the map.</p>
+  <div class="tw" style="max-height:340px;margin-top:8px"><table><thead><tr><th>Type</th><th>Name / project</th><th>Area</th><th class="n">BHK</th><th class="n">Sqft</th><th class="n">Price</th><th class="n">₹/sqft</th><th>Segment</th><th>Buyer fit</th><th>Ready to move</th><th>Map</th><th>Source</th></tr></thead><tbody>${rows}</tbody></table></div></section>`;
+}
+function clientHTML(){
+  const A=state.analysis;if(!A||!A.items.length)return'';
+  if(!A.clusters)return `<section class="card"><h2>Top 1 for the client</h2><p class="note">Upload at least 3 listings to run the cluster analysis.</p></section>`;
+  const t=A.top,r=t&&t.r;
+  const fact=(k,v)=>`<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`;
+  const pick=t?`<div class="top1"><div class="tp-h"><span class="star">★</span><div><div class="tp-n">${esc(r.name)}</div><div class="sub">${esc(t.area)} · ${BUDGET_NAME[t.cls]} for the buyer${t.verify?' · Verify price first':''}</div></div></div>
+    <dl class="facts">${fact('Total price',money(r.price))}${fact('BHK',r.bhk??'–')}${fact('Area',r.sqft?inr(r.sqft)+' sqft':'–')}${fact('Price per sqft',r.ppsf?'₹'+inr(r.ppsf):'–')}${fact('Ready to move',r.ready)}${fact('From Infosys',r.km!=null?r.km.toFixed(1)+' km':'–')}${fact('Type',r.type||'–')}${t.rel?fact('Reliability',t.rel.split(':')[0]):''}</dl>
+    <p class="note">Best of ${A.candidates} ${BUDGET_NAME[t.cls]} listings in the best-fitting group, ranked equally on larger area, lower price per sqft, lower total price, shorter distance and more amenities.${A.flaggedOut?` ${A.flaggedOut} cheaper-looking listings were held back until their prices are checked.`:''}${A.allFlagged?' Every candidate has an unusually low price, so check this price before showing it.':''}</p>
+    <div class="group"><button class="btn primary" id="showTop" type="button">Show on map</button>${rawOf(r,'source url')?`<a class="btn" href="${esc(rawOf(r,'source url'))}" target="_blank" rel="noopener">Open source listing</a>`:''}</div></div>`:`<p class="note">No listing in ${esc(A.scopeName)} is within the buyer's budget of up to ₹1.55 Cr.</p>`;
+  const rows=A.clusters.map((c,i)=>`<tr${c.k===A.best?' class="bestrow"':''}><td><span class="tag"><i class="sw" style="background:${GROUP_COLOR[i]}"></i>Group ${GROUP_NAME[i]}${c.k===A.best?' · best fit':''}</span></td><td class="n">${c.n}</td><td class="n">${c.good}</td><td class="n">${c.okay}</td><td class="n">${money(c.price)}</td><td class="n">${c.sqft?inr(c.sqft):'–'}</td><td class="n">${c.ppsf?'₹'+inr(c.ppsf):'–'}</td><td class="n">${c.km!=null?c.km.toFixed(1)+' km':'–'}</td></tr>`).join('');
+  return `<section class="card"><div class="head"><div><h2>Top 1 for the client: ${esc(A.scopeName)}</h2><p class="sub">Cluster analysis of ${A.items.length.toLocaleString('en-IN')} listings of all types</p></div></div>${pick}
+  <h3 style="margin-top:14px">Cluster analysis</h3><p class="note" style="margin-top:2px">Grouped on: ${esc(A.used.join(', '))}.</p>
+  <div id="clplot"></div>
+  <div class="tw" style="max-height:none;margin-top:8px"><table><thead><tr><th>Group</th><th class="n">Listings</th><th class="n">Good</th><th class="n">Okay</th><th class="n">Typical price</th><th class="n">Typical sqft</th><th class="n">Typical ₹/sqft</th><th class="n">Typical distance</th></tr></thead><tbody>${rows}</tbody></table></div>${typeTableHTML(A)}</section>`;
+}
+const BUDGET_NAME=['Good','Okay','Not suggested','Reject'];
+function visitHTML(){
+  const A=state.analysis;if(!A||!A.items.length)return'';
+  const {stops,noLoc}=visitStops(A);A.stops=stops;
+  const doneN=stops.filter(q=>visited[q.key]).length;
+  return `<section class="card"><div class="head"><div><h2>Office boy visit list: ${esc(A.scopeName)}</h2><p class="sub">${stops.length} other in-budget locations up to ₹1.55 Cr · ${doneN} visited</p></div><div class="group"><button class="btn" id="dlVisit" type="button">Download visit list (CSV)</button></div></div>
+  <p class="note">Stops run in order from Infosys, each going to the nearest remaining location. At each one, ask about any other properties for sale nearby, add them to the area's file, and upload it with "Add to it". "Verify price" means the price is under 60% of the area's typical price per sqft.${noLoc?` ${noLoc} in-budget listings have no location, so they are not on this list.`:''}</p>
+  <div class="tw" style="max-height:320px;margin-top:8px"><table><thead><tr><th>Stop</th><th>Project</th><th>Area</th><th class="n">Listings</th><th class="n">Prices</th><th class="n">₹/sqft</th><th>Check</th><th>Directions</th><th>Visited</th></tr></thead><tbody>
+  ${stops.map(q=>{const ps=q.rows.map(r=>r.price),lo=Math.min(...ps),hi=Math.max(...ps),pp=q.rows.map(r=>r.ppsf).filter(x=>x>0);return `<tr><td>${q.stop}</td><td>${esc(q.name)}</td><td>${esc(q.area)}</td><td class="n">${q.rows.length}</td><td class="n">${money(lo)}${hi>lo?' to '+money(hi):''}</td><td class="n">${pp.length?'₹'+inr(avg(pp)):'–'}</td><td>${q.verify?'<span class="flag">Verify price</span>':''}</td><td><a href="https://www.google.com/maps/dir/?api=1&destination=${q.lat},${q.lon}" target="_blank" rel="noopener">Open in Maps</a></td><td><input type="checkbox" data-visit="${esc(q.key)}" aria-label="Visited ${esc(q.name)}"${visited[q.key]?' checked':''}></td></tr>`}).join('')}
+  </tbody></table></div></section>`;
+}
+function drawClusterPlot(){
+  const host=$('clplot'),A=state.analysis;if(!host||!A||!A.clusters)return;
+  const items=A.items.filter(i=>i.r.price>0&&i.r.sqft>0);if(!items.length)return;
+  const W=Math.max(320,host.clientWidth),H=250,P={l:58,r:14,t:12,b:40};
+  const ps=items.map(i=>i.r.price),qs=items.map(i=>i.r.sqft),x0=Math.min(...ps),x1=Math.max(...ps),y0=Math.min(...qs),y1=Math.max(...qs);
+  const X=v=>P.l+(Math.log(v)-Math.log(x0))/((Math.log(x1)-Math.log(x0))||1)*(W-P.l-P.r),Y=v=>H-P.b-(Math.log(v)-Math.log(y0))/((Math.log(y1)-Math.log(y0))||1)*(H-P.t-P.b);
+  const colorOf={};A.clusters.forEach((c,i)=>colorOf[c.k]=GROUP_COLOR[i]);
+  let o=`<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Each listing's total price against its area, coloured by cluster group">`;
+  niceTicks(x0,x1,true).forEach(t=>{const x=X(t);o+=`<line x1="${x}" x2="${x}" y1="${P.t}" y2="${H-P.b}" stroke="#e6eae8"/><text x="${x}" y="${H-P.b+16}" text-anchor="middle">${esc(money(t).replace(/\.?0+ Cr$/,' Cr'))}</text>`});
+  niceTicks(y0,y1,true).forEach(t=>{const y=Y(t);o+=`<line x1="${P.l}" x2="${W-P.r}" y1="${y}" y2="${y}" stroke="#e6eae8"/><text x="${P.l-6}" y="${y+4}" text-anchor="end">${inr(t)}</text>`});
+  if(OKAY_UP_TO>x0&&OKAY_UP_TO<x1){const x=X(OKAY_UP_TO);o+=`<line x1="${x}" x2="${x}" y1="${P.t}" y2="${H-P.b}" stroke="#556467" stroke-dasharray="4 3"/><text x="${x+4}" y="${P.t+11}">Budget limit ₹1.55 Cr</text>`}
+  o+=`<text x="${(P.l+W-P.r)/2}" y="${H-5}" text-anchor="middle">Total price</text><text x="12" y="${(P.t+H-P.b)/2}" transform="rotate(-90 12 ${(P.t+H-P.b)/2})" text-anchor="middle">Area (sqft)</text>`;
+  items.forEach(i=>{o+=`<circle data-tip="${esc(`${i.r.name}: ${money(i.r.price)}, ${inr(i.r.sqft)} sqft · ${BUDGET_NAME[i.cls]}`)}" cx="${X(i.r.price).toFixed(1)}" cy="${Y(i.r.sqft).toFixed(1)}" r="3" fill="${colorOf[i.group]}" fill-opacity=".6"/>`});
+  if(A.top&&A.top.r.sqft>0){const x=X(A.top.r.price),y=Y(A.top.r.sqft);o+=`<text data-tip="${esc('Top 1: '+A.top.r.name)}" x="${x}" y="${y+7}" text-anchor="middle" class="st">★</text>`}
+  host.innerHTML=o+'</svg>';
+}
+const pricePane=map.createPane('pricemap');pricePane.style.zIndex=646;
+const priceLayer=L.layerGroup().addTo(map),topLayer=L.layerGroup().addTo(map);
+const RAMP=['#d3ecec','#9bd2d6','#5eb2ba','#2a8e99','#0c5f68'];
+const priceLegend=L.control({position:'bottomleft'});
+priceLegend.onAdd=()=>{const e=L.DomUtil.create('div','blegend');e.hidden=true;return e};priceLegend.addTo(map);
+function drawPriceMap(){
+  priceLayer.clearLayers();topLayer.clearLayers();
+  const A=state.analysis,box=priceLegend.getContainer();box.hidden=true;
+  if(A&&A.top&&A.top.r.lat!=null){
+    const q=A.top;L.marker([q.r.lat,q.r.lon],{pane:'pricemap',zIndexOffset:900,title:`Top 1: ${q.r.name}`,icon:L.divIcon({className:'',iconSize:[0,0],html:'<div class="topstar">★</div>'})}).addTo(topLayer);
+  }
+  if(state.view!=='price'||!A)return;
+  const stops=visitStops(A).stops;if(!stops.length)return;
+  const val=q=>{const v=q.rows.map(r=>r.ppsf).filter(x=>x>0);return v.length?avg(v):null};
+  const vs=stops.map(val).filter(x=>x!=null).sort((a,b)=>a-b);
+  const cut=[.2,.4,.6,.8].map(f=>vs[Math.floor(f*(vs.length-1))]);
+  const bucket=v=>v==null?0:cut.filter(c=>v>c).length;
+  const showLabels=map.getZoom()>=14;
+  stops.forEach(q=>{
+    const ps=q.rows.map(r=>r.price),lo=Math.min(...ps),hi=Math.max(...ps),v=val(q);
+    const dot=L.circleMarker([q.lat,q.lon],{pane:'pricemap',radius:showLabels?7:5.5,color:'#111',weight:q.verify?2.5:1,dashArray:q.verify?'2 2':null,fillColor:RAMP[bucket(v)],fillOpacity:1}).addTo(priceLayer);
+    dot.bindTooltip(showLabels?money(lo):`<b>${esc(q.name)}</b><br>${money(lo)}${hi>lo?' to '+money(hi):''}<br>${v?'₹'+inr(v)+'/sqft':''}${q.verify?'<br>Verify price':''}`,showLabels?{permanent:true,direction:'right',offset:[6,0],className:'ptag'}:{direction:'top'});
+    attachSheet(dot,{area:q.area,loc:q.lat+','+q.lon});
+  });
+  box.innerHTML=`<div class="bl-t">In-budget price per sqft</div><div class="ramp">${RAMP.map(c=>`<i style="background:${c}"></i>`).join('')}</div><div class="bl-n rl"><span>₹${inr(vs[0]||0)}</span><span>₹${inr(vs[vs.length-1]||0)}</span></div><div class="bl-r"><span class="star sm">★</span>Top 1 for the client</div><div class="bl-r"><i class="pd vf"></i>Verify price</div>`;
+  box.hidden=false;
+}
+map.on('zoomend',drawPriceMap);
+function renderAll(){state.analysis=analyseScope();renderList();renderResults();drawPies();drawGrid();drawBorder();drawCellLabels();drawProjectDots();drawPriceMap();layout();refreshSheet();
+  $('metricgroup').hidden=fixedRules();$('scalegroup').hidden=fixedRules();$('sizegroup').hidden=!usingBuyer();$('segtypegroup').hidden=!usingSeg();
+  document.querySelectorAll('#segtype button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===state.segType));
   document.querySelectorAll('#method button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===state.method));
-  const chipText=usingBuyer()?['Good','Okay','Not suggested','Reject']:usingBands()?['Low (under ₹2 Cr)','Medium (₹2–6 Cr)','High (over ₹6 Cr)']:BUDGET;
-  $('chips').innerHTML='<span>Show</span>'+BUDGET.map((_,k)=>`<button type="button" class="chip" data-b="${k}" aria-pressed="${state.show[k]}"><i class="sw ${BCLASS[k]}"></i>${chipText[k]}</button>`).join('');
+  const chipText=usingSeg()||usingVC()?BUDGET:usingBuyer()?['Good','Okay','Not suggested','Reject']:usingBands()?['Low (under ₹2 Cr)','Medium (₹2–6 Cr)','High (over ₹6 Cr)']:BUDGET;
+  if(byType()){
+    const cnt=[0,0,0,0,0];Object.values(state.data).forEach(d=>d.rows.forEach(r=>cnt[typeIdx(r.type)]++));
+    $('chips').innerHTML='<span>Show</span>'+TYPE_NAMES.map((n,k)=>cnt[k]?`<button type="button" class="chip" data-t="${k}" aria-pressed="${state.showType[k]}"><i class="sw" style="background:${TYPE_COLOR[k]}"></i>${n} (${cnt[k]})</button>`:'').join('');
+  }else $('chips').innerHTML='<span>Show</span>'+BUDGET.map((_,k)=>`<button type="button" class="chip" data-b="${k}" aria-pressed="${state.show[k]}"><i class="sw ${BCLASS[k]}"></i>${chipText[k]}</button>`).join('');
+  document.querySelectorAll('#colorby button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===state.colorBy));
   setToolbarVar();
   $('cellgroup').hidden=state.view!=='grid';
   document.querySelectorAll('#view button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===state.view));
   document.querySelectorAll('#cell button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.v===state.cell));
   document.querySelectorAll('#metric button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===state.metric));
   document.querySelectorAll('#scale button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===state.scale));
-  document.querySelectorAll('.chip').forEach(b=>b.setAttribute('aria-pressed',state.show[+b.dataset.b]));
+  document.querySelectorAll('.chip[data-b]').forEach(b=>b.setAttribute('aria-pressed',state.show[+b.dataset.b]));
 }
 function select(name,fly=true){closeSheet();state.selected=name;state.tq='';renderAll();if(fly)fitSelected()}
 function downloadCSV(a,d){
   const c=d.cluster,q=v=>{const s=String(v??'');return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s};
-  const lines=[['area','project','grid_cell',usingBuyer()?'buyer_fit':'budget','bhk','area_sqft','price_per_sqft','total_price','ready_to_move','km_from_infosys'].join(',')];
+  const lines=[['area','project','grid_cell',catMode()?'buyer_fit':'budget','bhk','area_sqft','price_per_sqft','total_price','ready_to_move','km_from_infosys'].join(',')];
   d.rows.forEach(r=>lines.push([a,r.name,r.cellId,r.b==null?'':BUDGET[r.b],r.bhk,r.sqft,r.ppsf,r.price,r.ready,r.km!=null?r.km.toFixed(2):''].map(q).join(',')));
   const url=URL.createObjectURL(new Blob(['﻿'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'}));
   const link=document.createElement('a');link.href=url;link.download=`${a.replace(/[^\w]+/g,'_')}_clusters.csv`;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
@@ -759,6 +1489,14 @@ function attachSheet(layer,spec){
 }
 const countsHTML=rows=>classCounts(rows).map(x=>`<span>· <i class="sw ${BCLASS[x.k]}"></i> ${x.c} ${esc(x.n)}</span>`).join('');
 function resolveSheet(spec){
+  if(spec.rid!=null){const d=state.data[spec.area],r=d&&d.rows[spec.rid];if(!r)return null;const g=VC&&r.vc!=null?VC.groups[r.vc]:null;
+    return{d,grid:false,items:[{r,b:r.b,area:spec.area}],file:`${spec.area}_${r.name}`,title:`${r.name} · ${spec.area}`,sub:`${g?`<span><i class="sw vc${r.vc}"></i> ${esc(g.name)}</span>`:''}<span>· ${money(r.price)}</span><span>· ${r.km!=null?r.km.toFixed(1)+' km from Infosys':'no map location'}</span>${srcLinks(r).length?`<span>· <a class="srcbtn" href="${esc(srcLinks(r)[0].u)}" target="_blank" rel="noopener">Open on ${esc(srcLinks(r)[0].site)} ↗</a></span>`:'<span>· no source link</span>'}`}}
+  if(spec.vcout){const items=(VC&&VC.removed||[]).map(r=>({r,b:r.b,area:r._area}));if(!items.length)return null;
+    return{d:Object.values(state.data)[0],grid:false,multi:true,items,file:'Removed_price_outliers',title:`Price outliers removed before clustering`,sub:`<span>${items.length} ${esc(VC.typeOf)}</span><span>· total price outside ${money(Math.max(0,VC.fence[0]))} to ${money(VC.fence[1])}</span>`}}
+  if(spec.ih){const R=IH_RULES.find(x=>x.key===spec.ih);if(!R)return null;const items=Object.entries(state.data).flatMap(([a,d])=>d.rows.filter(r=>{const q=ihRule(r);return q&&q.key===R.key}).map(r=>({r,b:r.b,area:a})));
+    return{d:Object.values(state.data)[0],grid:false,multi:true,items,file:`Independent_houses_${R.short}`,title:`Independent houses: ${R.label}`,sub:`<span>${items.length} house${items.length>1?'s':''}</span><span>· ${esc(R.note)}</span><span>· click a row to find it on the map</span>`}}
+  if(spec.vc!=null){const g=VC&&VC.groups[spec.vc];if(!g)return null;const items=Object.entries(state.data).flatMap(([a,d])=>d.rows.filter(r=>r.vc===spec.vc).map(r=>({r,b:r.b,area:a})));
+    return{d:Object.values(state.data)[0],grid:false,multi:true,items,file:`Cluster_${spec.vc+1}_${g.name}`,title:`Cluster ${spec.vc+1}: ${g.name}`,sub:`<span><i class="sw vc${spec.vc}"></i> ${items.length} listings</span><span>· typical ${money(g.price)}</span><span>· click a row to find it on the map</span>`}}
   const d=state.data[spec.area];if(!d)return null;
   const tag=b=>b==null?'Not clustered':BUDGET[b];
   const swatch=b=>b==null?'':`<i class="sw ${BCLASS[b]}"></i>`;
@@ -775,7 +1513,7 @@ function resolveSheet(spec){
   if(spec.level==='listing'){
     const c=d.cluster,s=c&&c.stats[spec.budget];if(!s)return null;
     const items=d.rows.filter(r=>r.b===spec.budget).map(r=>({r,b:r.b}));
-    return{d,grid:false,items,file:`${spec.area}_listing_${BUDGET[spec.budget]}`,title:`${spec.area}: ${groupName(spec.budget)} properties`,sub:`${swatch(spec.budget)}<span>${items.length} listings</span><span>· ${fixedRules()?'Average':'Centroid'} ${fmtV(s.centroid,c.metric)}</span>${usingBuyer()?`<span>· ${esc(ruleText(spec.budget))}</span>`:''}`};
+    return{d,grid:false,items,file:`${spec.area}_listing_${BUDGET[spec.budget]}`,title:`${spec.area}: ${groupName(spec.budget)} properties`,sub:`${swatch(spec.budget)}<span>${items.length} listings</span><span>· ${fixedRules()?'Average':'Centroid'} ${fmtV(s.centroid,c.metric)}</span>${catMode()?`<span>· ${esc(ruleText(spec.budget))}</span>`:''}`};
   }
   if(spec.loc){
     const rows=d.rows.filter(r=>r.lat+','+r.lon===spec.loc);if(!rows.length)return null;
@@ -784,16 +1522,30 @@ function resolveSheet(spec){
   }
   return null;
 }
+/* Every portal link stored for a listing: the main one first, then any repeats found on other pages. */
+const SITE_NAMES=[['squareyards','Square Yards'],['99acres','99acres'],['nobroker','NoBroker'],['houssed','Houssed'],['magicbricks','MagicBricks'],['housing.com','Housing.com'],['makaan','Makaan'],['commonfloor','CommonFloor']];
+const siteName=u=>{const h=String(u).toLowerCase();const m=SITE_NAMES.find(([k])=>h.includes(k));if(m)return m[1];try{return new URL(u).hostname.replace(/^www\./,'')}catch(e){return'Source'}};
+function srcLinks(r){const all=(rawOf(r,'source url')+' '+rawOf(r,'other source urls')).split(/[\s|;,]+/).filter(u=>/^https?:\/\//i.test(u));return[...new Set(all)].map(u=>({u,site:siteName(u)}))}
+function srcHTML(r,max){const L=srcLinks(r);if(!L.length)return'';const seen={};const parts=L.slice(0,max||L.length).map(x=>{seen[x.site]=(seen[x.site]||0)+1;return `<a class="src" href="${esc(x.u)}" target="_blank" rel="noopener">${esc(x.site)}${seen[x.site]>1?' '+seen[x.site]:''} ↗</a>`});return parts.join(' ')+(max&&L.length>max?` <span class="muted">+${L.length-max} more</span>`:'')}
+function srcPopup(r,a){
+  const L_=srcLinks(r),D=ihRule(r),seen={};
+  return `<div class="srcpop"><b>${esc(r.name)}</b><div>${money(r.price)} · ${r.bhk??'?'} BHK · ${r.sqft?inr(r.sqft)+' sqft':'size not given'} · ${esc(r.type||'')}</div>${D?`<div style="color:${D.color};font-weight:700">● ${esc(D.label)}</div>`:''}<div class="sp-h">Taken from</div>${L_.length?L_.map(x=>{seen[x.site]=(seen[x.site]||0)+1;return `<a class="srcbtn" href="${esc(x.u)}" target="_blank" rel="noopener">${esc(x.site)}${seen[x.site]>1?' (copy '+seen[x.site]+')':''} ↗</a><div class="sp-u">${esc(x.u.replace(/^https?:\/\/(www\.)?/,'').slice(0,70))}${x.u.length>78?'…':''}</div>`}).join(''):'<div>No source link was given for this listing.</div>'}<div class="sp-u">${esc(a)}${rawOf(r,'last photo date')?` · last updated on the site ${esc(rawOf(r,'last photo date'))}`:''}</div></div>`;
+}
 function sheetColumns(info){
   const name=b=>b==null?'Not classified':BUDGET[b];
   return[{key:'name',label:'Project',get:x=>x.r.name},
-    {key:'budget',label:usingBuyer()?'Buyer fit':'Budget',get:x=>name(x.r.b),order:x=>x.r.b,tag:x=>x.r.b},
+    {key:'src',label:'Source listing',get:x=>srcLinks(x.r).map(l=>l.u).join(' '),link:1},
+    ...(info.multi?[{key:'area',label:'Area',get:x=>x.area}]:[]),
+    {key:'budget',label:usingVC()?'Cluster':usingSeg()?'Segment':usingBuyer()?'Buyer fit':'Budget',get:x=>name(x.r.b),order:x=>x.r.b,tag:x=>x.r.b},
+    {key:'type',label:'Type',get:x=>x.r.type},
+    ...(info.items.some(x=>ihRule(x.r))?[{key:'ihv',label:'Buyer decision',get:x=>{const q=ihRule(x.r);return q?q.short:null},order:x=>{const q=ihRule(x.r);return q?IH_RULES.indexOf(q):null}}]:[]),
     {key:'bhk',label:'BHK',num:1,get:x=>x.r.bhk,order:x=>x.r.bhk},
     {key:'sqft',label:'Area (sqft)',num:1,get:x=>x.r.sqft?inr(x.r.sqft):null,order:x=>x.r.sqft},
     {key:'ppsf',label:'Price per sqft',num:1,get:x=>x.r.ppsf?'₹'+inr(x.r.ppsf):null,order:x=>x.r.ppsf},
     {key:'price',label:'Total price',num:1,get:x=>money(x.r.price),order:x=>x.r.price},
     {key:'ready',label:'Ready to move',get:x=>x.r.ready},
-    {key:'km',label:'From Infosys',num:1,get:x=>x.r.km!=null?x.r.km.toFixed(1)+' km':null,order:x=>x.r.km}];
+    {key:'km',label:'From Infosys',num:1,get:x=>x.r.km!=null?x.r.km.toFixed(1)+' km':null,order:x=>x.r.km},
+    {key:'rel',label:'Reliability',get:x=>rawOf(x.r,'reliability').split(':')[0]}];
 }
 const blank=v=>v==null||v==='';
 function sheetRows(){
@@ -803,12 +1555,13 @@ function sheetRows(){
   if(sheet.sort){
     const c=sheet.cols.find(k=>k.key===sheet.sort.key),dir=sheet.sort.dir;
     if(c)out.sort((x,y)=>{const a=c.order?c.order(x):c.get(x),b=c.order?c.order(y):c.get(y);if(blank(a))return 1;if(blank(b))return -1;const na=Number(a),nb=Number(b);return(!isNaN(na)&&!isNaN(nb)?na-nb:String(a).localeCompare(String(b)))*dir});
-  }else out.sort((x,y)=>usingBuyer()?(x.r.b-y.r.b)||(x.r.price-y.r.price):y.r.price-x.r.price);
+  }else out.sort((x,y)=>catMode()?(x.r.b-y.r.b)||(x.r.price-y.r.price):y.r.price-x.r.price);
   return out;
 }
 function drawSheetBody(){
   const rows=sheetRows();
-  $('shB').innerHTML=rows.map(x=>'<tr>'+sheet.cols.map(c=>{const v=c.get(x),t=blank(v)?'–':String(v);
+  $('shB').innerHTML=rows.map((x,i)=>`<tr data-si="${i}"${x.r.lat!=null?' class="goto"':''}>`+sheet.cols.map(c=>{const v=c.get(x),t=blank(v)?'–':String(v);
+    if(c.link)return blank(v)?'<td class="muted">No link</td>':`<td class="srcs">${srcHTML(x.r,3)}</td>`;
     const b=c.tag?c.tag(x):null;
     if(b!=null)return `<td><span class="tag"><i class="sw ${BCLASS[b]}"></i>${esc(t)}</span></td>`;
     return `<td${c.num?' class="n"':''}>${esc(t)}</td>`}).join('')+'</tr>').join('');
@@ -818,7 +1571,7 @@ function drawSheetHead(){
   $('shH').innerHTML='<tr>'+sheet.cols.map(c=>`<th${c.num?' class="n"':''}><button type="button" data-k="${esc(c.key)}">${esc(c.label)}${sheet.sort&&sheet.sort.key===c.key?(sheet.sort.dir>0?' ▲':' ▼'):''}</button></th>`).join('')+'</tr>';
 }
 function highlightCell(c){
-  if(sheet.hl){try{sheet.hl.setStyle({weight:1,color:sheet.hl.options.fillColor})}catch(e){}sheet.hl=null}
+  if(sheet.hl){try{sheet.hl.setStyle({weight:1.5,color:'#ffffff'})}catch(e){}sheet.hl=null}
   if(c&&c._rect){c._rect.setStyle({weight:3,color:'#111'});c._rect.bringToFront();sheet.hl=c._rect}
 }
 function padForSheet(){document.querySelector('main').style.paddingBottom=sheet.spec?$('sheet').offsetHeight+'px':''}
@@ -849,6 +1602,8 @@ function closeSheet(){
   $('sheet').hidden=true;$('sheet').classList.remove('big');$('shBig').textContent='Larger';padForSheet();
 }
 $('shX').addEventListener('click',closeSheet);
+$('shB').addEventListener('click',e=>{if(e.target.closest('a'))return;const tr=e.target.closest('tr[data-si]');if(!tr)return;const x=sheet.shown[+tr.dataset.si];if(!x||x.r.lat==null)return;
+  settleMap();map.setView([x.r.lat,x.r.lon],Math.max(map.getZoom(),16),{animate:false});const m=listingMarkers.get(x.r);if(m){m.openTooltip();m.setStyle({weight:4,color:'#111'});setTimeout(()=>{try{m.setStyle({weight:[1,2,3].includes(typeIdx(x.r.type))?2.5:1.2,color:VC.groups[x.r.vc].outlier?'#111':'#fff'})}catch(_){}},2500)}document.querySelector('main').scrollTop=0});
 $('shBig').addEventListener('click',()=>{const b=$('sheet').classList.toggle('big');$('shBig').textContent=b?'Smaller':'Larger';padForSheet()});
 $('shQ').addEventListener('input',e=>{sheet.q=e.target.value;drawSheetBody()});
 $('shH').addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(!b)return;const k=b.dataset.k;
@@ -867,7 +1622,7 @@ const drop=$('drop');
 ['dragenter','dragover'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.add('over')}));
 ['dragleave','drop'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.remove('over')}));
 drop.addEventListener('drop',e=>onFiles(e.dataTransfer.files));
-$('queue').addEventListener('change',e=>{const i=e.target.dataset.area;if(i==null)return;state.queue[+i].area=e.target.value;renderQueue()});
+$('queue').addEventListener('change',e=>{if(e.target.dataset.mode!=null){state.queue[+e.target.dataset.mode].mode=e.target.value;renderQueue();return}const i=e.target.dataset.area;if(i==null)return;state.queue[+i].area=e.target.value;renderQueue()});
 $('queue').addEventListener('input',e=>{const i=e.target.dataset.other;if(i!=null)state.queue[+i].other=e.target.value});
 $('queue').addEventListener('click',e=>{const i=e.target.dataset.x;if(i==null)return;state.queue.splice(+i,1);renderQueue()});
 $('ccancel').addEventListener('click',()=>{state.queue=[];renderQueue();$('qerr').hidden=true});
@@ -882,8 +1637,16 @@ $('confirm').addEventListener('submit',async e=>{
   $('qerr').hidden=true;
   for(let i=0;i<q.length;i++){
     const x=q[i],d={file:x.file,rows:x.rows,skipped:x.skipped,columns:x.columns,nameCol:x.nameCol,sold:x.sold,old:x.old,at:Date.now()};
+    const old=state.data[names[i]];
+    if(old&&x.mode==='add'){
+      const key=r=>[r.name,r.price,r.sqft,r.bhk,r.lat,r.lon].join('|'),seen=new Set(old.rows.map(key));
+      d.rows=[...old.rows,...x.rows.filter(r=>!seen.has(key(r)))];
+      d.columns=[...new Set([...(old.columns||[]),...(x.columns||[])])];
+      d.file=`${old.file} + ${x.file}`;d.sold=(old.sold||0)+(x.sold||0);d.old=(old.old||0)+(x.old||0);d.skipped=(old.skipped||0)+(x.skipped||0);d.nameCol=old.nameCol||x.nameCol;
+    }
     state.data[names[i]]=d;computeCluster(d);await saveArea(names[i],d);
   }
+  recomputeAll();
   state.queue=[];renderQueue();
   if(names.length===1)select(names[0]);else selectAll();
 });
@@ -894,14 +1657,42 @@ $('scale').addEventListener('click',e=>{const v=e.target.dataset.v;if(v&&v!==sta
 $('minsq').addEventListener('change',e=>{const v=parseFloat(e.target.value);state.minSqft=v>=0?v:1600;e.target.value=state.minSqft;try{localStorage.setItem('minSqft',state.minSqft)}catch(x){}recomputeAll();renderAll()});
 try{const v=parseFloat(localStorage.getItem('minSqft'));if(v>=0){state.minSqft=v;$('minsq').value=v}}catch(x){}
 $('method').addEventListener('click',e=>{const v=e.target.dataset.v;if(!v||v===state.method)return;state.method=v;setGroups(v);state.show=BUDGET.map(()=>true);if(v!=='kmeans'){state.metric='price';state.scale='log'}recomputeAll();renderAll();map.invalidateSize()});
+$('dlTemplate').addEventListener('click',()=>{const a=state.selected&&state.selected!=='__all'?state.selected:'Area';saveCSV(`${a.replace(/[^\w]+/g,'_')}_Property.csv`,[['name of the project','type','bhk','area_sqft','status','asking price','price_numeric','price per sqft','lat-lon','age_years','total amenities','orr connectivity','airport distance'].join(',')])});
+$('dlChecklist').addEventListener('click',()=>{const extra=Object.keys(state.data).filter(k=>!AREAS.some(a=>a.name===k)).map(n=>({name:n,km:'',dir:''}));saveCSV('Area_checklist.csv',[['Area','Km from Infosys','Direction','File uploaded','Listings kept','In-budget listings','File name to use'].join(','),...[...AREAS,...extra].map(a=>{const d=state.data[a.name];return[a.name,a.km,a.dir,d?'Yes':'No',d?d.rows.length:'',d?d.rows.filter(r=>r.price<=OKAY_UP_TO).length:'',`${a.name.replace(/[^\w]+/g,'_')}_Property.csv`].map(csvCell).join(',')})])});
+$('segtype').addEventListener('click',e=>{const v=e.target.dataset.v;if(!v||v===state.segType)return;state.segType=v;
+  state.show=[0,1,2,3,4,5].map(k=>v==='all'||(v==='apt'?k<3:k>=3));state.colorBy='class';recomputeAll();renderAll()});
+$('colorby').addEventListener('click',e=>{const v=e.target.dataset.v;if(v&&v!==state.colorBy){state.colorBy=v;renderAll()}});
 $('view').addEventListener('click',e=>{const v=e.target.dataset.v;if(v&&v!==state.view){state.view=v;renderAll()}});
 $('cell').addEventListener('click',e=>{const v=+e.target.dataset.v;if(v&&v!==state.cell){state.cell=v;Object.values(state.data).forEach(computeGrid);renderAll()}});
-$('chips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;state.show[+b.dataset.b]=!state.show[+b.dataset.b];renderAll()});
+$('chips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;if(b.dataset.t!=null){state.showType[+b.dataset.t]=!state.showType[+b.dataset.t];renderAll();return}state.show[+b.dataset.b]=!state.show[+b.dataset.b];renderAll()});
 function selectAll(){closeSheet();state.selected='__all';state.tq='';renderAll();map.closePopup();settleMap();map.fitBounds(WHOLE,{padding:[12,12],animate:false})}
 $('whole').addEventListener('click',selectAll);
 $('results').addEventListener('click',async e=>{
   const s=e.target.closest('button[data-s]');
   if(s){const k=s.dataset.s;if(state.sort.key===k)state.sort.dir*=-1;else state.sort={key:k,dir:k==='name'||k==='type'||k==='status'?1:-1};renderResults();return}
+  const vs=e.target.closest('[data-vcshow]'),vl=e.target.closest('[data-vclist]'),vd=e.target.closest('[data-vcl]');
+  if(vs||e.target.id==='vcall'){if(!usingVC()){state.method='clusters';recomputeAll()}const k=vs?+vs.dataset.vcshow:null;state.show=BUDGET.map((_,i)=>k==null||i===k);state.view='grid';selectAll();
+    if(k!=null){const pts=VC.rows.filter(r=>r.vc===k&&r.lat!=null).map(r=>[r.lat,r.lon]);if(pts.length)map.fitBounds(L.latLngBounds(pts).pad(.15),{maxZoom:15,animate:false})}return}
+  const vco=e.target.closest('[data-vcout]');if(vco){openSheet({vcout:1},true);return}
+  const ihm=e.target.closest('[data-ihmap]');if(ihm){ihShow(ihm.dataset.ihmap);return}
+  const ihl=e.target.closest('[data-ihlist]');if(ihl){openSheet({ih:ihl.dataset.ihlist},true);return}
+  if(vl){if(!usingVC()){state.method='clusters';recomputeAll();renderAll()}openSheet({vc:+vl.dataset.vclist},true);return}
+  if(vd){const [a,ri]=vd.dataset.vcl.split('|');if(!usingVC()){state.method='clusters';recomputeAll();renderAll()}const r=state.data[a].rows[+ri];if(r.lat!=null){settleMap();map.setView([r.lat,r.lon],Math.max(map.getZoom(),16),{animate:false})}openSheet({area:a,rid:+ri},true);document.querySelector('main').scrollTop=0;return}
+  const tmc=e.target.closest('[data-tmcell]');
+  if(tmc){const [n,key,g]=tmc.dataset.tmcell.split('|');const want=g==='1'?'house':'apt';if(state.segType!==want){state.segType=want;state.show=[0,1,2,3,4,5].map(k=>want==='apt'?k<3:k>=3);recomputeAll()}select(n);focusCell(key);return}
+  const agc=e.target.closest('[data-agcell]');
+  if(agc){const n=agc.closest('[data-ag]').dataset.ag;select(n);focusCell(agc.dataset.agcell);return}
+  if(e.target.id==='showHouses'){
+    state.colorBy='type';state.showType=[false,true,true,true,false];state.view='grid';renderAll();
+    const pts=Object.values(state.data).flatMap(d=>d.rows.filter(r=>[1,2,3].includes(typeIdx(r.type))&&r.lat!=null).map(r=>[r.lat,r.lon]));
+    settleMap();if(pts.length)map.fitBounds(L.latLngBounds(pts).pad(.25),{maxZoom:15,animate:false});document.querySelector('main').scrollTop=0;return}
+  if(e.target.id==='dlHouses'){
+    const hs=Object.entries(state.data).flatMap(([n,d])=>d.rows.filter(r=>[1,2,3].includes(typeIdx(r.type))).map(r=>({n,r})));
+    saveCSV('Independent_houses_and_villas.csv',[['Area','Type','Name','BHK','Built-up sqft','Total price','Price per sqft','Segment','Buyer fit','Ready to move','Km from Infosys','Lat','Lon','Source link'].join(','),...hs.map(({n,r})=>[n,r.type,r.name,r.bhk,r.sqft,r.price,r.ppsf?Math.round(r.ppsf):'',r.seg!=null?GROUPS.segments.names[r.seg]:'',BUDGET_NAME[buyerClass(r)],r.ready,r.km!=null?r.km.toFixed(1):'',r.lat,r.lon,rawOf(r,'source url')].map(csvCell).join(','))]);return}
+  const hr=e.target.closest('tr.houserow');
+  if(hr&&!e.target.closest('a')){const [n,ll]=hr.dataset.hloc.split('|'),[la,lo]=ll.split(',').map(Number);settleMap();map.setView([la,lo],Math.max(map.getZoom(),16),{animate:false});openSheet({area:n,loc:la+','+lo},true);document.querySelector('main').scrollTop=0;return}
+  if(e.target.id==='showTop'){const t=state.analysis.top;if(t.r.lat!=null){settleMap();map.setView([t.r.lat,t.r.lon],Math.max(map.getZoom(),15),{animate:false});openSheet({area:t.area,loc:t.r.lat+','+t.r.lon},true);document.querySelector('main').scrollTop=0}return}
+  if(e.target.id==='dlVisit'){const A=state.analysis,{stops}=visitStops(A);saveCSV(`Visit_list_${A.scopeName.replace(/[^\w]+/g,'_')}.csv`,[['Stop','Area','Project','In-budget listings','Lowest price','Highest price','Average price per sqft','Check','Latitude','Longitude','Directions','Visited','New properties found','Notes'].join(','),...stops.map(q=>{const ps=q.rows.map(r=>r.price),pp=q.rows.map(r=>r.ppsf).filter(x=>x>0);return[q.stop,q.area,q.name,q.rows.length,Math.min(...ps),Math.max(...ps),pp.length?Math.round(avg(pp)):'',q.verify?'Verify price':'',q.lat,q.lon,`https://www.google.com/maps/dir/?api=1&destination=${q.lat},${q.lon}`,visited[q.key]?'Yes':'','',''].map(csvCell).join(',')})]);return}
   const sn=e.target.closest('[data-sel]');
   if(sn){select(sn.dataset.sel);return}
   const rb=e.target.closest('button[data-rec]');
@@ -910,7 +1701,7 @@ $('results').addEventListener('click',async e=>{
   const cr=e.target.closest('tr.cellrow');
   if(cr){focusCell(cr.dataset.cell);return}
   if(e.target.id==='dl'){downloadCSV(state.selected,state.data[state.selected]);return}
-  if(e.target.id==='rm'){const a=state.selected;delete state.data[a];await deleteArea(a);select(a,false);return}
+  if(e.target.id==='rm'){const a=state.selected;delete state.data[a];await deleteArea(a);recomputeAll();select(a,false);return}
   const tr=e.target.closest('tr.link');if(tr)select(tr.dataset.a);
 });
 $('results').addEventListener('keydown',e=>{if(e.key==='Enter'){const sn=e.target.closest('[data-sel]');if(sn)select(sn.dataset.sel);const tr=e.target.closest('tr.link');if(tr)select(tr.dataset.a);const cr=e.target.closest('tr.cellrow');if(cr)focusCell(cr.dataset.cell)}});
@@ -922,6 +1713,7 @@ function focusCell(key){
   openSheet({area:state.selected,cell:key},true);
   document.querySelector('main').scrollTop=0;
 }
+$('results').addEventListener('change',e=>{if(e.target.id==='ihc'){state.ihColor=e.target.value;renderAll();return}if(e.target.id==='vct'){state.vcType=e.target.value;state.vcK='auto';state.ihOnly='all';recomputeAll();renderAll();return}if(e.target.id==='vcon'){state.vcOn=e.target.value;state.vcK='auto';recomputeAll();renderAll();return}if(e.target.id==='vck'){state.vcK=e.target.value==='auto'?'auto':+e.target.value;recomputeAll();renderAll();return}const k=e.target.dataset.visit;if(k==null)return;if(e.target.checked)visited[k]=1;else delete visited[k];try{localStorage.setItem('visited',JSON.stringify(visited))}catch(x){}const sub=e.target.closest('section').querySelector('.sub');if(sub&&state.analysis.stops)sub.textContent=`${state.analysis.stops.length} other in-budget locations up to ₹1.55 Cr · ${state.analysis.stops.filter(q=>visited[q.key]).length} visited`});
 $('results').addEventListener('input',e=>{if(e.target.id==='tq'){state.tq=e.target.value;renderTable(state.data[state.selected])}});
 const tip=$('tip');
 $('results').addEventListener('mousemove',e=>{
@@ -930,12 +1722,14 @@ $('results').addEventListener('mousemove',e=>{
   tip.style.left=Math.min(innerWidth-270,e.clientX+12)+'px';tip.style.top=(e.clientY-34)+'px';
 });
 $('results').addEventListener('mouseleave',()=>tip.hidden=true);
-let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{const d=state.data[state.selected];drawOverview();if(d){drawChart(d);drawGridChart(d)}setToolbarVar();map.invalidateSize();padForSheet()},150)});
+let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{const d=state.data[state.selected];drawVC();drawSegPlot();drawTypeMaps();drawAreaGrids();drawClusterPlot();drawOverview();if(d){drawChart(d);drawGridChart(d)}setToolbarVar();map.invalidateSize();padForSheet()},150)});
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(layout);
 
 /* ---------- start ---------- */
 (async()=>{
-  await loadAll();recomputeAll();
+  /* Uploads are not kept: each refresh starts from the Infosys map alone. Older saved uploads are cleared too. */
+  try{indexedDB.deleteDatabase('infosys-clusters')}catch(e){}
+  recomputeAll();
   const k=Object.keys(state.data);state.selected=k.length>1?'__all':(k[0]||null);
   renderAll();if(state.selected)fitSelected();
 })();
