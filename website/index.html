@@ -174,7 +174,7 @@ let BUDGET=GROUPS.segments.names,BCLASS=GROUPS.segments.cls,BCOLOR=GROUPS.segmen
 function setGroups(m){BUDGET=GROUPS[m].names;BCLASS=GROUPS[m].cls;BCOLOR=GROUPS[m].color}
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const state={data:{},selected:null,metric:'price',scale:'log',show:[true,true,true,true,true,true],minSqft:1600,sort:{key:'price',dir:-1},tq:'',pending:null,view:'grid',cell:500,method:'clusters',vcK:'auto',vcOn:'price',vcType:'all',ihColor:'decision',ihOnly:'all',segType:'all',colorBy:'class',showType:[true,true,true,true,true]};
+const state={data:{},selected:null,metric:'price',scale:'log',show:[true,true,true,true,true,true],minSqft:1600,sort:{key:'price',dir:-1},tq:'',pending:null,view:'grid',cell:500,method:'clusters',vcK:'auto',vcOn:'price',vcRange:'fixed',vcType:'all',ihColor:'decision',ihOnly:'all',segType:'all',colorBy:'class',showType:[true,true,true,true,true]};
 
 /* ---------- formatting ---------- */
 const inr=n=>Math.round(n).toLocaleString('en-IN');
@@ -500,6 +500,7 @@ const IH_RULES=[{key:'good',label:'Good',short:'Good',max:1.5e7,color:'#1e9e5a',
 const ihRule=r=>typeIdx(r.type)===2&&r.price>0?IH_RULES.find(x=>r.price<=x.max):null;
 let VCCOL=[];
 const VC_TYPES={all:{label:'All property types',of:'all listings',test:()=>true},apt:{label:'Apartments',of:'apartments',test:r=>typeIdx(r.type)===0},ih:{label:'Independent houses',of:'independent houses',test:r=>typeIdx(r.type)===2},villa:{label:'Villas',of:'villas',test:r=>[1,3].includes(typeIdx(r.type))}};
+const FIX=[1.5e7,2.5e7],FIX_NAMES=['Low price, up to ₹1.50 Cr','Mid-range price, ₹1.50 Cr to ₹2.50 Cr','High price, above ₹2.50 Cr'];
 function computeVCPrice(){
   const T=VC_TYPES[state.vcType]||VC_TYPES.all;
   Object.values(state.data).forEach(d=>d.rows.forEach(r=>r.vc=null));
@@ -518,10 +519,11 @@ function computeVCPrice(){
   // elbow: the k farthest below the straight line joining the first and last points of the inertia curve
   const a0=I[0],a1=I[I.length-1],dist=p=>Math.abs((a1.inertia-a0.inertia)*p.k-(a1.k-a0.k)*p.inertia+a1.k*a0.inertia-a1.inertia*a0.k);
   VC.bestK=I.slice(1).reduce((b,p)=>dist(p)>dist(b)?p:b,I[1]).k;
-  const k=state.vcK!=='auto'&&VC.runs[state.vcK]?+state.vcK:VC.bestK,best={k,...VC.runs[k]};
-  VC.k=k;VC.sil=best.sil;
+  let k=state.vcK!=='auto'&&VC.runs[state.vcK]?+state.vcK:VC.bestK;const best={k,...VC.runs[k]};
+  VC.k=k;VC.sil=best.sil;VC.fixed=state.vcRange==='fixed';
   const byC=[...Array(k).keys()].map(c=>({c,m:medianOf(rows.filter((_,i)=>best.run.L[i]===c).map(r=>r.price))})).sort((a,b)=>a.m-b.m),rank={};byC.forEach((o,i)=>rank[o.c]=i);
-  rows.forEach((r,i)=>r.vc=rank[best.run.L[i]]);
+  if(VC.fixed){k=3;VC.k=3;rows.forEach(r=>r.vc=r.price<=FIX[0]?0:r.price<=FIX[1]?1:2)}
+  else rows.forEach((r,i)=>r.vc=rank[best.run.L[i]]);
   const TIERS={2:['Low price','High price'],3:['Low price','Mid-range price','High price'],4:['Low price','Lower mid-range','Upper mid-range','High price'],
     5:['Low price','Lower mid-range','Mid-range price','Upper mid-range','High price'],6:['Very low price','Low price','Lower mid-range','Upper mid-range','High price','Very high price'],
     7:['Very low price','Low price','Lower mid-range','Mid-range price','Upper mid-range','High price','Very high price'],8:['Lowest price','Very low price','Low price','Lower mid-range','Upper mid-range','High price','Very high price','Highest price']}[k];
@@ -529,11 +531,11 @@ function computeVCPrice(){
   for(let c=0;c<k;c++){
     const rs=rows.filter(r=>r.vc===c),wq=rs.filter(r=>r.sqft>0),ps=rs.map(r=>r.price),bk=rs.map(r=>r.bhk).filter(x=>x),km=rs.map(r=>r.km).filter(x=>x!=null),hs=rs.filter(r=>[1,2,3].includes(typeIdx(r.type))).length;
     const ar=new Map();rs.forEach(r=>ar.set(r._area,(ar.get(r._area)||0)+1));
-    const G={n:rs.length,price:medianOf(ps),pmin:Math.min(...ps),pmax:Math.max(...ps),sqft:wq.length?medianOf(wq.map(r=>r.sqft)):null,ppsf:wq.length?medianOf(wq.map(r=>r.price/r.sqft)):null,bhk:bk.length?medianOf(bk):null,km:km.length?medianOf(km):null,house:hs/rs.length,ready:rs.filter(r=>r.ready==='Yes').length/rs.length,areas:[...ar.entries()].sort((a,b)=>b[1]-a[1])};
+    const G={n:rs.length,price:ps.length?medianOf(ps):0,pmin:ps.length?Math.min(...ps):0,pmax:ps.length?Math.max(...ps):0,sqft:wq.length?medianOf(wq.map(r=>r.sqft)):null,ppsf:wq.length?medianOf(wq.map(r=>r.price/r.sqft)):null,bhk:bk.length?medianOf(bk):null,km:km.length?medianOf(km):null,house:hs/rs.length,ready:rs.filter(r=>r.ready==='Yes').length/rs.length,areas:[...ar.entries()].sort((a,b)=>b[1]-a[1])};
     const t=[];if(G.sqft)t.push(`${inr(G.sqft)} sqft`);if(G.bhk)t.push(`mostly ${G.bhk%1?G.bhk:G.bhk.toFixed(0)} BHK`);if(G.ppsf)t.push(`₹${inr(G.ppsf)} per sqft`);if(G.km!=null)t.push(`about ${G.km.toFixed(1)} km from Infosys`);
     t.push(`${Math.round(G.ready*100)}% ready to move`);if(hs)t.push(`${Math.round(G.house*100)}% villas or houses`);
     G.centre=Math.exp(avg(rs.map(r=>Math.log(r.price))));G.tier=TIERS[c];
-    groups.push({...G,name:`${TIERS[c]}, ${money(G.pmin)} to ${money(G.pmax)}`,desc:`Priced ${money(G.pmin)} to ${money(G.pmax)}, typically ${money(G.price)}. ${t.join(', ').replace(/^./,x=>x.toUpperCase())}.`,outlier:false});
+    groups.push({...G,name:VC.fixed?FIX_NAMES[c]:`${TIERS[c]}, ${money(G.pmin)} to ${money(G.pmax)}`,desc:rs.length?`Priced ${money(G.pmin)} to ${money(G.pmax)}, typically ${money(G.price)}. ${t.join(', ').replace(/^./,x=>x.toUpperCase())}.`:'No listings in this range.',outlier:false});
   }
   VC.groups=groups;
   GROUPS.clusters={names:groups.map(g=>g.name),cls:groups.map((g,i)=>'vc'+i),color:groups.map((g,i)=>VC_PALETTE[i%VC_PALETTE.length])};
@@ -1242,6 +1244,9 @@ function drawTypeMaps(){
 }
 function whyHTML(){
   if(!VC||!VC.priceOnly||!VC.groups.length)return'';
+  if(VC.fixed){const G=VC.groups,why=['every home within the buyer\'s ₹1.50 Cr budget','homes up to ₹1 Cr above the buyer\'s budget','every home above ₹2.50 Cr'];
+    return `<div class="why"><h3>Why these price ranges</h3><ul>${G.map((g,i)=>`<li><b><i class="sw vc${i}"></i> ${esc(g.name)}</b> (${g.n} listing${g.n===1?'':'s'}). This range covers ${why[i]}.${g.n?` Here the listings run from ${money(g.pmin)} to ${money(g.pmax)}, typically ${money(g.price)}.`:''}</li>`).join('')}</ul>
+    <p class="note">These limits are the ones you chose: ₹1.50 Cr and ₹2.50 Cr. ${G[0].n&&G[0].pmin<5e6?`The cheapest listing, ${money(G[0].pmin)}, is below ₹50 L and is counted as low price.`:''}</p></div>`}
   const G=VC.groups,k=G.length,cut=i=>Math.sqrt(G[i].centre*G[i+1].centre),inK=VC.ks.find(x=>x.k===VC.k);
   const prevI=VC.ks.find(x=>x.k===VC.k-1),nextI=VC.ks.find(x=>x.k===VC.k+1);
   const item=(g,i)=>{const from=i===0?'that is the cheapest listing in the data':`that is the cheapest listing above the boundary at <b>${money(cut(i-1))}</b>`;
@@ -1249,7 +1254,7 @@ function whyHTML(){
     const bnd=i<k-1?` That boundary sits halfway (on the log price scale) between this cluster's centre, ${money(g.centre)}, and the next cluster's centre, ${money(G[i+1].centre)}. Every listing goes to whichever centre is nearer, so the prices change cluster there.${G[i+1].pmin>g.pmax*1.001?` No listing is priced between ${money(g.pmax)} and ${money(G[i+1].pmin)}, which is why the ranges do not touch.`:''}`:'';
     return `<li><b><i class="sw vc${i}"></i> ${esc(g.tier)}, ${money(g.pmin)} to ${money(g.pmax)}</b> (${g.n} listings). It starts at <b>${money(g.pmin)}</b> because ${from}, and ends at <b>${money(g.pmax)}</b> because ${to}. K-means settled this cluster's centre at <b>${money(g.centre)}</b>, the middle of its ${g.n} listings on the log price scale.${bnd}</li>`};
   return `<div class="why"><h3>Why these price ranges</h3>
-  <p class="note">No range is typed in by hand. K-means moves ${k} centres along the price line until each one sits in the middle of its own listings and no listing would be closer to another centre. The ranges are what is left: each one runs from the first to the last listing nearest to its centre.</p>
+  <p class="note">K-means moves ${k} centres along the price line until each one sits in the middle of its own listings and no listing would be closer to another centre. Each range runs from the first to the last listing nearest to its centre.</p>
   <ul>${G.map(item).join('')}</ul>
   <p class="note"><b>Why ${k} clusters:</b> ${prevI?`going from ${k-1} to ${k} clusters makes the groups much tighter (inertia ${prevI.inertia.toFixed(1)} → ${inK.inertia.toFixed(1)})`:`${k} clusters is the smallest choice`}${nextI?`, while going to ${k+1} gains much less (→ ${nextI.inertia.toFixed(1)})`:''}. That bend is the elbow, so ${k} is used. Choose another number above to see how the ranges move.</p></div>`;
 }
@@ -1262,12 +1267,15 @@ function ihHTML(){
 function vcHTML(){
   if(!VC||!VC.groups.length)return Object.keys(state.data).length?`<section class="card"><div class="head"><div><h2>Cluster analysis</h2><p class="note">${VC&&VC.priceOnly?`Only ${VC.rows.length} ${esc(VC.typeOf)} have a price; at least 8 are needed to find clusters.`:'Upload at least 8 listings with a price and size to run the cluster analysis.'}</p></div>${VC&&VC.priceOnly?`<div class="group"><label for="vct" class="sub">Property type</label><select id="vct">${Object.entries(VC_TYPES).map(([k,v])=>`<option value="${k}"${state.vcType===k?' selected':''}>${v.label}</option>`).join('')}</select></div>`:''}</div></section>`:'';
   const f=VC.fences,main=VC.groups.filter(g=>!g.outlier),outs=VC.groups.filter(g=>g.outlier);
-  const card=(g,i)=>`<div class="vcc${g.outlier?' out':''}"><div class="vch"><i class="sw vc${i}"></i><div><b>${g.outlier?'':'Cluster '+(i+1)+': '}${esc(g.name)}</b><span>${g.n} listings</span></div></div>
+  const card=(g,i)=>`<div class="vcc${g.outlier?' out':''}"><div class="vch"><i class="sw vc${i}"></i><div><b>${g.outlier?'':(VC.fixed?'Range ':'Cluster ')+(i+1)+': '}${esc(g.name)}</b><span>${g.n} listing${g.n===1?'':'s'}</span></div></div>
     <p>${esc(g.desc)}</p>
     <dl><dt>Price range</dt><dd>${money(g.pmin)} to ${money(g.pmax)}</dd><dt>Typical size</dt><dd>${g.sqft?inr(g.sqft)+' sqft':'–'}${g.bhk?` · ${g.bhk%1?g.bhk:g.bhk.toFixed(0)} BHK`:''}</dd><dt>Villas and houses</dt><dd>${Math.round(g.house*100)}%</dd><dt>Areas</dt><dd>${g.areas.slice(0,3).map(a=>`${esc(a[0])} ${a[1]}`).join(', ')}</dd></dl>
     <div class="group"><button class="btn small" type="button" data-vcshow="${i}">Show on map</button><button class="btn small" type="button" data-vclist="${i}">List its ${g.n} listings</button></div></div>`;
-  return `<section class="card"><div class="head"><div><h2>Cluster analysis: ${VC.k} clusters${outs.length?` and ${outs.length} outlier group${outs.length>1?'s':''}`:''}</h2><p class="sub">${VC.rows.length} listings from ${plural(Object.keys(state.data).length,'area','areas')} · ${VC.priceOnly&&VC.removed.length?`${VC.removed.length} price outliers removed · `:''}grouped on ${esc(VC.used.join(', '))}</p></div><div class="group"><label for="vcon" class="sub">Cluster on</label><select id="vcon"><option value="price"${state.vcOn==='price'?' selected':''}>Price only</option><option value="all"${state.vcOn==='all'?' selected':''}>Price, size and location</option></select>${state.vcOn==='price'?`<label for="vct" class="sub">Property type</label><select id="vct">${Object.entries(VC_TYPES).map(([k,v])=>`<option value="${k}"${state.vcType===k?' selected':''}>${v.label} (${Object.values(state.data).reduce((t,d)=>t+d.rows.filter(r=>r.price>0&&v.test(r)).length,0)})</option>`).join('')}</select>`:''}${state.vcOn==='price'&&state.vcType==='ih'?`<label for="ihc" class="sub">Colour houses on the map by</label><select id="ihc"><option value="decision"${state.ihColor==='decision'?' selected':''}>Buyer decision</option><option value="cluster"${state.ihColor==='cluster'?' selected':''}>Price cluster</option></select>`:''}<label for="vck" class="sub">Number of clusters</label><select id="vck">${['auto',...VC.ks.map(x=>x.k)].map(v=>`<option value="${v}"${String(state.vcK)===String(v)?' selected':''}>${v==='auto'?`${VC.priceOnly?'Elbow':'Best fit'} (${VC.bestK})`:v}</option>`).join('')}</select><button class="btn" type="button" id="vcall">Show all clusters on the map</button></div></div>
-  ${VC.priceOnly?`<details class="vcm"><summary>How these clusters were found</summary><ol>
+  return `<section class="card"><div class="head"><div><h2>Cluster analysis: ${VC.k} ${VC.fixed?'price ranges':'clusters'}${outs.length?` and ${outs.length} outlier group${outs.length>1?'s':''}`:''}</h2><p class="sub">${VC.rows.length} listings from ${plural(Object.keys(state.data).length,'area','areas')} · ${VC.priceOnly&&VC.removed.length?`${VC.removed.length} price outliers removed · `:''}grouped on ${esc(VC.used.join(', '))}</p></div><div class="group">${state.vcOn==='price'?`<label for="vct" class="sub">Property type</label><select id="vct">${Object.entries(VC_TYPES).map(([k,v])=>`<option value="${k}"${state.vcType===k?' selected':''}>${v.label} (${Object.values(state.data).reduce((t,d)=>t+d.rows.filter(r=>r.price>0&&v.test(r)).length,0)})</option>`).join('')}</select>`:''}${state.vcOn==='price'&&state.vcType==='ih'?`<label for="ihc" class="sub">Colour houses on the map by</label><select id="ihc"><option value="decision"${state.ihColor==='decision'?' selected':''}>Buyer decision</option><option value="cluster"${state.ihColor==='cluster'?' selected':''}>Price cluster</option></select>`:''}<span${VC.fixed?' hidden':''}><label for="vck" class="sub">Number of clusters</label> <select id="vck">${['auto',...VC.ks.map(x=>x.k)].map(v=>`<option value="${v}"${String(state.vcK)===String(v)?' selected':''}>${v==='auto'?`${VC.priceOnly?'Elbow':'Best fit'} (${VC.bestK})`:v}</option>`).join('')}</select></span><button class="btn" type="button" id="vcall">Show all clusters on the map</button></div></div>
+  ${VC.priceOnly&&VC.fixed?`<details class="vcm"><summary>How these price ranges are made</summary><ol>
+    <li>All ${VC.rows.length} ${esc(VC.typeOf)} with a price are used. No listing is removed or treated as an outlier.</li>
+    <li>Each listing goes into a price range you set: low up to ₹1.50 Cr, mid-range from ₹1.50 Cr to ₹2.50 Cr, and high above ₹2.50 Cr.</li>
+    <li>The ranges are coloured on the map, in the chart below and in every list, so each listing's range can be seen and clicked.</li></ol></details>`:VC.priceOnly?`<details class="vcm"><summary>How these clusters were found</summary><ol>
     <li>All ${VC.rows.length} ${esc(VC.typeOf)} with a price are used. No listing is removed or treated as an outlier, however high or low its price.</li>
     <li>Prices are compared on a log scale, so a ₹50 L gap counts for more between ₹1 Cr homes than between ₹10 Cr homes.</li>
     <li>K-means groups the prices into 2 to 8 clusters. The elbow chart shows how tight the groups are for each number.</li>
@@ -1276,12 +1284,12 @@ function vcHTML(){
     <li>All ${VC.rows.length} listings are kept. No listing is removed or treated as an outlier, however high or low its price.</li>
     <li>The ${VC.inliers} listings are standardised so every feature counts equally, then grouped with k-means for 2 to 6 clusters.</li>
     <li>${VC.bestK} clusters gave the best silhouette score (${VC.ks.find(x=>x.k===VC.bestK).sil.toFixed(2)}; closer to 1 means more distinct clusters).${VC.k!==VC.bestK?` You are viewing ${VC.k} clusters instead (score ${VC.sil.toFixed(2)}).`:''} Clusters are numbered from cheapest to dearest.</li></ol></details>`}
-  ${VC.priceOnly?`<h3 style="margin-top:12px">${VC.k} price clusters of ${esc(VC.typeOf)} found by K-means</h3><p class="note" style="margin-top:2px">Every dot is one listing, placed by its total price (log scale) and coloured by its cluster. The ◆ marks each cluster's K-means centre; dashed lines are where one cluster ends and the next begins. Hover a dot for details, click to open it.</p><div id="vcstrip"></div><div id="vcbars"></div>${whyHTML()}${VC.typeKey==='ih'?ihHTML():''}`:''}
-  <div class="vck"><div><h3>Inertia (elbow)</h3><div id="vcel"></div></div><div><h3>Silhouette score</h3><div id="vcsil"></div></div></div>
+  ${VC.priceOnly?`<h3 style="margin-top:12px">${VC.fixed?`${esc(VC.typeOf.replace(/^./,x=>x.toUpperCase()))} in your 3 price ranges`:`${VC.k} price clusters of ${esc(VC.typeOf)} found by K-means`}</h3><p class="note" style="margin-top:2px">Every dot is one listing, placed by its total price and coloured by its ${VC.fixed?'price range':'cluster'}. The ◆ marks each ${VC.fixed?"range's typical price":"cluster's K-means centre"}; dashed lines are where one ${VC.fixed?'range':'cluster'} ends and the next begins. Hover a dot for details, click to open it.</p><div id="vcstrip"></div><div id="vcbars"></div>${whyHTML()}${VC.typeKey==='ih'?ihHTML():''}`:''}
+  ${VC.fixed?'':`<div class="vck"><div><h3>Inertia (elbow)</h3><div id="vcel"></div></div><div><h3>Silhouette score</h3><div id="vcsil"></div></div></div>`}
   <div class="vcgrid">${main.map((g,i)=>card(g,i)).join('')}</div>
   ${outs.length?`<h3 style="margin-top:14px">Outlier groups</h3><div class="vcgrid">${outs.map(g=>card(g,VC.groups.indexOf(g))).join('')}</div>`:''}
-  <h3 style="margin-top:14px">Each listing by total price and area</h3><p class="note" style="margin-top:2px">Every dot is one listing, coloured by its cluster. Click a dot to open it.</p><div id="vcsc"></div>
-  <h3 style="margin-top:14px">How the clusters differ</h3><p class="note" style="margin-top:2px">Each box spans the middle half of a cluster's listings; the line inside is the typical value.</p><div class="vcbox" id="vcbox"></div></section>`;
+  <h3 style="margin-top:14px">Each listing by total price and area</h3><p class="note" style="margin-top:2px">Every dot is one listing, coloured by its ${VC.fixed?'price range':'cluster'}. Click a dot to open it.</p><div id="vcsc"></div>
+  <h3 style="margin-top:14px">How the ${VC.fixed?'price ranges':'clusters'} differ</h3><p class="note" style="margin-top:2px">Each box spans the middle half of the listings in that ${VC.fixed?'range':'cluster'}; the line inside is the typical value.</p><div class="vcbox" id="vcbox"></div></section>`;
 }
 function vcLine(host,vals,key,fmt,label){
   const el=$(host);if(!el)return;const W=Math.max(240,el.clientWidth),H=150,P={l:44,r:12,t:10,b:28},ks=vals.map(v=>v.k),ys=vals.map(v=>v[key]);
@@ -1296,9 +1304,9 @@ function vcLine(host,vals,key,fmt,label){
 const vcOn_=i=>usingVC()?state.show[i]!==false:true;
 function drawStrip(){
   const el=$('vcstrip');if(!el||!VC.priceOnly)return;
-  const W=Math.max(320,el.clientWidth),P={l:16,r:16},G=VC.groups.map((g,i)=>({g,i})).filter(x=>vcOn_(x.i)),rs=VC.rows.filter(r=>r.vc!=null&&vcOn_(r.vc));
+  const W=Math.max(320,el.clientWidth),P={l:16,r:16},G=VC.groups.map((g,i)=>({g,i})).filter(x=>vcOn_(x.i)&&x.g.n>0),rs=VC.rows.filter(r=>r.vc!=null&&vcOn_(r.vc));
   if(!rs.length){el.innerHTML='';$('vcbars').innerHTML='';return}
-  const lo=Math.min(...VC.rows.map(r=>r.price))*.92,hi=Math.max(...VC.rows.map(r=>r.price))*1.08,X=v=>P.l+(Math.log(v)-Math.log(lo))/(Math.log(hi)-Math.log(lo))*(W-P.l-P.r);
+  const lo=0,hi=Math.max(...VC.rows.map(r=>r.price))*1.03,X=v=>P.l+(v-lo)/(hi-lo)*(W-P.l-P.r);
   // beeswarm: each dot goes to the free spot nearest the middle line
   const R=4.2,gap=2*R+1.2,placed=[],dots=[...rs].sort((a,b)=>a.price-b.price).map(r=>{const x=X(r.price);let y=0;
     for(let k=0;k<400;k++){const t=k===0?0:(k%2?1:-1)*Math.ceil(k/2)*gap*.55;if(!placed.some(q=>Math.hypot(q.x-x,q.y-t)<gap)){y=t;break}}
@@ -1313,20 +1321,20 @@ function drawStrip(){
   lab.forEach(L_=>{const col=VCCOL[L_.i];o+=`<rect x="${(L_.a-R-2).toFixed(1)}" y="${top}" width="${(L_.b-L_.a+2*R+4).toFixed(1)}" height="${(base-top).toFixed(1)}" rx="6" fill="${col}" fill-opacity=".1" stroke="${col}" stroke-opacity=".5"/>`;
     const ly=L_.row*LH+14;o+=`<line x1="${L_.x.toFixed(1)}" x2="${L_.c.toFixed(1)}" y1="${ly+19}" y2="${top}" stroke="${col}" stroke-opacity=".6"/><text x="${L_.x.toFixed(1)}" y="${ly}" text-anchor="middle" class="stt"><tspan fill="${col}">●</tspan> ${esc(L_.g.tier)} · ${L_.g.n}</text><text x="${L_.x.toFixed(1)}" y="${ly+15}" text-anchor="middle">${esc(money(L_.g.pmin))} to ${esc(money(L_.g.pmax))}</text>`});
   // where one cluster ends and the next begins
-  for(let c=0;c+1<VC.groups.length;c++){const a=VC.groups[c].pmax,b=VC.groups[c+1].pmin,cut=Math.sqrt(a*b),x=X(cut);
-    o+=`<line x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${top-4}" y2="${base}" stroke="#1a2729" stroke-width="1.2" stroke-dasharray="4 3"/><text x="${x.toFixed(1)}" y="${base+28}" text-anchor="middle" class="stc">split ≈ ${esc(money(cut))}</text>`}
+  for(let c=0;c+1<VC.groups.length;c++){const a=VC.groups[c].pmax,b=VC.groups[c+1].pmin;if(!VC.fixed&&(!VC.groups[c].n||!VC.groups[c+1].n))continue;const cut=VC.fixed?FIX[c]:Math.sqrt(VC.groups[c].centre*VC.groups[c+1].centre),x=X(cut);if(!(x>0))continue;
+    o+=`<line x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${top-4}" y2="${base}" stroke="#1a2729" stroke-width="1.2" stroke-dasharray="4 3"/><text x="${x.toFixed(1)}" y="${base+28}" text-anchor="middle" class="stc">${VC.fixed?'limit':'split ≈'} ${esc(money(cut))}</text>`}
   if(VC.typeKey==='ih')IH_RULES.slice(0,3).forEach(R=>{const x=X(R.max);if(x<P.l||x>W-P.r)return;o+=`<line x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${top-6}" y2="${base}" stroke="${R.color}" stroke-width="2" stroke-dasharray="1 3" stroke-linecap="round"/><text x="${(x+4).toFixed(1)}" y="${top+12+IH_RULES.indexOf(R)*12}" class="stc">${esc(money(R.max))}</text>`});
   // price axis
   o+=`<line x1="${P.l}" x2="${W-P.r}" y1="${base}" y2="${base}" stroke="#c9d1cf"/>`;
-  niceTicks(lo,hi,true).forEach(t=>{const x=X(t);if(x<P.l||x>W-P.r)return;o+=`<line x1="${x}" x2="${x}" y1="${base}" y2="${base+4}" stroke="#c9d1cf"/><text x="${x}" y="${base+15}" text-anchor="middle">${esc(money(t).replace(/\.?0+ Cr$/,' Cr'))}</text>`});
+  niceTicks(lo,hi,false).forEach(t=>{const x=X(t);if(x<P.l||x>W-P.r)return;o+=`<line x1="${x}" x2="${x}" y1="${base}" y2="${base+4}" stroke="#c9d1cf"/><text x="${x}" y="${base+15}" text-anchor="middle">${esc(money(t).replace(/\.?0+ Cr$/,' Cr'))}</text>`});
   dots.forEach(({r,x,y})=>{const ri=state.data[r._area].rows.indexOf(r),g=VC.groups[r.vc],isH=[1,2,3].includes(typeIdx(r.type));
     o+=`<circle class="vcd" data-vcl="${esc(r._area)}|${ri}" data-tip="${esc(`${r.name}, ${r._area}: ${money(r.price)}${r.sqft?`, ${inr(r.sqft)} sqft`:''}${r.bhk?`, ${r.bhk} BHK`:''} · Cluster ${r.vc+1}, ${g.tier} · Source: ${srcLinks(r).length?[...new Set(srcLinks(r).map(l=>l.site))].join(', '):'none given'}`)}" cx="${x.toFixed(1)}" cy="${(mid+y).toFixed(1)}" r="${R}" fill="${VCCOL[r.vc]}" stroke="${isH?'#111':'#fff'}" stroke-width="${isH?1.3:.8}"/>`});
-  G.forEach(({g,i})=>{const x=X(g.centre);o+=`<path d="M${x.toFixed(1)},${mid-9}l7,9l-7,9l-7,-9z" fill="#111" stroke="#fff" stroke-width="1.5" data-tip="${esc(`Cluster ${i+1} K-means centre: ${money(g.centre)}`)}"/>`});
+  G.forEach(({g,i})=>{const x=X(VC.fixed?g.price:g.centre);o+=`<path d="M${x.toFixed(1)},${mid-9}l7,9l-7,9l-7,-9z" fill="#111" stroke="#fff" stroke-width="1.5" data-tip="${esc(VC.fixed?`Range ${i+1} typical price (median): ${money(g.price)}`:`Cluster ${i+1} K-means centre: ${money(g.centre)}`)}"/>`});
   el.innerHTML=o+'</svg>';
   // how many listings each cluster holds
   const mx=Math.max(...G.map(({g})=>g.n)),LW=Math.min(210,W*.36),BW=Math.max(40,W-LW-190);
   let b=`<svg viewBox="0 0 ${W} ${G.length*28+6}" height="${G.length*28+6}" role="img" aria-label="Listings in each price cluster">`;
-  G.forEach(({g,i},k)=>{const y=k*28+3,w=Math.max(4,g.n/mx*BW);b+=`<text x="${LW-8}" y="${y+15}" text-anchor="end" class="stt">Cluster ${i+1}: ${esc(g.tier)}</text><rect x="${LW}" y="${y+3}" width="${w.toFixed(1)}" height="16" rx="4" fill="${VCCOL[i]}" data-tip="${esc(`${g.n} listings, ${money(g.pmin)} to ${money(g.pmax)}, typically ${money(g.price)}`)}"/><text x="${(LW+w+6).toFixed(1)}" y="${y+15}">${g.n} listings · typically ${esc(money(g.price))}</text>`});
+  G.forEach(({g,i},k)=>{const y=k*28+3,w=Math.max(4,g.n/mx*BW);b+=`<text x="${LW-8}" y="${y+15}" text-anchor="end" class="stt">${VC.fixed?'Range':'Cluster'} ${i+1}: ${esc(g.tier)}</text><rect x="${LW}" y="${y+3}" width="${w.toFixed(1)}" height="16" rx="4" fill="${VCCOL[i]}" data-tip="${esc(`${g.n} listings, ${money(g.pmin)} to ${money(g.pmax)}, typically ${money(g.price)}`)}"/><text x="${(LW+w+6).toFixed(1)}" y="${y+15}">${g.n} listings · typically ${esc(money(g.price))}</text>`});
   $('vcbars').innerHTML=`<h4 style="margin:10px 0 2px;font-size:12.5px">Listings in each cluster</h4>`+b+'</svg>';
 }
 function drawVC(){
@@ -1336,16 +1344,16 @@ function drawVC(){
   // scatter
   const el=$('vcsc'),W=Math.max(320,el.clientWidth),H=300,P={l:58,r:14,t:10,b:40},rs=VC.rows.filter(r=>r.sqft>0);
   const ps=rs.map(r=>r.price),qs=rs.map(r=>r.sqft),x0=Math.min(...ps),x1=Math.max(...ps),y0=Math.min(...qs),y1=Math.max(...qs);
-  const X=v=>P.l+(Math.log(v)-Math.log(x0))/((Math.log(x1)-Math.log(x0))||1)*(W-P.l-P.r),Y=v=>H-P.b-(Math.log(v)-Math.log(y0))/((Math.log(y1)-Math.log(y0))||1)*(H-P.t-P.b);
-  let o=`<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Each listing's total price against area, coloured by cluster">`;
-  niceTicks(x0,x1,true).forEach(t=>{o+=`<line x1="${X(t)}" x2="${X(t)}" y1="${P.t}" y2="${H-P.b}" stroke="#eef1f0"/><text x="${X(t)}" y="${H-P.b+16}" text-anchor="middle">${esc(money(t).replace(/\.?0+ Cr$/,' Cr'))}</text>`});
-  niceTicks(y0,y1,true).forEach(t=>{o+=`<line x1="${P.l}" x2="${W-P.r}" y1="${Y(t)}" y2="${Y(t)}" stroke="#eef1f0"/><text x="${P.l-6}" y="${Y(t)+4}" text-anchor="end">${inr(t)}</text>`});
+  const X=v=>P.l+v/(x1*1.03)*(W-P.l-P.r),Y=v=>H-P.b-v/(y1*1.05)*(H-P.t-P.b);
+  let o=`<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Each listing's total price against area, coloured by price range">`;
+  niceTicks(0,x1,false).forEach(t=>{o+=`<line x1="${X(t)}" x2="${X(t)}" y1="${P.t}" y2="${H-P.b}" stroke="#eef1f0"/><text x="${X(t)}" y="${H-P.b+16}" text-anchor="middle">${esc(money(t).replace(/\.?0+ Cr$/,' Cr'))}</text>`});
+  niceTicks(0,y1,false).forEach(t=>{o+=`<line x1="${P.l}" x2="${W-P.r}" y1="${Y(t)}" y2="${Y(t)}" stroke="#eef1f0"/><text x="${P.l-6}" y="${Y(t)+4}" text-anchor="end">${inr(t)}</text>`});
   o+=`<text x="${(P.l+W-P.r)/2}" y="${H-4}" text-anchor="middle">Total price</text><text x="12" y="${(P.t+H-P.b)/2}" transform="rotate(-90 12 ${(P.t+H-P.b)/2})" text-anchor="middle">Area (sqft)</text>`;
   rs.forEach(r=>{if(r.vc==null||!vcOn_(r.vc))return;const ri=state.data[r._area].rows.indexOf(r),g=VC.groups[r.vc],isH=[1,2,3].includes(typeIdx(r.type));
     o+=`<circle class="vcd" data-vcl="${esc(r._area)}|${ri}" data-tip="${esc(`${r.name}, ${r._area}: ${money(r.price)}, ${inr(r.sqft)} sqft · ${g.name}`)}" cx="${X(r.price).toFixed(1)}" cy="${Y(r.sqft).toFixed(1)}" r="${isH?5:3.6}" fill="${VCCOL[r.vc]}" fill-opacity=".8" stroke="${g.outlier||isH?'#111':'#fff'}" stroke-width="${isH?1.4:.7}"/>`});
   el.innerHTML=o+'</svg>';
   // box plots per feature
-  const feats=[['Total price',r=>r.price,true,money],['Price per sqft',r=>r.price/r.sqft,true,v=>'₹'+inr(v)],['Area (sqft)',r=>r.sqft,true,v=>inr(v)],['Distance from Infosys (km)',r=>r.km,false,v=>v.toFixed(1)]];
+  const feats=[['Total price',r=>r.price,false,money],['Price per sqft',r=>r.price/r.sqft,false,v=>'₹'+inr(v)],['Area (sqft)',r=>r.sqft,false,v=>inr(v)],['Distance from Infosys (km)',r=>r.km,false,v=>v.toFixed(1)]];
   $('vcbox').innerHTML=feats.map(([nm,f,lg,fmt],fi)=>`<div><h4>${esc(nm)}</h4><div id="vcb${fi}"></div></div>`).join('');
   feats.forEach(([nm,f,lg,fmt],fi)=>{
     const host=$('vcb'+fi),W2=Math.max(240,host.clientWidth),rowH=22,G=VC.groups.map((g,i)=>({g,i,v:VC.rows.filter(r=>r.vc===i).map(f).filter(x=>x!=null&&x>0&&isFinite(x)).sort((a,b)=>a-b)})).filter(x=>x.v.length),H2=G.length*rowH+26,L2=34,R2=10;
@@ -1736,7 +1744,7 @@ function focusCell(key){
   openSheet({area:state.selected,cell:key},true);
   document.querySelector('main').scrollTop=0;
 }
-$('results').addEventListener('change',e=>{if(e.target.id==='ihc'){state.ihColor=e.target.value;renderAll();return}if(e.target.id==='vct'){state.vcType=e.target.value;state.vcK='auto';state.ihOnly='all';recomputeAll();renderAll();return}if(e.target.id==='vcon'){state.vcOn=e.target.value;state.vcK='auto';recomputeAll();renderAll();return}if(e.target.id==='vck'){state.vcK=e.target.value==='auto'?'auto':+e.target.value;recomputeAll();renderAll();return}const k=e.target.dataset.visit;if(k==null)return;if(e.target.checked)visited[k]=1;else delete visited[k];try{localStorage.setItem('visited',JSON.stringify(visited))}catch(x){}const sub=e.target.closest('section').querySelector('.sub');if(sub&&state.analysis.stops)sub.textContent=`${state.analysis.stops.length} other in-budget locations up to ₹1.55 Cr · ${state.analysis.stops.filter(q=>visited[q.key]).length} visited`});
+$('results').addEventListener('change',e=>{if(e.target.id==='vcr'){state.vcRange=e.target.value;state.vcK='auto';recomputeAll();renderAll();return}if(e.target.id==='ihc'){state.ihColor=e.target.value;renderAll();return}if(e.target.id==='vct'){state.vcType=e.target.value;state.vcK='auto';state.ihOnly='all';recomputeAll();renderAll();return}if(e.target.id==='vcon'){state.vcOn=e.target.value;state.vcK='auto';recomputeAll();renderAll();return}if(e.target.id==='vck'){state.vcK=e.target.value==='auto'?'auto':+e.target.value;recomputeAll();renderAll();return}const k=e.target.dataset.visit;if(k==null)return;if(e.target.checked)visited[k]=1;else delete visited[k];try{localStorage.setItem('visited',JSON.stringify(visited))}catch(x){}const sub=e.target.closest('section').querySelector('.sub');if(sub&&state.analysis.stops)sub.textContent=`${state.analysis.stops.length} other in-budget locations up to ₹1.55 Cr · ${state.analysis.stops.filter(q=>visited[q.key]).length} visited`});
 $('results').addEventListener('input',e=>{if(e.target.id==='tq'){state.tq=e.target.value;renderTable(state.data[state.selected])}});
 const tip=$('tip');
 $('results').addEventListener('mousemove',e=>{
