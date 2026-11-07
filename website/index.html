@@ -501,7 +501,7 @@ const IH_RULES=[{key:'good',label:'Good',short:'Good',max:1.5e7,color:'#1e9e5a',
 const ihRule=r=>typeIdx(r.type)===2&&r.price>0?IH_RULES.find(x=>r.price<=x.max):null;
 let VCCOL=[];
 const VC_TYPES={all:{label:'All property types',of:'all listings',test:()=>true},apt:{label:'Apartments',of:'apartments',test:r=>typeIdx(r.type)===0},ih:{label:'Independent houses',of:'independent houses',test:r=>typeIdx(r.type)===2},villa:{label:'Villas',of:'villas',test:r=>[1,3].includes(typeIdx(r.type))}};
-const FIX=[1.5e7,2.5e7],FIX_NAMES=['Low price, up to ₹1.50 Cr','Mid-range price, ₹1.50 Cr to ₹2.50 Cr','High price, above ₹2.50 Cr'];
+const FIX=[1.5e7,2.5e7],FIX_NAMES=['Low price, up to ₹1.50 Cr (buyer max price)','Mid-range price, ₹1.50 Cr to ₹2.50 Cr','High price, above ₹2.50 Cr'];
 function computeVCPrice(){
   const T=VC_TYPES[state.vcType]||VC_TYPES.all;
   Object.values(state.data).forEach(d=>d.rows.forEach(r=>r.vc=null));
@@ -535,7 +535,7 @@ function computeVCPrice(){
     const G={n:rs.length,price:ps.length?medianOf(ps):0,pmin:ps.length?Math.min(...ps):0,pmax:ps.length?Math.max(...ps):0,sqft:wq.length?medianOf(wq.map(r=>r.sqft)):null,ppsf:wq.length?medianOf(wq.map(r=>r.price/r.sqft)):null,bhk:bk.length?medianOf(bk):null,km:km.length?medianOf(km):null,house:hs/rs.length,ready:rs.filter(r=>r.ready==='Yes').length/rs.length,areas:[...ar.entries()].sort((a,b)=>b[1]-a[1])};
     const t=[];if(G.sqft)t.push(`${inr(G.sqft)} sqft`);if(G.bhk)t.push(`mostly ${G.bhk%1?G.bhk:G.bhk.toFixed(0)} BHK`);if(G.ppsf)t.push(`₹${inr(G.ppsf)} per sqft`);if(G.km!=null)t.push(`about ${G.km.toFixed(1)} km from Infosys`);
     t.push(`${Math.round(G.ready*100)}% ready to move`);if(hs)t.push(`${Math.round(G.house*100)}% villas or houses`);
-    G.centre=Math.exp(avg(rs.map(r=>Math.log(r.price))));G.tier=TIERS[c];
+    G.centre=Math.exp(avg(rs.map(r=>Math.log(r.price))));G.tier=VC.fixed&&c===0?'Low price (buyer max price)':TIERS[c];
     groups.push({...G,name:VC.fixed?FIX_NAMES[c]:`${TIERS[c]}, ${money(G.pmin)} to ${money(G.pmax)}`,desc:rs.length?`Priced ${money(G.pmin)} to ${money(G.pmax)}, typically ${money(G.price)}. ${t.join(', ').replace(/^./,x=>x.toUpperCase())}.`:'No listings in this range.',outlier:false});
   }
   VC.groups=groups;
@@ -1570,8 +1570,7 @@ function sheetColumns(info){
     {key:'ppsf',label:'Price per sqft',num:1,get:x=>x.r.ppsf?'₹'+inr(x.r.ppsf):null,order:x=>x.r.ppsf},
     {key:'price',label:'Total price',num:1,get:x=>money(x.r.price),order:x=>x.r.price},
     {key:'ready',label:'Ready to move',get:x=>x.r.ready},
-    {key:'km',label:'From Infosys',num:1,get:x=>x.r.km!=null?x.r.km.toFixed(1)+' km':null,order:x=>x.r.km},
-    {key:'rel',label:'Reliability',get:x=>rawOf(x.r,'reliability').split(':')[0]}];
+    {key:'km',label:'From Infosys',num:1,get:x=>x.r.km!=null?x.r.km.toFixed(1)+' km':null,order:x=>x.r.km}];
 }
 const blank=v=>v==null||v==='';
 function sheetRows(){
