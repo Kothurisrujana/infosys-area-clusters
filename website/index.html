@@ -59,6 +59,7 @@ button,select,input{font:inherit;color:inherit}
 td.heat{background:color-mix(in srgb,var(--c) calc(var(--h)*55%),transparent);font-weight:600}
 #segplot{position:relative;margin-top:8px}#segplot svg{display:block;width:100%}#segplot text{font:12px var(--font);fill:var(--muted)}#segplot text.an{font-weight:500;font-size:13px;fill:var(--fg);cursor:pointer;text-decoration:underline;text-decoration-color:#9fb0ae}#segplot text.sl{fill:#fff;font-weight:600;font-size:11.5px}#segplot text.sl.dark{fill:#13252a}
 .vck{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:8px}.vck svg,#vcsc svg,.vcbox svg{display:block;width:100%}.srcpop{font:12.5px/1.4 var(--font);display:flex;flex-direction:column;gap:3px}.srcpop .sp-h{margin-top:4px;font-weight:600;color:var(--muted)}.srcpop .srcbtn{align-self:flex-start;margin-top:2px}.srcpop .sp-u{font-size:11px;color:var(--muted);word-break:break-all}
+#areaLegend{display:none!important}
 .ihl{cursor:pointer}.ihl.dim{opacity:.4}.ihl:hover{text-decoration:underline}
 .why{margin-top:14px;border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}.why h3{margin:0}.why ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:8px;font-size:13.5px;line-height:1.5}.why .sw{vertical-align:-1px}
 .ihg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:8px}.ihc{border:1px solid var(--line);border-left:5px solid;border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:3px}.ihc b{font-size:13px}.ihn{font-size:22px;font-weight:700}.ihc .btn{align-self:flex-start;margin-top:4px}
@@ -747,7 +748,7 @@ const borderPane=map.createPane('border');borderPane.style.zIndex=395;borderPane
 const borderLayer=L.layerGroup().addTo(map),cellLabels=L.layerGroup().addTo(map);
 const tintRenderer=L.canvas({pane:'tags-tint'}),gridRenderer=L.canvas({pane:'tags-tint'});
 const legend=L.control({position:'topright'});
-legend.onAdd=()=>{const e=L.DomUtil.create('div','blegend');L.DomEvent.disableClickPropagation(e);e.hidden=true;return e};legend.addTo(map);
+legend.onAdd=()=>{const e=L.DomUtil.create('div','blegend');e.id='areaLegend';L.DomEvent.disableClickPropagation(e);e.hidden=true;return e};legend.addTo(map);
 function cellPx(){
   const {dLon}=gridStep(state.cell),pa=map.latLngToLayerPoint([HQ[0],HQ[1]]),pb=map.latLngToLayerPoint([HQ[0],HQ[1]+dLon]);
   return Math.abs(pb.x-pa.x);
@@ -996,7 +997,7 @@ function drawChart(d){
   drawStrip('chart',d.rows.filter(r=>r.b!=null).map(r=>({v:r[m],b:r.b,tip:`${r.name}: ${money(r.price)}${r.ppsf?' · ₹'+inr(r.ppsf)+'/sqft':''} · ${BUDGET[r.b]}`})),d.cluster.stats,m,d.cluster.scale==='log',`Each listing's ${metricName(m)} with the three centroids marked`);
 }
 function drawGridChart(d){
-  const g=d.grid;if(!g||!g.stats)return;
+  const g=d.grid;if(!g||!g.stats||!$('gridchart'))return;
   drawStrip('gridchart',g.cells.map(c=>({v:c.value,b:c.b,r:Math.min(9,3.5+Math.sqrt(c.rows.length)*.7),tip:`Cell ${c.id}: ${fmtV(c.value,g.metric)} average, ${c.rows.length} listing${c.rows.length>1?'s':''} · ${BUDGET[c.b]}`})),g.stats,g.metric,g.scale==='log',`Each grid cell's average ${metricName(g.metric)} with the three centroids marked`);
 }
 function buyerGridHTML(g,head){
@@ -1084,7 +1085,7 @@ function compareHTML(){
 function renderResults(){
   const R=$('results'),a=state.selected,d=state.data[a],up=Object.keys(state.data).length;
   let h=vcHTML()+segmentsHTML()+typeMapsHTML()+areaGridsHTML()+housesHTML()+clientHTML()+visitHTML()+compareHTML();
-  const gh=d&&d.grid?gridHTML(a,d):'';
+  const gh='';
   if(!catMode())h+=gh;
   if(d&&d.cluster){
     const c=d.cluster,m=c.metric;
@@ -1093,8 +1094,7 @@ function renderResults(){
       <div class="tiles" style="margin-top:12px">${c.stats.map((s,k)=>tileHTML(s,k,c.total,m)).join('')}</div>
       <h3 style="margin-top:16px">Every listing by ${metricName(m)}${usingSeg()?', coloured by segment':usingBuyer()?', with the ₹1.55 Cr and ₹2 Cr limits':`, with ${usingBands()?"each group's average":'the three centroids'}`}</h3><div id="chart"></div>
       <p class="note">${usingSeg()?segNote():usingBuyer()?`Buyer budget ₹1.5 Cr. Good means a 3 BHK of at least ${inr(state.minSqft)} sqft under ₹1.5 Cr. Okay is ₹1.5 Cr to ₹1.55 Cr, or under ₹1.5 Cr without meeting that. Not suggested is above ₹1.55 Cr, up to ₹2 Cr. Reject is above ₹2 Cr.`:usingBands()?"Each listing is classified by its own total price: Low below ₹2 Cr, Medium from ₹2 Cr to ₹6 Cr, High above ₹6 Cr.":`Centroid method (k-means, k = 3): each listing joins its nearest centroid, each centroid moves to the average of its listings, and this repeats until nothing changes. It settled after ${c.iterations} rounds, using ${c.scale==='log'?'proportional price gaps, so a few very expensive homes do not push nearly everything into Low. Centroids are geometric averages':'raw rupee gaps'}.`}${d.unclustered?` ${d.unclustered} listings have no ${metricName(m)} and were left out.`:''}</p></section>
-      <section class="card"><div class="head"><h2>Listings</h2><div class="group"><span id="tcount" class="sub"></span><input id="tq" type="search" placeholder="Filter by project" aria-label="Filter listings by project" style="width:180px" value="${esc(state.tq)}"></div></div>
-      <div class="tw"><table><thead><tr>${[['name','Project'],['cellId','Grid cell'],['b',usingSeg()?'Segment':usingBuyer()?'Buyer fit':'Budget'],['bhk','BHK',1],['sqft','Area (sqft)',1],['ppsf','Price per sqft',1],['price','Total price',1],['ready','Ready to move'],['km','From Infosys',1]].map(([k,t,n])=>`<th class="${n?'n':''}" aria-sort="${state.sort.key===k?(state.sort.dir>0?'ascending':'descending'):'none'}"><button type="button" data-s="${k}">${t}${state.sort.key===k?(state.sort.dir>0?' ▲':' ▼'):''}</button></th>`).join('')}</tr></thead><tbody id="tbody"></tbody></table></div></section>`;
+      `;
     if(catMode())h+=gh;
   }else if(d){
     h+=`<div class="empty"><h2>${esc(a)}</h2><p>This file has fewer than three different ${metricName(state.metric)} values, so it cannot form Low, Medium and High groups.</p><p><button class="btn" id="rm" type="button">Remove this data</button></p></div>`;
@@ -1172,9 +1172,10 @@ function analyseScope(){
   A.top=cand[0];A.top.rel=relOf(cand[0]);A.candidates=cand.length;A.tier=tier;A.runnersUp=cand.slice(1,3);
   return A;
 }
+const SUITABLE_UP_TO=1.5e7; /* suitable property listings: up to ₹1.50 Cr only */
 function visitStops(A){
-  const map_=new Map(),topKey=A.top?A.top.r.name+'|'+A.top.r.lat+'|'+A.top.r.lon:null;let noLoc=0;
-  A.items.forEach(i=>{const r=i.r;if(r.price>OKAY_UP_TO)return;if(r.lat==null){noLoc++;return}const k=r.name+'|'+r.lat+'|'+r.lon;if(k===topKey)return;if(!map_.has(k))map_.set(k,{key:k,name:r.name,area:i.area,lat:r.lat,lon:r.lon,rows:[],verify:false});const q=map_.get(k);q.rows.push(r);if(i.verify)q.verify=true});
+  const map_=new Map(),topKey=null;let noLoc=0;
+  A.items.forEach(i=>{const r=i.r;if(!(r.price>0)||r.price>SUITABLE_UP_TO)return;if(r.lat==null){noLoc++;return}const k=r.name+'|'+r.lat+'|'+r.lon;if(k===topKey)return;if(!map_.has(k))map_.set(k,{key:k,name:r.name,area:i.area,lat:r.lat,lon:r.lon,rows:[],verify:false});const q=map_.get(k);q.rows.push(r);if(i.verify)q.verify=true});
   const left=[...map_.values()],out=[];let la=HQ[0],lo=HQ[1];
   while(left.length){let bi=0,bd=Infinity;left.forEach((q,i)=>{const e=haversine(la,lo,q.lat,q.lon);if(e<bd){bd=e;bi=i}});const q=left.splice(bi,1)[0];q.stop=out.length+1;q.leg=bd;la=q.lat;lo=q.lon;out.push(q)}
   return{stops:out,noLoc};
@@ -1410,7 +1411,7 @@ function housesHTML(){
 }
 function clientHTML(){
   const A=state.analysis;if(!A||!A.items.length)return'';
-  if(!A.clusters)return `<section class="card"><h2>Top 1 for the client</h2><p class="note">Upload at least 3 listings to run the cluster analysis.</p></section>`;
+  if(!A.clusters)return `<section class="card"><h2>Buyer fit by group</h2><p class="note">Upload at least 3 listings to run the cluster analysis.</p></section>`;
   const t=A.top,r=t&&t.r;
   const fact=(k,v)=>`<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`;
   const pick=t?`<div class="top1"><div class="tp-h"><span class="star">★</span><div><div class="tp-n">${esc(r.name)}</div><div class="sub">${esc(t.area)} · ${BUDGET_NAME[t.cls]} for the buyer${t.verify?' · Verify price first':''}</div></div></div>
@@ -1418,7 +1419,7 @@ function clientHTML(){
     <p class="note">Best of ${A.candidates} ${BUDGET_NAME[t.cls]} listings in the best-fitting group, ranked equally on larger area, lower price per sqft, lower total price, shorter distance and more amenities.${A.flaggedOut?` ${A.flaggedOut} cheaper-looking listings were held back until their prices are checked.`:''}${A.allFlagged?' Every candidate has an unusually low price, so check this price before showing it.':''}</p>
     <div class="group"><button class="btn primary" id="showTop" type="button">Show on map</button>${rawOf(r,'source url')?`<a class="btn" href="${esc(rawOf(r,'source url'))}" target="_blank" rel="noopener">Open source listing</a>`:''}</div></div>`:`<p class="note">No listing in ${esc(A.scopeName)} is within the buyer's budget of up to ₹1.55 Cr.</p>`;
   const rows=A.clusters.map((c,i)=>`<tr${c.k===A.best?' class="bestrow"':''}><td><span class="tag"><i class="sw" style="background:${GROUP_COLOR[i]}"></i>Group ${GROUP_NAME[i]}${c.k===A.best?' · best fit':''}</span></td><td class="n">${c.n}</td><td class="n">${c.good}</td><td class="n">${c.okay}</td><td class="n">${money(c.price)}</td><td class="n">${c.sqft?inr(c.sqft):'–'}</td><td class="n">${c.ppsf?'₹'+inr(c.ppsf):'–'}</td><td class="n">${c.km!=null?c.km.toFixed(1)+' km':'–'}</td></tr>`).join('');
-  return `<section class="card"><div class="head"><div><h2>Top 1 for the client: ${esc(A.scopeName)}</h2><p class="sub">Cluster analysis of ${A.items.length.toLocaleString('en-IN')} listings of all types</p></div></div>${pick}
+  return `<section class="card"><div class="head"><div><h2>Buyer fit by group: ${esc(A.scopeName)}</h2><p class="sub">Cluster analysis of ${A.items.length.toLocaleString('en-IN')} listings of all types</p></div></div>
   <h3 style="margin-top:14px">Cluster analysis</h3><p class="note" style="margin-top:2px">Grouped on: ${esc(A.used.join(', '))}.</p>
   <div id="clplot"></div>
   <div class="tw" style="max-height:none;margin-top:8px"><table><thead><tr><th>Group</th><th class="n">Listings</th><th class="n">Good</th><th class="n">Okay</th><th class="n">Typical price</th><th class="n">Typical sqft</th><th class="n">Typical ₹/sqft</th><th class="n">Typical distance</th></tr></thead><tbody>${rows}</tbody></table></div>${typeTableHTML(A)}</section>`;
@@ -1428,10 +1429,10 @@ function visitHTML(){
   const A=state.analysis;if(!A||!A.items.length)return'';
   const {stops,noLoc}=visitStops(A);A.stops=stops;
   const doneN=stops.filter(q=>visited[q.key]).length;
-  return `<section class="card"><div class="head"><div><h2>Office boy visit list: ${esc(A.scopeName)}</h2><p class="sub">${stops.length} other in-budget locations up to ₹1.55 Cr · ${doneN} visited</p></div><div class="group"><button class="btn" id="dlVisit" type="button">Download visit list (CSV)</button></div></div>
-  <p class="note">Stops run in order from Infosys, each going to the nearest remaining location. At each one, ask about any other properties for sale nearby, add them to the area's file, and upload it with "Add to it". "Verify price" means the price is under 60% of the area's typical price per sqft.${noLoc?` ${noLoc} in-budget listings have no location, so they are not on this list.`:''}</p>
-  <div class="tw" style="max-height:320px;margin-top:8px"><table><thead><tr><th>Stop</th><th>Project</th><th>Area</th><th class="n">Listings</th><th class="n">Prices</th><th class="n">₹/sqft</th><th>Check</th><th>Directions</th><th>Visited</th></tr></thead><tbody>
-  ${stops.map(q=>{const ps=q.rows.map(r=>r.price),lo=Math.min(...ps),hi=Math.max(...ps),pp=q.rows.map(r=>r.ppsf).filter(x=>x>0);return `<tr><td>${q.stop}</td><td>${esc(q.name)}</td><td>${esc(q.area)}</td><td class="n">${q.rows.length}</td><td class="n">${money(lo)}${hi>lo?' to '+money(hi):''}</td><td class="n">${pp.length?'₹'+inr(avg(pp)):'–'}</td><td>${q.verify?'<span class="flag">Verify price</span>':''}</td><td><a href="https://www.google.com/maps/dir/?api=1&destination=${q.lat},${q.lon}" target="_blank" rel="noopener">Open in Maps</a></td><td><input type="checkbox" data-visit="${esc(q.key)}" aria-label="Visited ${esc(q.name)}"${visited[q.key]?' checked':''}></td></tr>`}).join('')}
+  return `<section class="card"><div class="head"><div><h2>Suitable property listings: ${esc(A.scopeName)}</h2><p class="sub">${stops.length} location${stops.length===1?'':'s'} with listings up to ₹1.50 Cr · ${doneN} checked</p></div><div class="group"><button class="btn" id="dlVisit" type="button">Download suitable listings (CSV)</button></div></div>
+  <p class="note">These are the listings priced up to ₹1.50 Cr, the buyer's budget, grouped by location and listed from the one nearest Infosys outwards. "Verify price" means the price is under 60% of the area's typical price per sqft, so confirm it first. Tick "Checked" once a listing has been looked at.${noLoc?` ${noLoc} suitable listing${noLoc>1?'s have':' has'} no location, so ${noLoc>1?'they are':'it is'} not on this list.`:''}</p>
+  <div class="tw" style="max-height:320px;margin-top:8px"><table><thead><tr><th>No.</th><th>Project</th><th>Area</th><th class="n">Suitable listings</th><th class="n">Prices</th><th class="n">₹/sqft</th><th>Check</th><th>Directions</th><th>Checked</th></tr></thead><tbody>
+  ${stops.map(q=>{const ps=q.rows.map(r=>r.price),lo=Math.min(...ps),hi=Math.max(...ps),pp=q.rows.map(r=>r.ppsf).filter(x=>x>0);return `<tr><td>${q.stop}</td><td>${esc(q.name)}</td><td>${esc(q.area)}</td><td class="n">${q.rows.length}</td><td class="n">${money(lo)}${hi>lo?' to '+money(hi):''}</td><td class="n">${pp.length?'₹'+inr(avg(pp)):'–'}</td><td>${q.verify?'<span class="flag">Verify price</span>':''}</td><td><a href="https://www.google.com/maps/dir/?api=1&destination=${q.lat},${q.lon}" target="_blank" rel="noopener">Open in Maps</a></td><td><input type="checkbox" data-visit="${esc(q.key)}" aria-label="Checked ${esc(q.name)}"${visited[q.key]?' checked':''}></td></tr>`}).join('')}
   </tbody></table></div></section>`;
 }
 function drawClusterPlot(){
@@ -1447,7 +1448,6 @@ function drawClusterPlot(){
   if(OKAY_UP_TO>x0&&OKAY_UP_TO<x1){const x=X(OKAY_UP_TO);o+=`<line x1="${x}" x2="${x}" y1="${P.t}" y2="${H-P.b}" stroke="#556467" stroke-dasharray="4 3"/><text x="${x+4}" y="${P.t+11}">Budget limit ₹1.55 Cr</text>`}
   o+=`<text x="${(P.l+W-P.r)/2}" y="${H-5}" text-anchor="middle">Total price</text><text x="12" y="${(P.t+H-P.b)/2}" transform="rotate(-90 12 ${(P.t+H-P.b)/2})" text-anchor="middle">Area (sqft)</text>`;
   items.forEach(i=>{o+=`<circle data-tip="${esc(`${i.r.name}: ${money(i.r.price)}, ${inr(i.r.sqft)} sqft · ${BUDGET_NAME[i.cls]}`)}" cx="${X(i.r.price).toFixed(1)}" cy="${Y(i.r.sqft).toFixed(1)}" r="3" fill="${colorOf[i.group]}" fill-opacity=".6"/>`});
-  if(A.top&&A.top.r.sqft>0){const x=X(A.top.r.price),y=Y(A.top.r.sqft);o+=`<text data-tip="${esc('Top 1: '+A.top.r.name)}" x="${x}" y="${y+7}" text-anchor="middle" class="st">★</text>`}
   host.innerHTML=o+'</svg>';
 }
 const pricePane=map.createPane('pricemap');pricePane.style.zIndex=646;
@@ -1458,9 +1458,6 @@ priceLegend.onAdd=()=>{const e=L.DomUtil.create('div','blegend');e.hidden=true;r
 function drawPriceMap(){
   priceLayer.clearLayers();topLayer.clearLayers();
   const A=state.analysis,box=priceLegend.getContainer();box.hidden=true;
-  if(A&&A.top&&A.top.r.lat!=null){
-    const q=A.top;L.marker([q.r.lat,q.r.lon],{pane:'pricemap',zIndexOffset:900,title:`Top 1: ${q.r.name}`,icon:L.divIcon({className:'',iconSize:[0,0],html:'<div class="topstar">★</div>'})}).addTo(topLayer);
-  }
   if(state.view!=='price'||!A)return;
   const stops=visitStops(A).stops;if(!stops.length)return;
   const val=q=>{const v=q.rows.map(r=>r.ppsf).filter(x=>x>0);return v.length?avg(v):null};
@@ -1474,7 +1471,7 @@ function drawPriceMap(){
     dot.bindTooltip(showLabels?money(lo):`<b>${esc(q.name)}</b><br>${money(lo)}${hi>lo?' to '+money(hi):''}<br>${v?'₹'+inr(v)+'/sqft':''}${q.verify?'<br>Verify price':''}`,showLabels?{permanent:true,direction:'right',offset:[6,0],className:'ptag'}:{direction:'top'});
     attachSheet(dot,{area:q.area,loc:q.lat+','+q.lon});
   });
-  box.innerHTML=`<div class="bl-t">In-budget price per sqft</div><div class="ramp">${RAMP.map(c=>`<i style="background:${c}"></i>`).join('')}</div><div class="bl-n rl"><span>₹${inr(vs[0]||0)}</span><span>₹${inr(vs[vs.length-1]||0)}</span></div><div class="bl-r"><span class="star sm">★</span>Top 1 for the client</div><div class="bl-r"><i class="pd vf"></i>Verify price</div>`;
+  box.innerHTML=`<div class="bl-t">In-budget price per sqft</div><div class="ramp">${RAMP.map(c=>`<i style="background:${c}"></i>`).join('')}</div><div class="bl-n rl"><span>₹${inr(vs[0]||0)}</span><span>₹${inr(vs[vs.length-1]||0)}</span></div><div class="bl-r"><i class="pd vf"></i>Verify price</div>`;
   box.hidden=false;
 }
 map.on('zoomend',drawPriceMap);
@@ -1723,7 +1720,7 @@ $('results').addEventListener('click',async e=>{
   const hr=e.target.closest('tr.houserow');
   if(hr&&!e.target.closest('a')){const [n,ll]=hr.dataset.hloc.split('|'),[la,lo]=ll.split(',').map(Number);settleMap();map.setView([la,lo],Math.max(map.getZoom(),16),{animate:false});openSheet({area:n,loc:la+','+lo},true);document.querySelector('main').scrollTop=0;return}
   if(e.target.id==='showTop'){const t=state.analysis.top;if(t.r.lat!=null){settleMap();map.setView([t.r.lat,t.r.lon],Math.max(map.getZoom(),15),{animate:false});openSheet({area:t.area,loc:t.r.lat+','+t.r.lon},true);document.querySelector('main').scrollTop=0}return}
-  if(e.target.id==='dlVisit'){const A=state.analysis,{stops}=visitStops(A);saveCSV(`Visit_list_${A.scopeName.replace(/[^\w]+/g,'_')}.csv`,[['Stop','Area','Project','In-budget listings','Lowest price','Highest price','Average price per sqft','Check','Latitude','Longitude','Directions','Visited','New properties found','Notes'].join(','),...stops.map(q=>{const ps=q.rows.map(r=>r.price),pp=q.rows.map(r=>r.ppsf).filter(x=>x>0);return[q.stop,q.area,q.name,q.rows.length,Math.min(...ps),Math.max(...ps),pp.length?Math.round(avg(pp)):'',q.verify?'Verify price':'',q.lat,q.lon,`https://www.google.com/maps/dir/?api=1&destination=${q.lat},${q.lon}`,visited[q.key]?'Yes':'','',''].map(csvCell).join(',')})]);return}
+  if(e.target.id==='dlVisit'){const A=state.analysis,{stops}=visitStops(A);saveCSV(`Suitable_listings_${A.scopeName.replace(/[^\w]+/g,'_')}.csv`,[['No.','Area','Project','Suitable listings','Lowest price','Highest price','Average price per sqft','Check','Latitude','Longitude','Directions','Checked','Notes'].join(','),...stops.map(q=>{const ps=q.rows.map(r=>r.price),pp=q.rows.map(r=>r.ppsf).filter(x=>x>0);return[q.stop,q.area,q.name,q.rows.length,Math.min(...ps),Math.max(...ps),pp.length?Math.round(avg(pp)):'',q.verify?'Verify price':'',q.lat,q.lon,`https://www.google.com/maps/dir/?api=1&destination=${q.lat},${q.lon}`,visited[q.key]?'Yes':'',''].map(csvCell).join(',')})]);return}
   const sn=e.target.closest('[data-sel]');
   if(sn){select(sn.dataset.sel);return}
   const rb=e.target.closest('button[data-rec]');
