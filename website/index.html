@@ -1621,7 +1621,7 @@ function drawPriceMap(){
   box.hidden=false;
 }
 map.on('zoomend',drawPriceMap);
-function renderAll(){renderAreasCtl();if(Object.keys(PRELOAD).length>1)$('preBtns').querySelectorAll('label').forEach(l=>{const c=l.querySelector('input');l.classList.toggle('on',!!state.loaded[c.dataset.pre])});state.analysis=analyseScope();renderList();renderResults();drawPies();drawGrid();drawBorder();drawCellLabels();drawProjectDots();drawPriceMap();layout();refreshSheet();
+function renderAll(){renderAreasCtl();if(Object.keys(PRELOAD).length>1)$('preBtns').querySelectorAll('label').forEach(l=>{const c=l.querySelector('input');l.classList.toggle('on',!!state.loaded[c.dataset.pre]);if(state.loaded[c.dataset.pre])c.checked=true});state.analysis=analyseScope();renderList();renderResults();drawPies();drawGrid();drawBorder();drawCellLabels();drawProjectDots();drawPriceMap();layout();refreshSheet();
   $('metricgroup').hidden=fixedRules();$('scalegroup').hidden=fixedRules();$('sizegroup').hidden=!usingBuyer();$('segtypegroup').hidden=!usingSeg();
   document.querySelectorAll('#segtype button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===state.segType));
   document.querySelectorAll('#method button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===state.method));
@@ -1913,7 +1913,8 @@ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(layout);
   /* Uploads are not kept: each refresh starts from the Infosys map alone. Older saved uploads are cleared too. */
   try{indexedDB.deleteDatabase('infosys-clusters')}catch(e){}
   recomputeAll();
-  const want=new URLSearchParams(location.search).get('area');if(want){await loadPreset(want);if(Object.keys(state.loaded).length)return}
+  /* With no ?area= in the link, open with the three Financial District areas. ?area=all, ?area=A,B or ?area=none still work. */
+  const q=new URLSearchParams(location.search).get('area'),want=q==null?'Gachibowli,Nanakramguda,Khajaguda':q.toLowerCase()==='none'?'':q;if(want){await loadPreset(want);if(Object.keys(state.loaded).length)return}
   const k=Object.keys(state.data);state.selected=k.length>1?'__all':(k[0]||null);
   renderAll();if(state.selected)fitSelected();
 })();
