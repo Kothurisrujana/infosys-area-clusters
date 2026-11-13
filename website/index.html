@@ -76,6 +76,17 @@ td.heat{background:color-mix(in srgb,var(--c) calc(var(--h)*55%),transparent);fo
 .why{margin-top:14px;border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}.why h3{margin:0}.why ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:8px;font-size:13.5px;line-height:1.5}.why .sw{vertical-align:-1px}
 .ihg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:8px}.ihc{border:1px solid var(--line);border-left:5px solid;border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:3px}.ihc b{font-size:13px}.ihn{font-size:22px;font-weight:700}.ihc .btn{align-self:flex-start;margin-top:4px}
 .stt{font-weight:600;fill:var(--fg)!important}.stc{font-size:11px!important;fill:#1a2729!important}#vcstrip svg,#vcbars svg{display:block;width:100%;overflow:visible}#vcstrip text,#vcbars text{font:11.5px var(--font);fill:var(--muted)}#vcstrip,#vcbars{margin-top:4px}
+.vcnt{margin-top:12px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--panel)}
+.vcnt h3{margin:0}.vcnt .note{margin:2px 0 10px}
+.vct{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.vct button{all:unset;cursor:pointer;display:block;border:1px solid var(--line);border-left:6px solid var(--c);border-radius:8px;padding:10px 12px;background:var(--panel)}
+.vct button:hover,.vct button:focus-visible{box-shadow:0 0 0 2px var(--c)}
+.vct .n{font-size:28px;font-weight:700;line-height:1.1;color:var(--fg)}.vct .p{font-size:13px;font-weight:600;color:var(--c);margin-left:6px}
+.vct .l{font-size:13px;font-weight:600;color:var(--fg);margin-top:2px}.vct .r{font-size:12px;color:var(--muted)}
+.vct .bar{height:8px;border-radius:4px;background:var(--line);margin-top:8px;overflow:hidden}.vct .bar i{display:block;height:100%;background:var(--c)}
+.vcnt-k{display:flex;flex-wrap:wrap;gap:4px 14px;margin:12px 0 2px;font-size:12px;color:var(--muted)}.vcnt-k i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.vcnt-m{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-left:auto}.vcnt-m button{border:0;background:none;padding:3px 10px;font-size:12px;cursor:pointer;color:var(--muted)}.vcnt-m button[aria-pressed=true]{background:var(--accent);color:#fff}
+#vcntc svg{display:block;width:100%;overflow:visible}#vcntc text{font:11.5px var(--font);fill:var(--muted)}#vcntc .vl{font-weight:700;fill:var(--fg)}#vcntc .al{font-weight:600;fill:var(--fg)}
 .vck text,#vcsc text,.vcbox text{font:11.5px var(--font);fill:var(--muted)}
 .vcgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin-top:10px}.vcc{border:1px solid var(--line);border-radius:8px;padding:10px;display:grid;gap:6px;min-width:0}.vcc.out{border-style:dashed}.vch{display:flex;gap:8px;align-items:flex-start}.vch .sw{margin-top:3px;width:14px;height:14px}.vch b{display:block}.vch span{color:var(--muted);font-size:12.5px}.vcc p{margin:0;font-size:12.5px}.vcc dl{display:grid;grid-template-columns:auto 1fr;gap:1px 10px;margin:0;font-size:12px}.vcc dt{color:var(--muted)}.vcc dd{margin:0;text-align:right}
 .head select#vck,.head select#vct,.head select#vcon{padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:#fff}
@@ -569,7 +580,7 @@ function computeVCPrice(){
    (a tie goes to the nearer area centre), and empty squares next to an area join it, two squares deep. No square has two owners,
    so area borders can never overlap. */
 const TERR_M=250,AREA_PALETTE=['#0f766e','#7c3aed','#be123c','#4d7c0f','#a16207','#1e40af','#9d174d','#155e75','#713f12','#3f3f46'];
-let TERR=null;state.ihMark=true;
+let TERR=null;state.ihMark=false;
 const areaColor=a=>{const n=Object.keys(state.loaded||state.data).sort((x,y)=>x.localeCompare(y)),i=n.indexOf(a);return AREA_PALETTE[(i<0?0:i)%AREA_PALETTE.length]};
 function areaCentre(a){const x=AREAS.find(v=>v.name===a);if(x)return[x.lat,x.lon];const rs=(state.data[a]?.rows||[]).filter(r=>r.lat!=null);return rs.length?[avg(rs.map(r=>r.lat)),avg(rs.map(r=>r.lon))]:HQ}
 function computeTerritory(){
@@ -925,14 +936,37 @@ function ihShow(k){state.ihOnly=k;state.ihColor='decision';if(!usingVC()){state.
   const pts=VC.rows.filter(r=>r.lat!=null&&ihRule(r)&&(k==='all'||ihRule(r).key===k)).map(r=>[r.lat,r.lon]);if(pts.length){settleMap();map.fitBounds(L.latLngBounds(pts).pad(.3),{maxZoom:15,animate:false})}document.querySelector('main').scrollTop=0}
 const ihKey=L.control({position:'bottomleft'});ihKey.onAdd=()=>{const e=L.DomUtil.create('div','blegend ihkey');L.DomEvent.disableClickPropagation(e);e.hidden=true;return e};ihKey.addTo(map);
 ihKey.getContainer().addEventListener('change',e=>{if(e.target.id==='ihmark'){state.ihMark=e.target.checked;drawProjectDots()}});
+const areaKey=L.control({position:'topright'});areaKey.onAdd=()=>{const e=L.DomUtil.create('div','blegend areakey');L.DomEvent.disableClickPropagation(e);e.hidden=true;return e};areaKey.addTo(map);
+areaKey.getContainer().addEventListener('click',e=>{const b=e.target.closest('[data-akey]');if(b)select(b.dataset.akey)});
+function drawAreaKey(){
+  const box=areaKey.getContainer(),an=Object.keys(state.data).sort((x,y)=>x.localeCompare(y));
+  if(!an.length){box.hidden=true;return}
+  box.style.maxWidth='none';
+  box.innerHTML=`<div style="font-weight:600;margin-bottom:2px">Area borders</div>`+an.map(a=>`<div class="bl-r" data-akey="${esc(a)}" style="cursor:pointer" title="Zoom to ${esc(a)}"><i style="display:inline-block;width:22px;height:0;border-top:3px solid ${areaColor(a)};margin-right:2px"></i><span style="white-space:nowrap"><b style="color:${areaColor(a)}">${esc(a)}</b> · ${state.data[a].rows.length.toLocaleString('en-IN')} listings</span></div>`).join('');
+  box.hidden=false;
+}
+/* Where most listings in a price range sit: round price bands (₹10 L wide up to ₹2.5 Cr, ₹50 L wide above), the band with the most listings. */
+function busyBand(rs){
+  const ps=rs.map(r=>r.price).filter(p=>p>0);if(!ps.length)return null;
+  const w=medianOf(ps)<2.5e7?1e6:5e6,c=new Map();ps.forEach(p=>{const b=Math.floor(p/w);c.set(b,(c.get(b)||0)+1)});
+  let best=null;c.forEach((n,b)=>{if(!best||n>best.n||(n===best.n&&b<best.b))best={b,n}});
+  return{lo:best.b*w,hi:(best.b+1)*w,n:best.n,of:ps.length};
+}
+const bandTxt=B=>{if(!B)return'–';const a=money(B.lo),b=money(B.hi),u=s=>s.split(' ').pop();return u(a)===u(b)?`${a.replace(/ (Cr|L)$/,'')}–${b}`:`${a} – ${b}`};
 function drawIhKey(){
+  drawAreaKey();
   const box=ihKey.getContainer(),rows=Object.values(state.data).flatMap(d=>d.rows);
   if(!usingVC()||state.view!=='grid'||ihDecide()||!rows.length){box.hidden=true;return}
   const ih=rows.filter(isIH),fit=ih.filter(fitsBuyer),on=ih.filter(r=>r.lat!=null).length;
-  box.innerHTML=`<label style="display:flex;gap:6px;align-items:center;font-weight:600"><input type="checkbox" id="ihmark"${state.ihMark?' checked':''}>Mark independent houses</label>
+  const G=VC&&VC.groups?VC.groups.map((g,i)=>({g,i})).filter(x=>!x.g.outlier):[];
+  const key=G.length?`<div style="font-weight:600;margin-bottom:2px">${VC.fixed?'Price ranges':'Price clusters'} · ${esc(VC.typeOf==='all listings'?'all property types':VC.typeOf)}</div>
+   <div class="bl-n" style="margin:0 0 3px">"Most at" is the price band with the most listings in that range.</div>
+   ${G.map(({g,i})=>`<div class="bl-r"${state.show[i]===false?' style="opacity:.45"':''}><i class="pd" style="background:${VCCOL[i]};width:12px;height:12px;border:2px solid #fff;box-shadow:0 0 0 1px #999"></i><span style="white-space:nowrap"><b>${esc(g.tier.replace(/ \(.*\)/,''))}</b> · ${g.n.toLocaleString('en-IN')} listings · most at ${(B=>B?`${bandTxt(B)} (${B.n})`:'–')(busyBand(VC.rows.filter(r=>r.vc===i)))}</span></div>`).join('')}
+   <div style="border-top:1px solid var(--line);margin:6px 0"></div>`:'';
+  box.style.maxWidth='none';box.innerHTML=key+`<label style="display:flex;gap:6px;align-items:center;font-weight:600"><input type="checkbox" id="ihmark"${state.ihMark?' checked':''}>Mark independent houses</label>${state.ihMark?`
    <div class="bl-r"><i class="pd" style="background:${IH_COLOR};width:12px;height:12px;border:2px solid #fff;box-shadow:0 0 0 1px #999"></i>Independent house · ${ih.length}</div>
    <div class="bl-r"><i class="pd" style="background:${IH_FIT_COLOR};width:14px;height:14px;border:2px solid #111"></i>Fits the buyer · ${fit.length}</div>
-   <div class="bl-n">Fits the buyer: up to ₹1.50 Cr, 3+ BHK, ${inr(state.minSqft)}+ sqft.${on<ih.length?` ${ih.length-on} house${ih.length-on>1?'s have':' has'} no map pin.`:''}</div>`;
+   <div class="bl-n">Fits the buyer: up to ₹1.50 Cr, 3+ BHK, ${inr(state.minSqft)}+ sqft.${on<ih.length?` ${ih.length-on} house${ih.length-on>1?'s have':' has'} no map pin.`:''}</div>`:''}`;
   box.hidden=false;
 }
 const ihLegend=L.control({position:'bottomright'});ihLegend.onAdd=()=>{const e=L.DomUtil.create('div','blegend');L.DomEvent.disableClickPropagation(e);e.hidden=true;return e};ihLegend.addTo(map);ihLegend.getContainer().addEventListener('click',e=>{const t=e.target.closest('[data-ihmap]');if(t)ihShow(t.dataset.ihmap)});
@@ -1418,6 +1452,7 @@ function vcHTML(){
     <li>All ${VC.rows.length} listings are kept. No listing is removed or treated as an outlier, however high or low its price.</li>
     <li>The ${VC.inliers} listings are standardised so every feature counts equally, then grouped with k-means for 2 to 6 clusters.</li>
     <li>${VC.bestK} clusters gave the best silhouette score (${VC.ks.find(x=>x.k===VC.bestK).sil.toFixed(2)}; closer to 1 means more distinct clusters).${VC.k!==VC.bestK?` You are viewing ${VC.k} clusters instead (score ${VC.sil.toFixed(2)}).`:''} Clusters are numbered from cheapest to dearest.</li></ol></details>`}
+  <div class="vcnt" id="vcnt"></div>
   ${VC.priceOnly?`<h3 style="margin-top:12px">${VC.fixed?`${esc(VC.typeOf.replace(/^./,x=>x.toUpperCase()))} in your 3 price ranges`:`${VC.k} price clusters of ${esc(VC.typeOf)} found by K-means`}</h3><p class="note" style="margin-top:2px">Every dot is one listing, placed by its total price and coloured by its ${VC.fixed?'price range':'cluster'}. The ◆ marks each ${VC.fixed?"range's typical price":"cluster's K-means centre"}; dashed lines are where one ${VC.fixed?'range':'cluster'} ends and the next begins. Hover a dot for details, click to open it.</p><div id="vcstrip"></div><div id="vcbars"></div>${whyHTML()}${VC.typeKey==='ih'?ihHTML():''}`:''}
   ${VC.fixed?'':`<div class="vck"><div><h3>Inertia (elbow)</h3><div id="vcel"></div></div><div><h3>Silhouette score</h3><div id="vcsil"></div></div></div>`}
   <div class="vcgrid">${main.map((g,i)=>card(g,i)).join('')}</div>
@@ -1471,9 +1506,44 @@ function drawStrip(){
   G.forEach(({g,i},k)=>{const y=k*28+3,w=Math.max(4,g.n/mx*BW);b+=`<text x="${LW-8}" y="${y+15}" text-anchor="end" class="stt">${VC.fixed?'Range':'Cluster'} ${i+1}: ${esc(g.tier)}</text><rect x="${LW}" y="${y+3}" width="${w.toFixed(1)}" height="16" rx="4" fill="${VCCOL[i]}" data-tip="${esc(`${g.n} listings, ${money(g.pmin)} to ${money(g.pmax)}, typically ${money(g.price)}`)}"/><text x="${(LW+w+6).toFixed(1)}" y="${y+15}">${g.n} listings · typically ${esc(money(g.price))}</text>`});
   $('vcbars').innerHTML=`<h4 style="margin:10px 0 2px;font-size:12.5px">Listings in each cluster</h4>`+b+'</svg>';
 }
+/* How many listings fall in each price range: one tile per range, then a grouped bar chart by area (count or share). */
+state.vcntMode=state.vcntMode||'count';
+function drawVCount(){
+  const box=$('vcnt');if(!box||!VC||!VC.groups.length)return;
+  const G=VC.groups.map((g,i)=>({g,i})).filter(x=>!x.g.outlier),tot=VC.rows.length||1,word=VC.fixed?'range':'cluster';
+  const pc=n=>Math.round(n/tot*100),areas=Object.keys(state.data).filter(a=>VC.rows.some(r=>r._area===a));
+  const cnt=a=>G.map(({i})=>VC.rows.filter(r=>r._area===a&&r.vc===i).length);
+  const tiles=G.map(({g,i})=>`<button type="button" data-vcshow="${i}" style="--c:${VCCOL[i]}" title="Show the ${g.n} ${esc(g.tier.toLowerCase())} listings on the map">
+    <div><span class="n">${g.n.toLocaleString('en-IN')}</span><span class="p">${pc(g.n)}%</span></div>
+    <div class="l">${esc(g.tier)}</div><div class="r">${VC.fixed?esc(['Up to ₹1.50 Cr','₹1.50 Cr to ₹2.50 Cr','Above ₹2.50 Cr'][i]||''):`${money(g.pmin)} to ${money(g.pmax)}`}</div>
+    <div class="r">${(B=>B?`Most listings at <b style="color:var(--fg)">${bandTxt(B)}</b> (${B.n} of ${B.of})`:'')(busyBand(VC.rows.filter(r=>r.vc===i)))}</div>
+    <div class="bar"><i style="width:${(g.n/tot*100).toFixed(1)}%"></i></div></button>`).join('');
+  const share=state.vcntMode==='share';
+  box.innerHTML=`<div style="display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap"><div><h3>How many listings are in each price ${word}</h3>
+    <p class="note">${tot.toLocaleString('en-IN')} ${esc(VC.typeOf==='all listings'?'listings':VC.typeOf)} with a price, in ${plural(areas.length,'area','areas')}. Click a box to show that ${word} on the map.</p></div></div>
+    <div class="vct">${tiles}</div>
+    ${areas.length>1?`<div class="vcnt-k"><b style="color:var(--fg)">By area</b>${G.map(({g,i})=>`<span><i style="background:${VCCOL[i]}"></i>${esc(g.tier)}</span>`).join('')}
+      <span class="vcnt-m" role="group" aria-label="Bar height"><button type="button" data-vcntm="count" aria-pressed="${!share}">Number</button><button type="button" data-vcntm="share" aria-pressed="${share}">% of area</button></span></div>
+    <div id="vcntc"></div>`:''}`;
+  if(areas.length<2)return;
+  const el=$('vcntc'),W=Math.max(300,el.clientWidth),H=260,P={l:40,r:8,t:20,b:34};
+  const data=areas.map(a=>{const c=cnt(a),s=c.reduce((x,y)=>x+y,0)||1;return{a,c,s,v:share?c.map(n=>n/s*100):c}});
+  const vmax=share?100:Math.max(1,...data.flatMap(d=>d.v));
+  const step=share?25:(()=>{const raw=vmax/4,m=10**Math.floor(Math.log10(raw));return[1,2,5,10].map(x=>x*m).find(x=>x>=raw)})(),top=Math.ceil(vmax/step)*step;
+  const Y=v=>H-P.b-v/top*(H-P.t-P.b),gw=(W-P.l-P.r)/areas.length,bw=Math.min(34,(gw*.8)/G.length);
+  let o=`<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Listings in each price ${word} by area">`;
+  for(let v=0;v<=top;v+=step)o+=`<line x1="${P.l}" x2="${W-P.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="${v?'#e6eae8':'#b9c3c1'}"/><text x="${P.l-6}" y="${Y(v)+4}" text-anchor="end">${share?v+'%':v.toLocaleString('en-IN')}</text>`;
+  data.forEach((d,ai)=>{const x0=P.l+ai*gw+(gw-bw*G.length)/2;
+    G.forEach(({g,i},k)=>{const v=d.v[k],x=x0+k*bw,y=Y(v),h=Y(0)-y;
+      o+=`<rect x="${(x+1).toFixed(1)}" y="${y.toFixed(1)}" width="${(bw-2).toFixed(1)}" height="${Math.max(0,h).toFixed(1)}" rx="3" fill="${VCCOL[i]}" data-vcshow="${i}" style="cursor:pointer" data-tip="${esc(`${d.a}: ${d.c[k]} ${g.tier.toLowerCase()} listing${d.c[k]===1?'':'s'} (${Math.round(d.c[k]/d.s*100)}% of the area's ${d.s})`)}"/>`;
+      if(d.c[k]&&bw>=14)o+=`<text class="vl" x="${(x+bw/2).toFixed(1)}" y="${(y-4).toFixed(1)}" text-anchor="middle" style="font-size:${bw<22?10:11.5}px">${share?Math.round(v)+'%':d.c[k]}</text>`});
+    o+=`<text class="al" x="${(P.l+ai*gw+gw/2).toFixed(1)}" y="${H-P.b+16}" text-anchor="middle">${esc(d.a)}</text><text x="${(P.l+ai*gw+gw/2).toFixed(1)}" y="${H-P.b+29}" text-anchor="middle">${d.s} listings</text>`});
+  el.innerHTML=o+'</svg>';
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-vcntm]');if(b&&b.dataset.vcntm!==state.vcntMode){state.vcntMode=b.dataset.vcntm;drawVCount()}});
 function drawVC(){
   if(!VC||!VC.groups.length||!$('vcsc'))return;
-  drawStrip();
+  drawVCount();drawStrip();
   vcLine('vcel',VC.ks,'inertia',v=>Math.round(v).toLocaleString('en-IN'),'Inertia');vcLine('vcsil',VC.ks,'sil',v=>v.toFixed(2),'Silhouette score');
   // scatter
   const el=$('vcsc'),W=Math.max(320,el.clientWidth),H=300,P={l:58,r:14,t:10,b:40},rs=VC.rows.filter(r=>r.sqft>0);
