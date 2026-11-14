@@ -1,0 +1,2705 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-11-14T06:44:36Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 2180951748,
+  "lat": 17.3920424,
+  "lon": 78.3517694,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "Narsingi",
+    "ref": "19"
+  }
+},
+{
+  "type": "node",
+  "id": 2180951764,
+  "lat": 17.3260485,
+  "lon": 78.3742009,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "Rajendra Nagar (North)",
+    "ref": "17"
+  }
+},
+{
+  "type": "node",
+  "id": 2180952017,
+  "lat": 17.3982578,
+  "lon": 78.3513550,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "Narsingi",
+    "ref": "19"
+  }
+},
+{
+  "type": "node",
+  "id": 2187030024,
+  "lat": 17.4049017,
+  "lon": 78.3345642,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "Gandipet",
+    "ref": "1"
+  }
+},
+{
+  "type": "node",
+  "id": 2187030064,
+  "lat": 17.4597866,
+  "lon": 78.2502292,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "Edulanagulapally",
+    "ref": "2"
+  }
+},
+{
+  "type": "node",
+  "id": 2187030089,
+  "lat": 17.4088866,
+  "lon": 78.3266594,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "Gandipet",
+    "ref": "1"
+  }
+},
+{
+  "type": "node",
+  "id": 2187030096,
+  "lat": 17.4678730,
+  "lon": 78.2489203,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "Edulanagulapally",
+    "ref": "2"
+  }
+},
+{
+  "type": "node",
+  "id": 2188391651,
+  "lat": 17.3530793,
+  "lon": 78.3583343,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "APPA",
+    "ref": "18"
+  }
+},
+{
+  "type": "node",
+  "id": 2188391722,
+  "lat": 17.3456001,
+  "lon": 78.3621246,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "APPA",
+    "ref": "18"
+  }
+},
+{
+  "type": "node",
+  "id": 3384185317,
+  "lat": 17.4539558,
+  "lon": 78.3783191,
+  "tags": {
+    "name": "NIGHT BAZAR",
+    "shop": "mall"
+  }
+},
+{
+  "type": "node",
+  "id": 3789901090,
+  "lat": 17.3261265,
+  "lon": 78.4261359,
+  "tags": {
+    "highway": "motorway_junction"
+  }
+},
+{
+  "type": "node",
+  "id": 3789901288,
+  "lat": 17.3466113,
+  "lon": 78.4159174,
+  "tags": {
+    "highway": "motorway_junction",
+    "source": "Esri World Imagery (2023-08-31)"
+  }
+},
+{
+  "type": "node",
+  "id": 3789901657,
+  "lat": 17.3813042,
+  "lon": 78.4294038,
+  "tags": {
+    "highway": "motorway_junction"
+  }
+},
+{
+  "type": "node",
+  "id": 4310418162,
+  "lat": 17.3046202,
+  "lon": 78.3781550,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "Rajendra Nagar (South)",
+    "ref": "17"
+  }
+},
+{
+  "type": "node",
+  "id": 5405045518,
+  "lat": 17.4350521,
+  "lon": 78.3683916,
+  "tags": {
+    "name": "South india shopping mall",
+    "shop": "mall"
+  }
+},
+{
+  "type": "node",
+  "id": 5405055460,
+  "lat": 17.4418221,
+  "lon": 78.3619375,
+  "tags": {
+    "name": "Centro by Reliance",
+    "shop": "mall"
+  }
+},
+{
+  "type": "node",
+  "id": 5405057984,
+  "lat": 17.4474048,
+  "lon": 78.3629944,
+  "tags": {
+    "brand": "Radisson",
+    "brand:wikidata": "Q1751979",
+    "name": "Radisson",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6036834735,
+  "lat": 17.4499196,
+  "lon": 78.3641864,
+  "tags": {
+    "name": "Platina mall",
+    "shop": "mall"
+  }
+},
+{
+  "type": "node",
+  "id": 6248864186,
+  "lat": 17.4937589,
+  "lon": 78.4007057,
+  "tags": {
+    "addr:city": "Hyderabad",
+    "addr:postcode": "500072",
+    "addr:street": "225 & 226 Travels Road Opposite City Bus Stop, Kukatpally Housing Board Colony, Kukatpally, Hyderabad, Telangana 500072",
+    "check_date": "2024-03-16",
+    "name": "R.S. Brothers Kukatpally",
+    "shop": "mall"
+  }
+},
+{
+  "type": "node",
+  "id": 6779829501,
+  "lat": 17.4930479,
+  "lon": 78.4044898,
+  "tags": {
+    "addr:city": "Hyderabad",
+    "addr:housenumber": "7-8",
+    "addr:postcode": "500072",
+    "addr:street": "Usha Mullapudi Rd",
+    "name": "sounth india shoppinh mall",
+    "opening_hours": "Mo-Su 10:00-22:00",
+    "operator": "mall",
+    "payment:credit_cards": "yes",
+    "shop": "mall"
+  }
+},
+{
+  "type": "node",
+  "id": 6850830309,
+  "lat": 17.4713322,
+  "lon": 78.4195193,
+  "tags": {
+    "name": "Yurani Fashion",
+    "shop": "mall",
+    "source": "survey"
+  }
+},
+{
+  "type": "node",
+  "id": 7008117198,
+  "lat": 17.4946527,
+  "lon": 78.3222218,
+  "tags": {
+    "name": "balaji dresses",
+    "shop": "mall"
+  }
+},
+{
+  "type": "node",
+  "id": 7008117199,
+  "lat": 17.4945892,
+  "lon": 78.3222305,
+  "tags": {
+    "name": "ME2 Shoppee",
+    "shop": "mall"
+  }
+},
+{
+  "type": "node",
+  "id": 7008117200,
+  "lat": 17.4944803,
+  "lon": 78.3222511,
+  "tags": {
+    "name": "KAIRA Dresses",
+    "shop": "mall"
+  }
+},
+{
+  "type": "node",
+  "id": 7097251734,
+  "lat": 17.4321790,
+  "lon": 78.3849981,
+  "tags": {
+    "name": "ITC Kohenur",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 7134891008,
+  "lat": 17.4308409,
+  "lon": 78.3734500,
+  "tags": {
+    "name": "Preston Prime Mall & Multiplex",
+    "shop": "mall",
+    "website": "https://prestondevelopers.com/prime/"
+  }
+},
+{
+  "type": "node",
+  "id": 7180198654,
+  "lat": 17.4929268,
+  "lon": 78.4011171,
+  "tags": {
+    "addr:city": "Hyderabad",
+    "addr:postcode": "500072",
+    "addr:street": "Lig 67, Rd Number 2, Kukatpally Housing Board Colony, Kukatpally, Hyderabad, Telangana 500072",
+    "check_date": "2024-03-16",
+    "name": "R K Collections",
+    "shop": "mall"
+  }
+},
+{
+  "type": "node",
+  "id": 7243983836,
+  "lat": 17.4088225,
+  "lon": 78.3993664,
+  "tags": {
+    "addr:city": "Hyderabad",
+    "addr:street": "Old Bombay Highway",
+    "name": "Relience Trends",
+    "shop": "mall"
+  }
+},
+{
+  "type": "node",
+  "id": 7244127021,
+  "lat": 17.4958081,
+  "lon": 78.3954187,
+  "tags": {
+    "check_date": "2024-03-16",
+    "name": "vrksilks",
+    "opening_hours": "10:00-23:00",
+    "payment:cash": "yes",
+    "payment:credit_cards": "yes",
+    "payment:debit_cards": "yes",
+    "shop": "mall"
+  }
+},
+{
+  "type": "node",
+  "id": 7244127022,
+  "lat": 17.4954617,
+  "lon": 78.3949732,
+  "tags": {
+    "check_date": "2024-03-16",
+    "name": "ZUDIO, JNTUH, KPHB",
+    "opening_hours": "10:00-23:00",
+    "payment:cash": "yes",
+    "payment:credit_cards": "yes",
+    "payment:debit_cards": "yes",
+    "shop": "mall"
+  }
+},
+{
+  "type": "node",
+  "id": 7385438418,
+  "lat": 17.4284153,
+  "lon": 78.3988434,
+  "tags": {
+    "addr:housenumber": "Plot No, 962, Rd Number 48, Silent Valley hills, Jubilee Hills, Hyderabad, Telangana 500033",
+    "amenity": "university",
+    "name": "CHIREC International School Jubilee Hills Campus"
+  }
+},
+{
+  "type": "node",
+  "id": 7385438430,
+  "lat": 17.4339646,
+  "lon": 78.3999765,
+  "tags": {
+    "amenity": "university",
+    "name": "NRI Academy Jubilee Hills"
+  }
+},
+{
+  "type": "node",
+  "id": 7385438431,
+  "lat": 17.4328865,
+  "lon": 78.3994454,
+  "tags": {
+    "addr:housenumber": "869, CBI Colony, Jubilee Hills, Hyderabad, Telangana 500033",
+    "amenity": "university",
+    "name": "The Loharu Montessori Children's House"
+  }
+},
+{
+  "type": "node",
+  "id": 7385438436,
+  "lat": 17.4305637,
+  "lon": 78.3971694,
+  "tags": {
+    "addr:housenumber": "G Rami Reddy Marg, Silent Valley hills, Jubilee Hills, Hyderabad, Telangana 500033",
+    "amenity": "university",
+    "name": "Shriram Montessori Road No. 46 Branch"
+  }
+},
+{
+  "type": "node",
+  "id": 7385438438,
+  "lat": 17.4323904,
+  "lon": 78.3982658,
+  "tags": {
+    "amenity": "university",
+    "name": "Govt Primary School,Jubilee Hills-Masthan Nagar"
+  }
+},
+{
+  "type": "node",
+  "id": 7385438439,
+  "lat": 17.4223811,
+  "lon": 78.4037842,
+  "tags": {
+    "addr:housenumber": "PLOT NO: 50, ROAD NO;72,Prasasan Nagar,, Andhra Jyothi Back Side Road, Jubilee Hills, Hyderabad, Telangana 500033",
+    "amenity": "university",
+    "name": "SHIVAJI VIDYA PEETH HIGH SCHOOL"
+  }
+},
+{
+  "type": "node",
+  "id": 7385438440,
+  "lat": 17.4154300,
+  "lon": 78.4048723,
+  "tags": {
+    "addr:housenumber": "354, Rd Number 80, Film Nagar, Hyderabad, Telangana 500033",
+    "amenity": "university",
+    "name": "Shriram Montessori House of Children"
+  }
+},
+{
+  "type": "node",
+  "id": 7385438441,
+  "lat": 17.4141797,
+  "lon": 78.4054691,
+  "tags": {
+    "addr:housenumber": "Phase III, Hyderabad, Telangana 500033",
+    "amenity": "university",
+    "name": "Little Elly"
+  }
+},
+{
+  "type": "node",
+  "id": 7385438443,
+  "lat": 17.4423925,
+  "lon": 78.3971119,
+  "tags": {
+    "addr:housenumber": "Plot No. 16, H. No. 1-63/3/16, Jubilee Hills road no. 36 extension, Hyderabad, Telangana 500081",
+    "amenity": "university",
+    "name": "Pioneer World School"
+  }
+},
+{
+  "type": "node",
+  "id": 7385438444,
+  "lat": 17.4422085,
+  "lon": 78.3974119,
+  "tags": {
+    "amenity": "university",
+    "name": "St. Mary's Junior College"
+  }
+},
+{
+  "type": "node",
+  "id": 7385438445,
+  "lat": 17.4433156,
+  "lon": 78.3969912,
+  "tags": {
+    "addr:housenumber": "Alamgir Masjid Lane, Kakatiya Hills, Kavuri Hills Phase 1, Kavuri Hills, Madhapur, Hyderabad, Telangana 500033",
+    "amenity": "university",
+    "name": "The Learningraph"
+  }
+},
+{
+  "type": "node",
+  "id": 7385438446,
+  "lat": 17.4441106,
+  "lon": 78.3977727,
+  "tags": {
+    "addr:housenumber": "Kakateeya Hills Rd 9, Kakatiya Hills, Kavuri Hills Phase 1, Kavuri Hills, Jubilee Hills, Hyderabad, Telangana 500033",
+    "amenity": "university",
+    "name": "VelocIITy School"
+  }
+},
+{
+  "type": "node",
+  "id": 7385438462,
+  "lat": 17.4443981,
+  "lon": 78.4006274,
+  "tags": {
+    "addr:housenumber": "123, Rd Number 3, Kakatiya Hills, Kavuri Hills Phase 1, Kavuri Hills, Madhapur, Hyderabad, Telangana 500081",
+    "amenity": "university",
+    "name": "Iris Florets Madhapur"
+  }
+},
+{
+  "type": "node",
+  "id": 7385438463,
+  "lat": 17.4361015,
+  "lon": 78.4136397,
+  "tags": {
+    "addr:housenumber": "Diamond House, Door No 8-2-293/82/A Plot No 281 K, Road No 10 C Opp Diamond House Lane Opp, Lane, Jubilee Hills, Hyderabad, Telangana 500033",
+    "amenity": "university",
+    "name": "Sloka Kindergarten School"
+  }
+},
+{
+  "type": "node",
+  "id": 7385438464,
+  "lat": 17.4354043,
+  "lon": 78.4151125,
+  "tags": {
+    "addr:housenumber": "270f, Road Number 10, Gayatri Hills, Jubilee Hills, Hyderabad, Telangana 500033",
+    "amenity": "university",
+    "name": "Indian Public School"
+  }
+},
+{
+  "type": "node",
+  "id": 7385438467,
+  "lat": 17.4340723,
+  "lon": 78.4180040,
+  "tags": {
+    "addr:housenumber": "Sravanthi Nagar, ICRISAT Colony, Jubilee Hills, Hyderabad, Telangana 500033",
+    "amenity": "university",
+    "name": "Happy Kids School and International Montessori Teachers Training , PPTC, NTTC COURCES"
+  }
+},
+{
+  "type": "node",
+  "id": 7385892259,
+  "lat": 17.4360040,
+  "lon": 78.4174383,
+  "tags": {
+    "addr:housenumber": "behind Goutam vidhayaniketan bhagavathinagar, Gayatri Hills, Jubilee Hills, jubileehills road no-11, Telangana 500045",
+    "amenity": "university",
+    "name": "Kidzee Jubileehills Play School"
+  }
+},
+{
+  "type": "node",
+  "id": 7385892260,
+  "lat": 17.4359805,
+  "lon": 78.4177569,
+  "tags": {
+    "addr:housenumber": "8-3-229/B/43/1, Gayatri Hills, Jubilee Hills, Hyderabad, Telangana 500033",
+    "amenity": "university",
+    "name": "Goutham Vidya Niketan"
+  }
+},
+{
+  "type": "node",
+  "id": 7385892261,
+  "lat": 17.4377049,
+  "lon": 78.4143329,
+  "tags": {
+    "addr:housenumber": "Road no.10, opp lane to diamond house,gayatri hills,jubilee hills, Hyderabad, Telangana 500033",
+    "amenity": "university",
+    "name": "Little Star high school"
+  }
+},
+{
+  "type": "node",
+  "id": 7385892266,
+  "lat": 17.4470171,
+  "lon": 78.4097371,
+  "tags": {
+    "addr:housenumber": "8-4-369/379, SPR Hills, Rajiv Gandhi Nagar, Borabanda, Hyderabad, Telangana 500018",
+    "amenity": "university",
+    "name": "Ekalavya Foundation"
+  }
+},
+{
+  "type": "node",
+  "id": 7385892267,
+  "lat": 17.4482016,
+  "lon": 78.4111128,
+  "tags": {
+    "addr:housenumber": "Rd Number 26, Borabanda, Hyderabad, Telangana 500018",
+    "amenity": "university",
+    "name": "Brilliant Talent High School"
+  }
+},
+{
+  "type": "node",
+  "id": 7385892268,
+  "lat": 17.4470664,
+  "lon": 78.4144352,
+  "tags": {
+    "amenity": "university",
+    "name": "Sai Renu Unique High School"
+  }
+},
+{
+  "type": "node",
+  "id": 7397325527,
+  "lat": 17.4345944,
+  "lon": 78.4190319,
+  "tags": {
+    "addr:housenumber": "5, Rd Number 10 B APSFC Colony, Hylam Colony, Rd Number 10 B, APSFC Colony, Hylam Colony, Jubilee Hills, Hyderabad, Telangana 500045",
+    "amenity": "university",
+    "name": "STAR GLOBAL SCHOOL"
+  }
+},
+{
+  "type": "node",
+  "id": 7397325528,
+  "lat": 17.4338968,
+  "lon": 78.4199433,
+  "tags": {
+    "addr:housenumber": "Plot No. 6, House No, 8-3-230/A/6, Road Number 10, APSFC Colony, Venkatagiri, Jubilee Hills, Hyderabad, Telangana 500045",
+    "amenity": "university",
+    "name": "Disha Schools"
+  }
+},
+{
+  "type": "node",
+  "id": 7401493579,
+  "lat": 17.4822094,
+  "lon": 78.2959999,
+  "tags": {
+    "addr:housenumber": "MIG-647, MIG Colony, MIG Phase I, Bharat Heavy Electricals Limited, Hyderabad, Telangana 500019",
+    "amenity": "university",
+    "name": "Kidzee Pre-School"
+  }
+},
+{
+  "type": "node",
+  "id": 7401493581,
+  "lat": 17.4785088,
+  "lon": 78.2975931,
+  "tags": {
+    "addr:housenumber": "MIG Colony, MIG Phase I, MIG Colony, Serilingampally, Hyderabad, Telangana 502032",
+    "amenity": "university",
+    "name": "Raos High School"
+  }
+},
+{
+  "type": "node",
+  "id": 7401493582,
+  "lat": 17.4842051,
+  "lon": 78.2995091,
+  "tags": {
+    "addr:housenumber": "H. No. 647, Old MIG, BHEL, Serilingampally, Hyderabad, Telangana 500032",
+    "amenity": "university",
+    "name": "Kidzee BHEL LINGAMPALLY"
+  }
+},
+{
+  "type": "node",
+  "id": 7401493584,
+  "lat": 17.4830041,
+  "lon": 78.3063348,
+  "tags": {
+    "addr:housenumber": "2031, Old Mig Rd, MIG Colony, MIG Phase I, Lingampally, Bharat Heavy Electricals Limited, Hyderabad, Telangana 502032",
+    "amenity": "university",
+    "name": "Thayal Grammer High School"
+  }
+},
+{
+  "type": "node",
+  "id": 7401498986,
+  "lat": 17.4843865,
+  "lon": 78.3094556,
+  "tags": {
+    "addr:housenumber": "No 2421, near Netaji Community Hall, Old MIG, Lingampally, Bharat Heavy Electricals Limited, Hyderabad, Telangana 502032",
+    "amenity": "university",
+    "name": "Raos High School"
+  }
+},
+{
+  "type": "node",
+  "id": 7401498987,
+  "lat": 17.4903138,
+  "lon": 78.3169068,
+  "tags": {
+    "addr:housenumber": "Lingampally, Serilingampally, Hyderabad, Telangana 500019",
+    "amenity": "university",
+    "name": "sri Sai Chaitanya School"
+  }
+},
+{
+  "type": "node",
+  "id": 7401498988,
+  "lat": 17.4891242,
+  "lon": 78.3190946,
+  "tags": {
+    "addr:housenumber": "shop no 3-125, 1, Lingampally Rd, Tara Nagar, Serilingampally, Hyderabad, Telangana 500050",
+    "amenity": "university",
+    "name": "Vidyaniketan Model High School"
+  }
+},
+{
+  "type": "node",
+  "id": 7401499020,
+  "lat": 17.4832930,
+  "lon": 78.3300281,
+  "tags": {
+    "addr:housenumber": "1764, Papireddy Nagar, Chanda Nagar, Hyderabad, Telangana 500050",
+    "amenity": "university",
+    "name": "sharada vidyaniketan"
+  }
+},
+{
+  "type": "node",
+  "id": 7402256571,
+  "lat": 17.4709316,
+  "lon": 78.3324156,
+  "tags": {
+    "addr:housenumber": "Sudarshan Nagar Colony, Serilingampally, Hyderabad, Telangana 500084",
+    "amenity": "university",
+    "name": "Wings Play School"
+  }
+},
+{
+  "type": "node",
+  "id": 7402256573,
+  "lat": 17.4824269,
+  "lon": 78.3183098,
+  "tags": {
+    "addr:housenumber": "Dubey Colony, Lingampally, Serilingampally, Hyderabad, Telangana 500019",
+    "amenity": "university",
+    "name": "Sahithi Vidyaniketan High School"
+  }
+},
+{
+  "type": "node",
+  "id": 7402256574,
+  "lat": 17.4799375,
+  "lon": 78.3176485,
+  "tags": {
+    "addr:housenumber": "H.no:7, 14/1, Old Mumbai Hwy, Bapu Nagar, Serilingampally, Hyderabad, Telangana 500019",
+    "amenity": "university",
+    "name": "Seeds School - Uranus campus"
+  }
+},
+{
+  "type": "node",
+  "id": 7402256577,
+  "lat": 17.4685707,
+  "lon": 78.3038358,
+  "tags": {
+    "addr:housenumber": "Aparna Cyber Life, Plot #B4, Nallagandla Residential Complex, opposite Lane, HUDA Layout, Nallagandla, Serilingampally, Hyderabad, Telangana 500019",
+    "amenity": "university",
+    "name": "Epistemo Vikas Leadership School"
+  }
+},
+{
+  "type": "node",
+  "id": 7402256579,
+  "lat": 17.4755464,
+  "lon": 78.3029526,
+  "tags": {
+    "addr:housenumber": "Survey No -386, Nallagandla-Tellapur Road Opp. Aditya Eden Park Apts., Nallagandla R.R. Dist., Telangana-19, Hyderabad, Telangana 500019",
+    "amenity": "university",
+    "name": "Sadhana Infinity School"
+  }
+},
+{
+  "type": "node",
+  "id": 7402256582,
+  "lat": 17.4783486,
+  "lon": 78.3039511,
+  "tags": {
+    "addr:housenumber": "Nallagandla Plot No. 51 & 52, Defence Colony, Serilingampally, Hyderabad, Telangana 500019",
+    "amenity": "university",
+    "name": "Edsmart Global - Nallagandla"
+  }
+},
+{
+  "type": "node",
+  "id": 7402256583,
+  "lat": 17.4781306,
+  "lon": 78.3040678,
+  "tags": {
+    "addr:housenumber": "Plot No: 51, Defense Colony, near Laxmi Vihar Phase-1, near Tellapur Road, Nallagandla, Serilingampally, Hyderabad, Telangana 500019",
+    "amenity": "university",
+    "name": "EuroKids Preschool at Nallagandla, Most Awarded Kindergarten in Hyderabad"
+  }
+},
+{
+  "type": "node",
+  "id": 7402256584,
+  "lat": 17.4789130,
+  "lon": 78.3102125,
+  "tags": {
+    "addr:housenumber": "Nallagandla, Serilingampally, Hyderabad, Telangana 500019",
+    "amenity": "university",
+    "name": "Akshaya Foundation School"
+  }
+},
+{
+  "type": "node",
+  "id": 9605389619,
+  "lat": 17.4886857,
+  "lon": 78.3240652,
+  "tags": {
+    "leisure": "stadium",
+    "name": "PJR stadium"
+  }
+},
+{
+  "type": "node",
+  "id": 9903904324,
+  "lat": 17.4960532,
+  "lon": 78.4005598,
+  "tags": {
+    "addr:city": "hyderabad",
+    "addr:postcode": "500072",
+    "addr:street": "street number 3",
+    "check_date": "2024-03-16",
+    "name": "South india shopping mall",
+    "shop": "mall"
+  }
+},
+{
+  "type": "node",
+  "id": 10281786064,
+  "lat": 17.3601042,
+  "lon": 78.4269532,
+  "tags": {
+    "highway": "motorway_junction",
+    "source": "Esri World Imagery (2023-08-31)"
+  }
+},
+{
+  "type": "node",
+  "id": 11178907552,
+  "lat": 17.4110972,
+  "lon": 78.3174988,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "1A"
+  }
+},
+{
+  "type": "node",
+  "id": 11178907692,
+  "lat": 17.3985202,
+  "lon": 78.3477190,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "Narsingi",
+    "ref": "19"
+  }
+},
+{
+  "type": "node",
+  "id": 11361169672,
+  "lat": 17.4926161,
+  "lon": 78.3843639,
+  "tags": {
+    "addr:city": "Kukatpally",
+    "addr:district": "Hyderabad",
+    "addr:housenumber": "F9VM+3P8",
+    "addr:postcode": "500085",
+    "addr:street": "Vasanth Nagar",
+    "air_conditioning": "yes",
+    "name": "Vasanth Nagar Shoping Complex",
+    "opening_hours": "Mo-Su 09:00-21:00",
+    "operator": "Shoping Complex",
+    "payment:cash": "yes",
+    "payment:credit_cards": "yes",
+    "payment:upi": "yes",
+    "shop": "mall",
+    "toilets": "yes",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 11736426758,
+  "lat": 17.4900984,
+  "lon": 78.3928581,
+  "tags": {
+    "check_date": "2025-07-30",
+    "fixme:type": "lulu mall",
+    "name": "Lulu Mall",
+    "shop": "mall"
+  }
+},
+{
+  "type": "node",
+  "id": 11736856481,
+  "lat": 17.4795295,
+  "lon": 78.4175929,
+  "tags": {
+    "addr:floor": "4",
+    "check_date": "2024-03-16",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Ashoka One",
+    "name:en": "Ashoka One",
+    "payment:cash": "yes",
+    "payment:credit_cards": "yes",
+    "payment:debit_cards": "yes",
+    "shop": "mall",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 11773916555,
+  "lat": 17.4921251,
+  "lon": 78.4063628,
+  "tags": {
+    "check_date": "2024-03-30",
+    "name": "CMR Family Mall",
+    "shop": "mall"
+  }
+},
+{
+  "type": "node",
+  "id": 12596374620,
+  "lat": 17.4842173,
+  "lon": 78.3889015,
+  "tags": {
+    "name": "Nexus Hyderabad Mall",
+    "shop": "mall"
+  }
+},
+{
+  "type": "node",
+  "id": 12596374927,
+  "lat": 17.4973150,
+  "lon": 78.3359793,
+  "tags": {
+    "name": "gsm mall",
+    "shop": "mall"
+  }
+},
+{
+  "type": "node",
+  "id": 12596383259,
+  "lat": 17.4954642,
+  "lon": 78.3925356,
+  "tags": {
+    "amenity": "university",
+    "check_date": "2026-04-08",
+    "internet_access": "wlan",
+    "internet_access:fee": "customers",
+    "name": "jntu college",
+    "payment:cash": "yes",
+    "payment:credit_cards": "yes",
+    "payment:debit_cards": "yes",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 12596394056,
+  "lat": 17.4951179,
+  "lon": 78.3344795,
+  "tags": {
+    "name": "infinity mall",
+    "shop": "mall"
+  }
+},
+{
+  "type": "node",
+  "id": 13019357773,
+  "lat": 17.4119636,
+  "lon": 78.3138557,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "1A"
+  }
+},
+{
+  "type": "node",
+  "id": 13227600344,
+  "lat": 17.4003086,
+  "lon": 78.4148459,
+  "tags": {
+    "check_date": "2025-10-12",
+    "name": "Podium Mall",
+    "shop": "mall"
+  }
+},
+{
+  "type": "node",
+  "id": 13308072626,
+  "lat": 17.4612654,
+  "lon": 78.3692400,
+  "tags": {
+    "amenity": "university",
+    "name": "KLH University GBS"
+  }
+},
+{
+  "type": "node",
+  "id": 13715452784,
+  "lat": 17.4959769,
+  "lon": 78.3947049,
+  "tags": {
+    "amenity": "university",
+    "check_date": "2026-04-08",
+    "education": "university",
+    "name": "Jntu First Gate"
+  }
+},
+{
+  "type": "node",
+  "id": 14004355201,
+  "lat": 17.4458312,
+  "lon": 78.3487799,
+  "tags": {
+    "addr:postcode": "500032",
+    "addr:street": "Campus Road",
+    "amenity": "university",
+    "check_date": "2026-07-11",
+    "education": "university",
+    "level": "6",
+    "name": "Human Sciences Research Centre",
+    "website": "https://hsrc.iiit.ac.in"
+  }
+},
+{
+  "type": "node",
+  "id": 14022786453,
+  "lat": 17.4972248,
+  "lon": 78.3632320,
+  "tags": {
+    "check_date": "2026-06-27",
+    "name": "CMR Shopping Mall",
+    "shop": "mall"
+  }
+},
+{
+  "type": "node",
+  "id": 14099128601,
+  "lat": 17.3489373,
+  "lon": 78.3412037,
+  "tags": {
+    "addr:postcode": "500075",
+    "addr:street": "APPA-Manchirevula-Narsingi Road",
+    "amenity": "university",
+    "contact:facebook": "KLUniversityH",
+    "contact:instagram": "klhuniversity",
+    "contact:twitter": "klhuniversity",
+    "email": "principalofficeengg@klh.edu.in",
+    "internet_access": "wlan",
+    "name": "Klh Aziznagar",
+    "opening_hours": "Mo-Sa 07:30-16:30",
+    "phone": "8985249328;7660872999",
+    "website": "http://klh.edu.in"
+  }
+},
+{
+  "type": "way",
+  "id": 28130557,
+  "center": {
+    "lat": 17.3747047,
+    "lon": 78.2877656
+  },
+  "tags": {
+    "alt_name": "Gandipet",
+    "intermittent": "no",
+    "name": "Osman Sagar",
+    "name:ar": "بحيرة عثمان ساغار",
+    "name:en": "Osman Sagar",
+    "name:fa": "دریاچه عثمان ساگر",
+    "name:ml": "ഉസ്മാൻ സാഗർ",
+    "name:te": "ఉస్మాన్ సాగర్",
+    "name:ur": "عثمان ساگر",
+    "natural": "water",
+    "salt": "no",
+    "tidal": "no",
+    "water": "lake",
+    "wikidata": "Q7107102",
+    "wikipedia": "en:Osman Sagar"
+  }
+},
+{
+  "type": "way",
+  "id": 28131043,
+  "center": {
+    "lat": 17.4310542,
+    "lon": 78.3899966
+  },
+  "tags": {
+    "leisure": "nature_reserve",
+    "name": "Durgam Cheruvu",
+    "name:fa": "دریاچه درگم چرووو",
+    "name:ml": "ദുർഗ്ഗം ചെരുവ്",
+    "name:te": "దుర్గం చెరువు",
+    "natural": "water",
+    "tourism": "attraction",
+    "water": "lake",
+    "wikidata": "Q5316410",
+    "wikimedia_commons": "Category:Durgam Cheruvu",
+    "wikipedia": "en:Durgam Cheruvu"
+  }
+},
+{
+  "type": "way",
+  "id": 28196632,
+  "center": {
+    "lat": 17.3935438,
+    "lon": 78.4132429
+  },
+  "tags": {
+    "name": "Shah Hatim Talab",
+    "natural": "water",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 28268610,
+  "center": {
+    "lat": 17.4202340,
+    "lon": 78.4201043
+  },
+  "tags": {
+    "alt_name": "KBR Park",
+    "boundary": "national_park",
+    "leisure": "nature_reserve",
+    "name": "Kasu Brahmananda Reddy National Park",
+    "name:etymology:wikidata": "Q3764086",
+    "name:fa": "پارک ملی کاسو برهماندا ردی",
+    "name:ml": "കാസു ബ്രഹ്മാനന്ദ റെഡ്ഡി നാഷണൽ പാർക്ക്",
+    "name:te": "కాసు బ్రహ్మానంద రెడ్డి నేషనల్ పార్క్",
+    "protect_class": "2",
+    "tourism": "attraction",
+    "wikidata": "Q969593",
+    "wikimedia_commons": "Category:Kasu Brahmananda Reddy National Park",
+    "wikipedia": "en:Kasu Brahmananda Reddy National Park"
+  }
+},
+{
+  "type": "way",
+  "id": 28847688,
+  "center": {
+    "lat": 17.3537536,
+    "lon": 78.3716132
+  },
+  "tags": {
+    "name": "Peeran Cheruvu",
+    "natural": "water"
+  }
+},
+{
+  "type": "way",
+  "id": 29050686,
+  "center": {
+    "lat": 17.4671801,
+    "lon": 78.3880688
+  },
+  "tags": {
+    "name": "Mullakathuva Cheruvu",
+    "natural": "water",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 29251874,
+  "center": {
+    "lat": 17.4785739,
+    "lon": 78.4127840
+  },
+  "tags": {
+    "name": "IDPL Tank",
+    "natural": "water",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 29473313,
+  "center": {
+    "lat": 17.4098211,
+    "lon": 78.4049419
+  },
+  "tags": {
+    "name": "Hakimpet Kunta",
+    "natural": "water"
+  }
+},
+{
+  "type": "way",
+  "id": 31355320,
+  "center": {
+    "lat": 17.4453180,
+    "lon": 78.3482634
+  },
+  "tags": {
+    "addr:city": "Hyderabad",
+    "addr:postcode": "500032",
+    "addr:street": "Prof. CR Rao Road, Gachibowli",
+    "alt_name": "IIIT Hyderabad;IIIT-H",
+    "amenity": "university",
+    "name": "International Institute of Information Technology, Hyderabad",
+    "name:hi": "अंतरराष्ट्रीय सूचना प्रौद्योगिकी संस्थान, हैदराबाद",
+    "name:te": "ఇంటర్నేషనల్ ఇన్స్టిట్యూట్ అఫ్ ఇన్ఫర్మేషన్ టెక్నాలజీ హైదరాబాద్",
+    "website": "https://www.iiit.ac.in/",
+    "wikidata": "Q1666653",
+    "wikimedia_commons": "Category:IIIT Hyderabad",
+    "wikipedia": "en:International Institute of Information Technology, Hyderabad"
+  }
+},
+{
+  "type": "way",
+  "id": 68871414,
+  "center": {
+    "lat": 17.4345433,
+    "lon": 78.3866939
+  },
+  "tags": {
+    "addr:city": "Hyderabad",
+    "addr:postcode": "500081",
+    "building": "retail",
+    "description": "Hyderabad's largest mall now has all its 3 anchors - HyperCITY, Lifestyle & Shoppers Stop",
+    "name": "Inorbit Mall Cyberabad",
+    "name:fa": "مرکز خرید اینوربیت",
+    "name:ml": "ഇനോർബിറ്റ് മാൾ സൈബരാബാദ്",
+    "name:te": "ఇనార్బిట్ మాల్ సైబరాబాద్",
+    "shop": "mall",
+    "website": "https://www.inorbit.in/cyberabad/mall-information/",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 89897992,
+  "center": {
+    "lat": 17.4424180,
+    "lon": 78.3817673
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Westin Hotel",
+    "not:brand:wikidata": "Q1969162",
+    "tourism": "hotel",
+    "website": "http://www.westinhyderabadmindspace.com/"
+  }
+},
+{
+  "type": "way",
+  "id": 90770155,
+  "center": {
+    "lat": 17.4571449,
+    "lon": 78.3808643
+  },
+  "tags": {
+    "name": "Timmidkunta Lake",
+    "natural": "water",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 95972653,
+  "center": {
+    "lat": 17.4725521,
+    "lon": 78.3725960
+  },
+  "tags": {
+    "brand": "Novotel",
+    "brand:wikidata": "Q420545",
+    "building": "yes",
+    "internet_access": "yes",
+    "internet_access:fee": "yes",
+    "name": "Novotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 96358423,
+  "center": {
+    "lat": 17.4708810,
+    "lon": 78.3718793
+  },
+  "tags": {
+    "name": "Kotla Cheruvu",
+    "natural": "water"
+  }
+},
+{
+  "type": "way",
+  "id": 96358424,
+  "center": {
+    "lat": 17.4742064,
+    "lon": 78.3710098
+  },
+  "tags": {
+    "leisure": "golf_course",
+    "name": "Golf"
+  }
+},
+{
+  "type": "way",
+  "id": 96358816,
+  "center": {
+    "lat": 17.4281253,
+    "lon": 78.3510613
+  },
+  "tags": {
+    "leisure": "golf_course",
+    "name": "Boulder Hills"
+  }
+},
+{
+  "type": "way",
+  "id": 113164532,
+  "center": {
+    "lat": 17.4639246,
+    "lon": 78.4043151
+  },
+  "tags": {
+    "name": "Kamuni Cheruvu",
+    "natural": "water"
+  }
+},
+{
+  "type": "way",
+  "id": 113164557,
+  "center": {
+    "lat": 17.4522927,
+    "lon": 78.4032963
+  },
+  "tags": {
+    "name": "sunnam cheruvu",
+    "natural": "water",
+    "water": "pond"
+  }
+},
+{
+  "type": "way",
+  "id": 116087831,
+  "center": {
+    "lat": 17.4481183,
+    "lon": 78.3464403
+  },
+  "tags": {
+    "leisure": "stadium",
+    "name": "Aquatics Complex"
+  }
+},
+{
+  "type": "way",
+  "id": 117035111,
+  "center": {
+    "lat": 17.4249016,
+    "lon": 78.3420206
+  },
+  "tags": {
+    "name": "Wipro Lake",
+    "natural": "water",
+    "source": "Natural",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 122090486,
+  "center": {
+    "lat": 17.4370440,
+    "lon": 78.3985050
+  },
+  "tags": {
+    "addr:city": "Hyderabad",
+    "addr:postcode": "500033",
+    "addr:street": "Road No 36",
+    "bar": "yes",
+    "brand": "Hotel Daspalla",
+    "building": "yes",
+    "internet_access": "wlan",
+    "internet_access:fee": "yes",
+    "name": "Hotel Daspalla",
+    "phone": "+91 40 6654 5678",
+    "rooms": "110",
+    "stars": "4",
+    "tourism": "hotel",
+    "website": "https://www.daspallahotels.com/"
+  }
+},
+{
+  "type": "way",
+  "id": 122444390,
+  "center": {
+    "lat": 17.4867611,
+    "lon": 78.3458849
+  },
+  "tags": {
+    "name": "Madinaguda Cheruvu",
+    "natural": "water",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 122444393,
+  "center": {
+    "lat": 17.4848217,
+    "lon": 78.3550828
+  },
+  "tags": {
+    "name": "Kotha Kunta",
+    "natural": "water",
+    "water": "pond"
+  }
+},
+{
+  "type": "way",
+  "id": 129523141,
+  "center": {
+    "lat": 17.5011459,
+    "lon": 78.4001675
+  },
+  "tags": {
+    "name": "Yellama Kunta 2",
+    "natural": "water"
+  }
+},
+{
+  "type": "way",
+  "id": 129523142,
+  "center": {
+    "lat": 17.5013436,
+    "lon": 78.4070326
+  },
+  "tags": {
+    "name": "Yellamma Kunta",
+    "natural": "water",
+    "water": "pond"
+  }
+},
+{
+  "type": "way",
+  "id": 129532522,
+  "center": {
+    "lat": 17.4881883,
+    "lon": 78.4184783
+  },
+  "tags": {
+    "name": "Nalla Cheruvu",
+    "natural": "water",
+    "water": "pond"
+  }
+},
+{
+  "type": "way",
+  "id": 139444432,
+  "center": {
+    "lat": 17.4184587,
+    "lon": 78.3415749
+  },
+  "tags": {
+    "addr:city": "Hyderabad",
+    "barrier": "wall",
+    "brand": "Hyatt",
+    "brand:wikidata": "Q1425063",
+    "internet_access": "yes",
+    "name": "Hyatt",
+    "stars": "5",
+    "tourism": "hotel",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 147232637,
+  "center": {
+    "lat": 17.3842501,
+    "lon": 78.3701581
+  },
+  "tags": {
+    "name": "Chinna Cheruvu",
+    "natural": "water",
+    "source:position": "Bing Imagery 2011",
+    "source:tracer": "scanaerial",
+    "source:zoomlevel": "16",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 152973712,
+  "center": {
+    "lat": 17.5028738,
+    "lon": 78.3825068
+  },
+  "tags": {
+    "name": "Hydernagar Cheruvu",
+    "natural": "water",
+    "water": "pond"
+  }
+},
+{
+  "type": "way",
+  "id": 158326980,
+  "center": {
+    "lat": 17.4950672,
+    "lon": 78.3343265
+  },
+  "tags": {
+    "name": "GVK Mall",
+    "shop": "mall"
+  }
+},
+{
+  "type": "way",
+  "id": 158331211,
+  "center": {
+    "lat": 17.5000344,
+    "lon": 78.3310752
+  },
+  "tags": {
+    "name": "Gangaram Cheruvu",
+    "natural": "water",
+    "salt": "no",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 159299915,
+  "center": {
+    "lat": 17.4326383,
+    "lon": 78.3409946
+  },
+  "tags": {
+    "amenity": "university",
+    "barrier": "wall",
+    "education": "university",
+    "name": "Indian School of Business - ISB Hyderabad",
+    "name:fa": "مدرسه بازرگانی هند - حیدرآباد"
+  }
+},
+{
+  "type": "way",
+  "id": 214170900,
+  "center": {
+    "lat": 17.4657672,
+    "lon": 78.3651500
+  },
+  "tags": {
+    "name": "rajanna kunta",
+    "natural": "water"
+  }
+},
+{
+  "type": "way",
+  "id": 221156977,
+  "center": {
+    "lat": 17.4671481,
+    "lon": 78.3460271
+  },
+  "tags": {
+    "name": "Kudikunta Lake",
+    "natural": "water",
+    "water": "pond"
+  }
+},
+{
+  "type": "way",
+  "id": 238310640,
+  "center": {
+    "lat": 17.3869004,
+    "lon": 78.3768185
+  },
+  "tags": {
+    "name": "Pedda Cheruvu",
+    "natural": "water"
+  }
+},
+{
+  "type": "way",
+  "id": 251805220,
+  "center": {
+    "lat": 17.4832941,
+    "lon": 78.3936455
+  },
+  "tags": {
+    "building": "yes",
+    "name": "NSL Mall",
+    "shop": "mall"
+  }
+},
+{
+  "type": "way",
+  "id": 261478392,
+  "center": {
+    "lat": 17.4301800,
+    "lon": 78.3396378
+  },
+  "tags": {
+    "name": "Microsoft Lake",
+    "natural": "water",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 263824383,
+  "center": {
+    "lat": 17.4752555,
+    "lon": 78.3318416
+  },
+  "tags": {
+    "name": "Artifical Pond",
+    "natural": "water",
+    "water": "pond"
+  }
+},
+{
+  "type": "way",
+  "id": 263825342,
+  "center": {
+    "lat": 17.4793654,
+    "lon": 78.3296784
+  },
+  "tags": {
+    "name": "Gopi Cheruvu",
+    "natural": "water",
+    "water": "pond",
+    "wikidata": "Q34887376"
+  }
+},
+{
+  "type": "way",
+  "id": 264924692,
+  "center": {
+    "lat": 17.4933876,
+    "lon": 78.3086036
+  },
+  "tags": {
+    "addr:city": "hyderabad",
+    "addr:postcode": "502032",
+    "addr:street": "BHEL",
+    "leisure": "stadium",
+    "name": "Dr B R Ambedkar stadium",
+    "name:etymology:wikidata": "Q231690"
+  }
+},
+{
+  "type": "way",
+  "id": 269128351,
+  "center": {
+    "lat": 17.3563315,
+    "lon": 78.4113598
+  },
+  "tags": {
+    "name": "Upparpally Lake",
+    "natural": "water",
+    "water": "pond"
+  }
+},
+{
+  "type": "way",
+  "id": 271124286,
+  "center": {
+    "lat": 17.5063308,
+    "lon": 78.2945081
+  },
+  "tags": {
+    "name": "Ramachandrapuram Cheruvu",
+    "natural": "water",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 271680421,
+  "center": {
+    "lat": 17.5013993,
+    "lon": 78.3589873
+  },
+  "tags": {
+    "intermittent": "yes",
+    "name": "Miyapur Cheruvu",
+    "name:te": "మియాపూర్ చెరువు",
+    "natural": "water",
+    "tidal": "no",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 277804473,
+  "center": {
+    "lat": 17.4529972,
+    "lon": 78.3279886
+  },
+  "tags": {
+    "amenity": "university",
+    "education": "university",
+    "name": "University of Hyderabad",
+    "name:fa": "دانشگاه حیدرآباد",
+    "name:hi": "हैदराबाद विश्वविद्यालय",
+    "name:ml": "ഹൈദ്രാബാദ് കേന്ദ്ര സർവകലാശാല",
+    "operator:type": "public",
+    "website": "https://uohyd.ac.in/",
+    "wikidata": "Q1191166",
+    "wikimedia_commons": "Category:University of Hyderabad",
+    "wikipedia": "en:University of Hyderabad"
+  }
+},
+{
+  "type": "way",
+  "id": 277808163,
+  "center": {
+    "lat": 17.4323819,
+    "lon": 78.3950777
+  },
+  "tags": {
+    "amenity": "university",
+    "name": "Dr. BR Ambedkar Open University",
+    "name:etymology:wikidata": "Q231690",
+    "name:fa": "دانشگاه آزاد دکتر بی آر آمبدکار",
+    "wikidata": "Q4754374",
+    "wikimedia_commons": "Category:Dr. B.R. Ambedkar Open University",
+    "wikipedia": "en:Dr. B.R. Ambedkar Open University"
+  }
+},
+{
+  "type": "way",
+  "id": 311388388,
+  "center": {
+    "lat": 17.4840695,
+    "lon": 78.3889039
+  },
+  "tags": {
+    "addr:city": "Hyderabad",
+    "addr:housenumber": "Plot No. S-16, Survey No. 1009, Opposite Malaysian Township, KPHB-6th Phase, Kukatpally",
+    "addr:postcode": "500072",
+    "addr:street": "Hitec - Kukatpally Main Road",
+    "addr:unit": "NEXUS MALL",
+    "air_conditioning": "yes",
+    "building": "yes",
+    "building:levels": "5",
+    "building:material": "concrete",
+    "check_date": "2024-03-16",
+    "name": "Nexus Hyderabad Mall",
+    "opening_hours": "Mo-Su 06:00-24:00",
+    "payment:cards": "yes",
+    "payment:cash": "yes",
+    "payment:coins": "yes",
+    "payment:credit_cards": "yes",
+    "payment:debit_cards": "yes",
+    "payment:google_pay": "yes",
+    "payment:maestro": "yes",
+    "payment:mastercard": "yes",
+    "payment:paytm": "yes",
+    "payment:upi": "yes",
+    "payment:visa": "yes",
+    "phone": "040 3053 4053",
+    "shop": "mall",
+    "toilets": "yes",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 318348330,
+  "center": {
+    "lat": 17.4484301,
+    "lon": 78.3339059
+  },
+  "tags": {
+    "name": "Peacock Lake",
+    "natural": "water",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 331631204,
+  "center": {
+    "lat": 17.4936008,
+    "lon": 78.4034839
+  },
+  "tags": {
+    "building": "yes",
+    "check_date": "2024-03-16",
+    "name": "Chennai Shopping Mall",
+    "shop": "mall"
+  }
+},
+{
+  "type": "way",
+  "id": 332097134,
+  "center": {
+    "lat": 17.4060021,
+    "lon": 78.3996783
+  },
+  "tags": {
+    "name": "Shaikpet Cheruvu",
+    "natural": "water",
+    "water": "pond"
+  }
+},
+{
+  "type": "way",
+  "id": 361685060,
+  "center": {
+    "lat": 17.4138653,
+    "lon": 78.4202571
+  },
+  "tags": {
+    "name": "Lotus Pond",
+    "natural": "water",
+    "water": "pond"
+  }
+},
+{
+  "type": "way",
+  "id": 416945180,
+  "center": {
+    "lat": 17.4496376,
+    "lon": 78.3787308
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Trident",
+    "name:te": "ట్రైడెంట్ హోటల్",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 441972337,
+  "center": {
+    "lat": 17.4564048,
+    "lon": 78.3389247
+  },
+  "tags": {
+    "name": "Water Tank",
+    "natural": "water",
+    "water": "reservoir"
+  }
+},
+{
+  "type": "way",
+  "id": 476912808,
+  "center": {
+    "lat": 17.4632128,
+    "lon": 78.4149190
+  },
+  "tags": {
+    "name": "Chinna Maisamma Cheruvu",
+    "natural": "water"
+  }
+},
+{
+  "type": "way",
+  "id": 500257373,
+  "center": {
+    "lat": 17.3840588,
+    "lon": 78.4007134
+  },
+  "tags": {
+    "name": "third tank",
+    "natural": "water",
+    "water": "reservoir"
+  }
+},
+{
+  "type": "way",
+  "id": 543889205,
+  "center": {
+    "lat": 17.3749430,
+    "lon": 78.3850318
+  },
+  "tags": {
+    "leisure": "golf_course",
+    "name": "Army Golf Course"
+  }
+},
+{
+  "type": "way",
+  "id": 545605705,
+  "center": {
+    "lat": 17.3433907,
+    "lon": 78.3831144
+  },
+  "tags": {
+    "name": "local rain water pond",
+    "natural": "water",
+    "water": "pond"
+  }
+},
+{
+  "type": "way",
+  "id": 574673965,
+  "center": {
+    "lat": 17.4576341,
+    "lon": 78.3639496
+  },
+  "tags": {
+    "air_conditioning": "yes",
+    "building": "yes",
+    "building:levels": "6",
+    "name": "Sarat City Capital Mall",
+    "name:te": "శరత్ సిటీ కాపిటల్ మాల్",
+    "opening_hours": "Mo-Fr 11:00-21:30; Sa-Su,PH 11:00-22:00",
+    "shop": "mall",
+    "website": "https://sarathcitycapitalmall.com/"
+  }
+},
+{
+  "type": "way",
+  "id": 626552618,
+  "center": {
+    "lat": 17.4481231,
+    "lon": 78.3844925
+  },
+  "tags": {
+    "building": "commercial",
+    "level": "5",
+    "name": "PVR Icon",
+    "operator": "PVR Cinemas",
+    "shop": "mall"
+  }
+},
+{
+  "type": "way",
+  "id": 653925957,
+  "center": {
+    "lat": 17.4596153,
+    "lon": 78.3401832
+  },
+  "tags": {
+    "name": "Chambal pond",
+    "natural": "water",
+    "water": "pond"
+  }
+},
+{
+  "type": "way",
+  "id": 661188648,
+  "center": {
+    "lat": 17.4147498,
+    "lon": 78.3617775
+  },
+  "tags": {
+    "name": "Khajaguda Lake",
+    "natural": "water",
+    "water": "lake",
+    "wikidata": "Q64094699",
+    "wikipedia": "en:Khajaguda Lake"
+  }
+},
+{
+  "type": "way",
+  "id": 665330878,
+  "center": {
+    "lat": 17.4462353,
+    "lon": 78.3441312
+  },
+  "tags": {
+    "alt_name": "GMC Balayogi Stadium",
+    "leisure": "stadium",
+    "name": "GMC Balayogi Athletic Stadium",
+    "name:etymology:wikidata": "Q376255",
+    "wikidata": "Q5516199",
+    "wikimedia_commons": "Category:G. M. C. Balayogi Athletic Stadium",
+    "wikipedia": "en:Gachibowli Athletic Stadium"
+  }
+},
+{
+  "type": "way",
+  "id": 670652454,
+  "center": {
+    "lat": 17.4405165,
+    "lon": 78.3624571
+  },
+  "tags": {
+    "description": "Private Lake",
+    "intermittent": "no",
+    "name": "QL Pond",
+    "natural": "water",
+    "water": "pond"
+  }
+},
+{
+  "type": "way",
+  "id": 686325013,
+  "center": {
+    "lat": 17.4023617,
+    "lon": 78.3274880
+  },
+  "tags": {
+    "name": "Kokapet Lake",
+    "natural": "water",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 715753112,
+  "center": {
+    "lat": 17.4603711,
+    "lon": 78.3411173
+  },
+  "tags": {
+    "intermittent": "yes",
+    "name": "Pochamma Kunta",
+    "natural": "water",
+    "salt": "no",
+    "water": "pond"
+  }
+},
+{
+  "type": "way",
+  "id": 726172893,
+  "center": {
+    "lat": 17.4705584,
+    "lon": 78.2964968
+  },
+  "tags": {
+    "name": "Irrigation Pond",
+    "natural": "water",
+    "water": "pond"
+  }
+},
+{
+  "type": "way",
+  "id": 726173848,
+  "center": {
+    "lat": 17.3905616,
+    "lon": 78.3967227
+  },
+  "tags": {
+    "intermittent": "no",
+    "name": "Golconda Mote",
+    "natural": "water",
+    "water": "moat"
+  }
+},
+{
+  "type": "way",
+  "id": 737782314,
+  "center": {
+    "lat": 17.4589780,
+    "lon": 78.3593805
+  },
+  "tags": {
+    "name": "kothaguda lake",
+    "name:te": "కొత్తగూడ చెరువు",
+    "natural": "water"
+  }
+},
+{
+  "type": "way",
+  "id": 737789731,
+  "center": {
+    "lat": 17.4295333,
+    "lon": 78.3486450
+  },
+  "tags": {
+    "golf": "lateral_water_hazard",
+    "name": "Chintal Cheruvu",
+    "natural": "water"
+  }
+},
+{
+  "type": "way",
+  "id": 740696767,
+  "center": {
+    "lat": 17.4945817,
+    "lon": 78.3549421
+  },
+  "tags": {
+    "building": "yes",
+    "name": "SMR Vinay Metro Mall",
+    "shop": "mall"
+  }
+},
+{
+  "type": "way",
+  "id": 740702842,
+  "center": {
+    "lat": 17.4572717,
+    "lon": 78.3438035
+  },
+  "tags": {
+    "name": "sigma lake",
+    "natural": "water",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 747900029,
+  "center": {
+    "lat": 17.4972524,
+    "lon": 78.3515158
+  },
+  "tags": {
+    "name": "Patel Cheruvu",
+    "name:te": "పటేల్ చెరువు",
+    "natural": "water",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 748816670,
+  "center": {
+    "lat": 17.4903678,
+    "lon": 78.3610408
+  },
+  "tags": {
+    "intermittent": "no",
+    "name": "Hafeezpet Cheruvu",
+    "natural": "water",
+    "salt": "no",
+    "water": "pond"
+  }
+},
+{
+  "type": "way",
+  "id": 763535120,
+  "center": {
+    "lat": 17.4307905,
+    "lon": 78.3734663
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Preston Prime Mall",
+    "shop": "mall"
+  }
+},
+{
+  "type": "way",
+  "id": 780897064,
+  "center": {
+    "lat": 17.3721744,
+    "lon": 78.4063927
+  },
+  "tags": {
+    "name": "Musa River",
+    "natural": "water",
+    "water": "river"
+  }
+},
+{
+  "type": "way",
+  "id": 790538808,
+  "center": {
+    "lat": 17.3712076,
+    "lon": 78.3535361
+  },
+  "tags": {
+    "name": "Timber Lake",
+    "natural": "water",
+    "water": "pond"
+  }
+},
+{
+  "type": "way",
+  "id": 790655281,
+  "center": {
+    "lat": 17.3645395,
+    "lon": 78.3746837
+  },
+  "tags": {
+    "name": "Bairagiguda Lake",
+    "natural": "water",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 790736601,
+  "center": {
+    "lat": 17.3633300,
+    "lon": 78.3930022
+  },
+  "tags": {
+    "name": "Sun City Lake",
+    "natural": "water",
+    "water": "pond"
+  }
+},
+{
+  "type": "way",
+  "id": 791815885,
+  "center": {
+    "lat": 17.3535541,
+    "lon": 78.3738842
+  },
+  "tags": {
+    "amenity": "university",
+    "layer": "1",
+    "name": "Shadan College",
+    "office": "educational_institution"
+  }
+},
+{
+  "type": "way",
+  "id": 852980144,
+  "center": {
+    "lat": 17.4295448,
+    "lon": 78.3949197
+  },
+  "tags": {
+    "addr:housenumber": "Rd Number 46, Silent Valley hills, Jubilee Hills, Hyderabad, Telangana 500033",
+    "amenity": "university",
+    "name": "Hillside School"
+  }
+},
+{
+  "type": "way",
+  "id": 852980145,
+  "center": {
+    "lat": 17.4302024,
+    "lon": 78.3952000
+  },
+  "tags": {
+    "addr:housenumber": "Plot No. 909, Rd Number 46, Silent Valley hills, Jubilee Hills, Hyderabad, Telangana 500033",
+    "amenity": "university",
+    "name": "Walden's Path School"
+  }
+},
+{
+  "type": "way",
+  "id": 880054935,
+  "center": {
+    "lat": 17.4899592,
+    "lon": 78.3931159
+  },
+  "tags": {
+    "building": "yes",
+    "check_date": "2024-03-16",
+    "name": "Lulu Mall",
+    "old_name": "Manjeera Mall",
+    "shop": "mall",
+    "wheelchair": "no"
+  }
+},
+{
+  "type": "way",
+  "id": 891676380,
+  "center": {
+    "lat": 17.5051818,
+    "lon": 78.3207754
+  },
+  "tags": {
+    "name": "HMWSSB Suraksha Colony Water Reservoir",
+    "natural": "water",
+    "water": "reservoir"
+  }
+},
+{
+  "type": "way",
+  "id": 906802389,
+  "center": {
+    "lat": 17.3929645,
+    "lon": 78.4050612
+  },
+  "tags": {
+    "golf": "driving_range",
+    "leisure": "golf_course"
+  }
+},
+{
+  "type": "way",
+  "id": 989815631,
+  "center": {
+    "lat": 17.4522134,
+    "lon": 78.3269943
+  },
+  "tags": {
+    "name": "Buffalo Lake",
+    "natural": "water",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 989835967,
+  "center": {
+    "lat": 17.4454015,
+    "lon": 78.3209295
+  },
+  "tags": {
+    "name": "Chilakala Kunta",
+    "natural": "water",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 989835969,
+  "center": {
+    "lat": 17.4631217,
+    "lon": 78.3193332
+  },
+  "tags": {
+    "name": "Garloni Kunta",
+    "natural": "water",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 1015402350,
+  "center": {
+    "lat": 17.3466929,
+    "lon": 78.3229271
+  },
+  "tags": {
+    "amenity": "university",
+    "name": "VJIT Ground"
+  }
+},
+{
+  "type": "way",
+  "id": 1067891934,
+  "center": {
+    "lat": 17.4497788,
+    "lon": 78.3634537
+  },
+  "tags": {
+    "brand": "Le Méridien",
+    "brand:wikidata": "Q261077",
+    "building": "yes",
+    "name": "Le Méridien",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 1127728614,
+  "center": {
+    "lat": 17.4508851,
+    "lon": 78.3859418
+  },
+  "tags": {
+    "leisure": "golf_course",
+    "name": "Spotflock"
+  }
+},
+{
+  "type": "way",
+  "id": 1134842649,
+  "center": {
+    "lat": 17.4142727,
+    "lon": 78.3292035
+  },
+  "tags": {
+    "leisure": "golf_course"
+  }
+},
+{
+  "type": "way",
+  "id": 1152313422,
+  "center": {
+    "lat": 17.4474931,
+    "lon": 78.3732833
+  },
+  "tags": {
+    "addr:city": "Hyderabad",
+    "addr:housenumber": "35",
+    "addr:postcode": "500081",
+    "addr:street": "Phoenix Avance Business Park",
+    "brand": "Holiday Inn Express",
+    "brand:wikidata": "Q5880423",
+    "description": "Holiday Inn Express Hyderabad HITEC City is located in Madhapur in the heart of Hitec City and strategically located adjacent to Phoenix SEZ Hyderabads Major IT hub.",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Holiday Inn Express Hyderabad HITEC City",
+    "payment:american_express": "yes",
+    "payment:credit_cards": "yes",
+    "payment:diners_club": "yes",
+    "payment:jcb": "yes",
+    "payment:mastercard": "yes",
+    "payment:visa": "yes",
+    "phone": "+91 040-71330330",
+    "tourism": "hotel",
+    "website": "https://www.ihg.com/holidayinnexpress/hotels/us/en/hyderabad/hydtc/hoteldetail",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 1153101603,
+  "center": {
+    "lat": 17.4219294,
+    "lon": 78.3369476
+  },
+  "tags": {
+    "brand": "Sheraton",
+    "brand:wikidata": "Q634831",
+    "name": "Sheraton Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 1212194479,
+  "center": {
+    "lat": 17.4669088,
+    "lon": 78.3103790
+  },
+  "tags": {
+    "building": "commercial",
+    "name": "Aparna Neo Mall",
+    "opening_hours": "Mo-Su 11:00-21:30",
+    "shop": "mall"
+  }
+},
+{
+  "type": "way",
+  "id": 1324064004,
+  "center": {
+    "lat": 17.4394963,
+    "lon": 78.3221013
+  },
+  "tags": {
+    "name": "Quarry Trek, University of Hyderabad",
+    "natural": "water",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 1324064005,
+  "center": {
+    "lat": 17.4390514,
+    "lon": 78.3199084
+  },
+  "tags": {
+    "name": "SDS Lake",
+    "natural": "water",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 1324064006,
+  "center": {
+    "lat": 17.4375177,
+    "lon": 78.3232001
+  },
+  "tags": {
+    "name": "Gnyankund",
+    "natural": "water",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 1345417673,
+  "center": {
+    "lat": 17.4304035,
+    "lon": 78.3429632
+  },
+  "tags": {
+    "leisure": "golf_course",
+    "name": "Microsoft Mini Golf",
+    "operator": "Microsoft"
+  }
+},
+{
+  "type": "way",
+  "id": 1419428219,
+  "center": {
+    "lat": 17.4831091,
+    "lon": 78.3901728
+  },
+  "tags": {
+    "building": "yes",
+    "shop": "mall"
+  }
+},
+{
+  "type": "way",
+  "id": 1420118048,
+  "center": {
+    "lat": 17.5051833,
+    "lon": 78.3911672
+  },
+  "tags": {
+    "name": "Kindi Kunta Lake",
+    "natural": "water",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 1442070839,
+  "center": {
+    "lat": 17.4644415,
+    "lon": 78.3304403
+  },
+  "tags": {
+    "intermittent": "no",
+    "name": "Cognitive Lake",
+    "natural": "water",
+    "salt": "no",
+    "tidal": "no",
+    "water": "lake"
+  }
+},
+{
+  "type": "way",
+  "id": 1496346444,
+  "center": {
+    "lat": 17.3253854,
+    "lon": 78.3938456
+  },
+  "tags": {
+    "amenity": "university",
+    "name": "Agriculture Research Instuite"
+  }
+},
+{
+  "type": "way",
+  "id": 1576171708,
+  "center": {
+    "lat": 17.3941009,
+    "lon": 78.3682062
+  },
+  "tags": {
+    "addr:city": "Hyderabad",
+    "addr:housenumber": "99V9+M87",
+    "addr:postcode": "500089",
+    "addr:street": "Road Number 14",
+    "building": "yes",
+    "name": "RR MALL",
+    "shop": "mall",
+    "website": "https://ramireddymall.com/about-us/"
+  }
+},
+{
+  "type": "relation",
+  "id": 1988398,
+  "center": {
+    "lat": 17.4253168,
+    "lon": 78.3727146
+  },
+  "tags": {
+    "name": "Khajaguda Talab",
+    "natural": "water",
+    "source:position": "Bing Imagery 2011",
+    "source:tracer": "scanaerial",
+    "source:zoomlevel": "17",
+    "type": "multipolygon",
+    "water": "lake",
+    "wikidata": "Q115148101",
+    "wikipedia": "en:Khajaguda Talab"
+  }
+},
+{
+  "type": "relation",
+  "id": 1988399,
+  "center": {
+    "lat": 17.4170331,
+    "lon": 78.3862898
+  },
+  "tags": {
+    "name": "Malakam Cheruvu",
+    "natural": "water",
+    "source:position": "Bing Imagery 2011",
+    "source:tracer": "scanaerial",
+    "source:zoomlevel": "17",
+    "type": "multipolygon",
+    "water": "pond"
+  }
+},
+{
+  "type": "relation",
+  "id": 1988400,
+  "center": {
+    "lat": 17.3802590,
+    "lon": 78.4156469
+  },
+  "tags": {
+    "name": "Langar Hauz",
+    "natural": "water",
+    "source:position": "Bing Imagery 2011",
+    "source:tracer": "scanaerial",
+    "source:zoomlevel": "17",
+    "type": "multipolygon"
+  }
+},
+{
+  "type": "relation",
+  "id": 1988401,
+  "center": {
+    "lat": 17.4135384,
+    "lon": 78.3743711
+  },
+  "tags": {
+    "name": "Manikonda Cheruvu",
+    "natural": "water",
+    "source:position": "Bing Imagery 2011",
+    "source:tracer": "scanaerial",
+    "source:zoomlevel": "18",
+    "type": "multipolygon"
+  }
+},
+{
+  "type": "relation",
+  "id": 5411363,
+  "center": {
+    "lat": 17.3135019,
+    "lon": 78.3536336
+  },
+  "tags": {
+    "AND_a_w": "10000419",
+    "intermittent": "no",
+    "name": "Himayat Sagar",
+    "name:ar": "بحيرة هيمايات ساغار",
+    "name:fa": "دریاچه حمایت ساگر",
+    "name:ml": "ഹിമായത് സാഗർ",
+    "name:te": "హిమాయత్ సాగర్",
+    "natural": "water",
+    "salt": "no",
+    "tidal": "no",
+    "type": "multipolygon",
+    "water": "lake",
+    "wikidata": "Q5765170"
+  }
+},
+{
+  "type": "relation",
+  "id": 7772882,
+  "center": {
+    "lat": 17.3907984,
+    "lon": 78.4092710
+  },
+  "tags": {
+    "leisure": "golf_course",
+    "note": "Hyderabad Golf Club",
+    "type": "multipolygon"
+  }
+},
+{
+  "type": "relation",
+  "id": 8162155,
+  "center": {
+    "lat": 17.4462182,
+    "lon": 78.3640912
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Atrium",
+    "shop": "mall",
+    "type": "multipolygon"
+  }
+},
+{
+  "type": "relation",
+  "id": 10190937,
+  "center": {
+    "lat": 17.5111762,
+    "lon": 78.3956432
+  },
+  "tags": {
+    "name": "Amber Cheruvu",
+    "natural": "water",
+    "type": "multipolygon",
+    "water": "pond"
+  }
+},
+{
+  "type": "relation",
+  "id": 11719542,
+  "center": {
+    "lat": 17.4262009,
+    "lon": 78.3645650
+  },
+  "tags": {
+    "amenity": "university",
+    "name": "Maulana Azaad National Urdu University",
+    "name:etymology:wikidata": "Q196617",
+    "name:fa": "دانشگاه ملی اردو مولانا آزاد",
+    "type": "multipolygon",
+    "website": "https://manuu.edu.in/",
+    "wikidata": "Q6792426",
+    "wikipedia": "en:Maulana Azad National Urdu University"
+  }
+},
+{
+  "type": "relation",
+  "id": 11769747,
+  "center": {
+    "lat": 17.4175222,
+    "lon": 78.4182329
+  },
+  "tags": {
+    "name": "Chiraan Kunta",
+    "natural": "water",
+    "type": "multipolygon",
+    "water": "pond"
+  }
+},
+{
+  "type": "relation",
+  "id": 13111438,
+  "center": {
+    "lat": 17.4689154,
+    "lon": 78.3159112
+  },
+  "tags": {
+    "name": "Nallagandla Chervu",
+    "natural": "water",
+    "type": "multipolygon",
+    "water": "lake",
+    "website": "http://www.nallagandlalake.org/"
+  }
+}
+
+  ]
+}

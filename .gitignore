@@ -10,3 +10,6 @@
 
 # Saved portal pages stay private
 portal_pages/
+
+# Raw OpenStreetMap road download (12 MB); re-fetch with build/roads/q_roads.overpassql
+build/roads/roads.json

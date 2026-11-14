@@ -1,0 +1,293 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-11-14T11:03:51Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 2930528724,
+  "lat": 17.4172202,
+  "lon": 78.3656108,
+  "tags": {
+    "name": "Khajaguda",
+    "name:fa": "خواجه‌گودا",
+    "name:ml": "ഖാജാഗുഡ",
+    "name:te": "ఖాజాగూడా",
+    "place": "suburb",
+    "wikidata": "Q6399133",
+    "wikipedia": "en:Khajaguda"
+  }
+},
+{
+  "type": "node",
+  "id": 2935018015,
+  "lat": 17.3915187,
+  "lon": 78.3598924,
+  "tags": {
+    "name": "Narsingi",
+    "name:fa": "نارسنگی",
+    "name:te": "నార్సింగి",
+    "place": "suburb",
+    "wikidata": "Q2228677",
+    "wikipedia": "en:Narsingi, Ranga Reddy district"
+  }
+},
+{
+  "type": "node",
+  "id": 3167952671,
+  "lat": 17.4226529,
+  "lon": 78.3817294,
+  "tags": {
+    "junction": "yes",
+    "name": "Khajaguda Jn"
+  }
+},
+{
+  "type": "node",
+  "id": 5401127313,
+  "lat": 17.3948624,
+  "lon": 78.3365214,
+  "tags": {
+    "name": "Kokapet",
+    "name:fa": "کوکاپیت",
+    "name:te": "కోకాపేట్",
+    "place": "suburb",
+    "wikidata": "Q6426560",
+    "wikipedia": "en:Kokapet"
+  }
+},
+{
+  "type": "node",
+  "id": 6132294957,
+  "lat": 17.4589220,
+  "lon": 78.3659805,
+  "tags": {
+    "highway": "traffic_signals",
+    "name": "Kothaguda T Junction"
+  }
+},
+{
+  "type": "node",
+  "id": 10724816503,
+  "lat": 17.4129831,
+  "lon": 78.3386350,
+  "tags": {
+    "name": "Financial District",
+    "name:fa": "منطقه مالی",
+    "official_name": "Nanakramguda Financial District",
+    "place": "suburb",
+    "wikidata": "Q118905162",
+    "wikipedia": "en:Financial District, Hyderabad"
+  }
+},
+{
+  "type": "node",
+  "id": 11230869887,
+  "lat": 17.3865738,
+  "lon": 78.3474189,
+  "tags": {
+    "junction": "yes",
+    "name": "Kokapet Circle"
+  }
+},
+{
+  "type": "node",
+  "id": 11230869888,
+  "lat": 17.3856641,
+  "lon": 78.3541202,
+  "tags": {
+    "junction": "yes",
+    "name": "Narsingi Circle"
+  }
+},
+{
+  "type": "node",
+  "id": 13369264755,
+  "lat": 17.4217796,
+  "lon": 78.3379784,
+  "tags": {
+    "name": "Nanakramguda",
+    "name:fa": "نانک رام گودا",
+    "place": "neighbourhood",
+    "wikidata": "Q15260925",
+    "wikipedia": "en:Nanakramguda"
+  }
+},
+{
+  "type": "way",
+  "id": 122796947,
+  "center": {
+    "lat": 17.4390986,
+    "lon": 78.3753235
+  },
+  "tags": {
+    "branch": "Hyderabad",
+    "brand": "IKEA",
+    "brand:wikidata": "Q54078",
+    "building": "yes",
+    "building:levels": "2",
+    "check_date": "2024-03-29",
+    "name": "IKEA",
+    "shop": "furniture",
+    "website": "https://www.ikea.com/in/en/stores/hyderabad"
+  }
+},
+{
+  "type": "way",
+  "id": 435245641,
+  "center": {
+    "lat": 17.4590074,
+    "lon": 78.3661206
+  },
+  "tags": {
+    "area": "yes",
+    "junction": "yes",
+    "name": "Kothaguda T Junction"
+  }
+},
+{
+  "type": "way",
+  "id": 435248359,
+  "center": {
+    "lat": 17.4515829,
+    "lon": 78.3810845
+  },
+  "tags": {
+    "junction": "yes",
+    "name": "Cyber Towers Junction"
+  }
+},
+{
+  "type": "way",
+  "id": 665835671,
+  "center": {
+    "lat": 17.4948991,
+    "lon": 78.3156868
+  },
+  "tags": {
+    "area": "yes",
+    "junction": "yes",
+    "name": "BHEL Junction"
+  }
+},
+{
+  "type": "way",
+  "id": 975084201,
+  "center": {
+    "lat": 17.3983901,
+    "lon": 78.3553373
+  },
+  "tags": {
+    "landuse": "residential",
+    "name": "My Home Avatar",
+    "residential": "apartments"
+  }
+},
+{
+  "type": "way",
+  "id": 1032557384,
+  "center": {
+    "lat": 17.4385249,
+    "lon": 78.3635980
+  },
+  "tags": {
+    "highway": "motorway",
+    "junction": "roundabout",
+    "lanes": "3",
+    "name": "Gachibowl Circle",
+    "oneway": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 1039277423,
+  "center": {
+    "lat": 17.4733383,
+    "lon": 78.3698971
+  },
+  "tags": {
+    "highway": "secondary",
+    "junction": "roundabout",
+    "name": "Hafeezpet to KPHB Road",
+    "oneway": "yes",
+    "surface": "asphalt"
+  }
+},
+{
+  "type": "way",
+  "id": 1152313438,
+  "center": {
+    "lat": 17.4434372,
+    "lon": 78.3771653
+  },
+  "tags": {
+    "area": "yes",
+    "junction": "yes",
+    "name": "TCS Junction"
+  }
+},
+{
+  "type": "way",
+  "id": 1272670470,
+  "center": {
+    "lat": 17.4387849,
+    "lon": 78.3638450
+  },
+  "tags": {
+    "highway": "motorway",
+    "junction": "roundabout",
+    "lanes": "3",
+    "name": "Gachibowl Circle",
+    "oneway": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 1272670471,
+  "center": {
+    "lat": 17.4385687,
+    "lon": 78.3638212
+  },
+  "tags": {
+    "highway": "motorway",
+    "junction": "roundabout",
+    "lanes": "3",
+    "name": "Gachibowl Circle",
+    "oneway": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 1272670472,
+  "center": {
+    "lat": 17.4387370,
+    "lon": 78.3636210
+  },
+  "tags": {
+    "highway": "motorway",
+    "junction": "roundabout",
+    "lanes": "3",
+    "name": "Gachibowl Circle",
+    "oneway": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 1349136360,
+  "center": {
+    "lat": 17.4555188,
+    "lon": 78.3639759
+  },
+  "tags": {
+    "area": "yes",
+    "junction": "yes",
+    "name": "Botanical Garden"
+  }
+}
+
+  ]
+}
