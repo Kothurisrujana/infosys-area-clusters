@@ -39,63 +39,74 @@ hosp_ok = lambda p: not re.search(r'clinic|dental|skin|physician', p[0], re.I)
 lst = lambda L: '; '.join(f'{n} ({km_txt(d)})' for n, d in L)
 def km_txt(d): return f'{round(d * 1000 / 10) * 10:.0f} m' if d < 1 else f'{d:.1f} km'
 
-total = 0
-for area in AREAS:
-    src_file = os.path.join(ROOT, 'area_property_lists', f'{area}_site.csv')
-    rows = list(csv.DictReader(open(src_file, encoding='utf-8-sig'))); cols = list(rows[0].keys())
-    new_cols = ['Infosys office km', 'Infosys office source', 'Metro', 'Metro km', 'Metro source', 'ORR km', 'ORR name', 'ORR source',
-                'ORR estimated range (km)', 'Airport km', 'Airport source', 'Airport estimated range (km)', 'Big company', 'Big company km',
-                'Big company source', 'Places source']
-    for _, lab in KINDS: new_cols += [f'{lab}: nearest', f'{lab}: nearest km', f'{lab}: count within 5 km', f'{lab}: all within 5 km']
-    new_cols += ['Hospitals by road', 'Schools by road', 'Parks by road', 'Road distances from']
+NEW_COLS = ['Infosys office km', 'Infosys office source', 'Metro', 'Metro km', 'Metro source', 'ORR km', 'ORR name', 'ORR source',
+            'ORR estimated range (km)', 'Airport km', 'Airport source', 'Airport estimated range (km)', 'Big company', 'Big company km',
+            'Big company source', 'Places source']
+for _, lab in KINDS: NEW_COLS += [f'{lab}: nearest', f'{lab}: nearest km', f'{lab}: count within 5 km', f'{lab}: all within 5 km']
+NEW_COLS += ['Hospitals by road', 'Schools by road', 'Parks by road', 'Road distances from']
+
+def enrich(lat, lon, name, g_orr=None, g_air=None, near_list=None, g_metro=None, allow_est=True):
+    """Place columns for one listing at (lat, lon). g_orr/g_air: the user's Google values if known.
+    near_list: [(name, kind, km), ...] from the user's files, if already matched."""
+    o = {}; pin = f'{lat!r},{lon!r}'; I = INFRA.get(pin); rd = ROAD_SRC.get(I['s']) if I else None
+    est = None; key = pin + '|' + norm(name)
+    G = U['gm'].get(key) or U['gm'].get(pin)
+    if G:
+        g_orr = g_orr if g_orr is not None else G[0]; g_air = g_air if g_air is not None else G[1]
+        g_metro = g_metro if g_metro is not None else G[2]
+    elif g_orr is None and g_air is None and allow_est:
+        est = U.get('est', {}).get(pin)
+    inf = (I['inf'], rd) if I and I.get('inf') is not None else (hv(lat, lon, *HQ), 'OpenStreetMap')
+    o['Infosys office km'], o['Infosys office source'] = r2(inf[0]), inf[1]
+    m = (I['metro'][0], I['metro'][1], rd) if I and I.get('metro') else ('', g_metro, 'your Google Maps data') if g_metro is not None else (*nearest(lat, lon, 'metro'), 'OpenStreetMap')
+    o['Metro'], o['Metro km'], o['Metro source'] = m[0], r2(m[1]), m[2]
+    q = ('', g_orr, 'your Google Maps data') if g_orr is not None else (I['orr'][0], I['orr'][1], rd) if I and I.get('orr') else (*nearest(lat, lon, 'orr'), 'OpenStreetMap')
+    o['ORR km'], o['ORR name'], o['ORR source'] = r2(q[1]), q[0], q[2]
+    o['Airport km'], o['Airport source'] = (r2(g_air), 'your Google Maps data') if g_air is not None else ('', '')
+    if est: o['ORR estimated range (km)'] = f'{est[0]}–{est[1]}'; o['Airport estimated range (km)'] = f'{est[2]}–{est[3]}'
+    b = (I['co'][0], I['co'][1], rd) if I and I.get('co') else (*nearest(lat, lon, 'it', lambda p: len(p) > 3 and p[3] != 'Infosys', lambda p: p[3]), 'OpenStreetMap')
+    o['Big company'], o['Big company km'], o['Big company source'] = b[0], r2(b[1]), b[2]
+    if near_list is None:
+        L = U['near'].get(key) or U['near'].get(pin)
+        near_list = [(U['places'][i][0], U['places'][i][1], d) for i, d in L] if L else None
+    if near_list:
+        places = list(near_list); o['Places source'] = 'your files'
+    else:
+        places = []
+        for k, kind in OSM_KIND.items():
+            for p in POIS[k]:
+                if (k == 'park' and not park_ok(p)) or (k == 'hospital' and not hosp_ok(p)): continue
+                d = hv(lat, lon, p[1], p[2])
+                if d <= 5: places.append((p[0], kind, d))
+        o['Places source'] = 'OpenStreetMap'
+    places.sort(key=lambda x: x[2])
+    for kind, lab in KINDS:
+        P = [(n, d) for n, k, d in places if k == kind]
+        o[f'{lab}: nearest'] = P[0][0] if P else ''; o[f'{lab}: nearest km'] = r2(P[0][1]) if P else ''
+        o[f'{lab}: count within 5 km'] = len(P); o[f'{lab}: all within 5 km'] = lst(P)
+    if I:
+        o['Hospitals by road'] = lst(I.get('H', [])); o['Schools by road'] = lst(I.get('S', [])); o['Parks by road'] = lst(I.get('P', []))
+        o['Road distances from'] = rd
+    return o
+
+def site_rows(area):
+    """The website's listings for one area, each with its place columns."""
+    rows = list(csv.DictReader(open(os.path.join(ROOT, 'area_property_lists', f'{area}_site.csv'), encoding='utf-8-sig')))
     out = []
     for r in rows:
         o = dict(r)
         try: lat, lon = (float(x) for x in str(r.get('lat-lon') or '').replace('"', '').split(','))
         except ValueError: out.append(o); continue
-        pin = f'{lat!r},{lon!r}'; I = INFRA.get(pin); rd = ROAD_SRC.get(I['s']) if I else None
-        # the user's Google Maps values: typed in this row, else the matching FMV row, else an estimate from nearby listings
-        g_orr = num(r.get('orr connectivity')); g_air = num(r.get('airport distance')); g_metro = None; est = None
-        key = pin + '|' + norm(r.get('name of the project'))
-        G = U['gm'].get(key) or U['gm'].get(pin)
-        if G:
-            g_orr = g_orr if g_orr is not None else G[0]; g_air = g_air if g_air is not None else G[1]; g_metro = G[2]
-        elif g_orr is None and g_air is None:
-            est = U.get('est', {}).get(pin)
-        # key distances (same order of preference as the website card)
-        inf = (I['inf'], rd) if I and I.get('inf') is not None else (hv(lat, lon, *HQ), 'OpenStreetMap')
-        o['Infosys office km'], o['Infosys office source'] = r2(inf[0]), inf[1]
-        m = (I['metro'][0], I['metro'][1], rd) if I and I.get('metro') else ('', g_metro, 'your Google Maps data') if g_metro is not None else (*nearest(lat, lon, 'metro'), 'OpenStreetMap')
-        o['Metro'], o['Metro km'], o['Metro source'] = m[0], r2(m[1]), m[2]
-        q = ('', g_orr, 'your Google Maps data') if g_orr is not None else (I['orr'][0], I['orr'][1], rd) if I and I.get('orr') else (*nearest(lat, lon, 'orr'), 'OpenStreetMap')
-        o['ORR km'], o['ORR name'], o['ORR source'] = r2(q[1]), q[0], q[2]
-        o['Airport km'], o['Airport source'] = (r2(g_air), 'your Google Maps data') if g_air is not None else ('', '')
-        if est: o['ORR estimated range (km)'] = f'{est[0]}–{est[1]}'; o['Airport estimated range (km)'] = f'{est[2]}–{est[3]}'
-        b = (I['co'][0], I['co'][1], rd) if I and I.get('co') else (*nearest(lat, lon, 'it', lambda p: len(p) > 3 and p[3] != 'Infosys', lambda p: p[3]), 'OpenStreetMap')
-        o['Big company'], o['Big company km'], o['Big company source'] = b[0], r2(b[1]), b[2]
-        # places within 5 km
-        L = U['near'].get(key) or U['near'].get(pin)
-        if L:
-            places = [(U['places'][i][0], U['places'][i][1], d) for i, d in L]; o['Places source'] = 'your files'
-        else:
-            places = []
-            for k, kind in OSM_KIND.items():
-                for p in POIS[k]:
-                    if (k == 'park' and not park_ok(p)) or (k == 'hospital' and not hosp_ok(p)): continue
-                    d = hv(lat, lon, p[1], p[2])
-                    if d <= 5: places.append((p[0], kind, d))
-            o['Places source'] = 'OpenStreetMap'
-        places.sort(key=lambda x: x[2])
-        for kind, lab in KINDS:
-            P = [(n, d) for n, k, d in places if k == kind]
-            o[f'{lab}: nearest'] = P[0][0] if P else ''; o[f'{lab}: nearest km'] = r2(P[0][1]) if P else ''
-            o[f'{lab}: count within 5 km'] = len(P); o[f'{lab}: all within 5 km'] = lst(P)
-        if I:
-            o['Hospitals by road'] = lst(I.get('H', [])); o['Schools by road'] = lst(I.get('S', [])); o['Parks by road'] = lst(I.get('P', []))
-            o['Road distances from'] = rd
+        o.update(enrich(lat, lon, r.get('name of the project'), num(r.get('orr connectivity')), num(r.get('airport distance'))))
         out.append(o)
-    dst = os.path.join(ROOT, 'area_property_lists', f'{area}_with_places.csv')
-    w = csv.DictWriter(open(dst, 'w', newline='', encoding='utf-8-sig'), cols + new_cols, extrasaction='ignore')
-    w.writeheader(); w.writerows(out); total += len(out)
-    print(area, len(out), 'rows ->', os.path.basename(dst))
-print('total', total)
+    return list(rows[0].keys()), out
+
+if __name__ == '__main__':
+    total = 0
+    for area in AREAS:
+        cols, out = site_rows(area)
+        dst = os.path.join(ROOT, 'area_property_lists', f'{area}_with_places.csv')
+        w = csv.DictWriter(open(dst, 'w', newline='', encoding='utf-8-sig'), cols + NEW_COLS, extrasaction='ignore')
+        w.writeheader(); w.writerows(out); total += len(out)
+        print(area, len(out), 'rows ->', os.path.basename(dst))
+    print('total', total)
