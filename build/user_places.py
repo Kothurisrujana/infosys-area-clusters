@@ -1,4 +1,4 @@
-"""Places within 5 km of each listing, taken from the user's own FMV files
+"""Google Maps distances (ORR, airport, metro) and places within 5 km of each listing, taken from the user's own FMV files
 (Gachibowli_Property_FMV.csv, Kokapet_Property_FMV.csv, Kondapur_Property_FMV.csv).
 
 Those files give, per project, the distance in km to named places (schools, hospitals, offices, ...).
@@ -68,9 +68,11 @@ for area in FMV:
             if 0 <= d <= MAX_KM:
                 if k not in pidx: pidx[k] = len(places); places.append([show(k), kind(k)])
                 near.append([pidx[k], d])
-        rows.append(dict(area=area, proj=norm(r['name of the project']), pin=p, near=sorted(near, key=lambda x: x[1])))
+        g = lambda c: (lambda v: float(v) if re.fullmatch(r'\d+(\.\d+)?', v) else None)(str(r.get(c) or '').strip())
+        rows.append(dict(area=area, proj=norm(r['name of the project']), pin=p, near=sorted(near, key=lambda x: x[1]),
+                         gm=[g('orr connectivity'), g('airport distance'), g('nearby metro'), r['name of the project'].strip()]))
 
-out, stat = {}, {'project': 0, 'pin': 0, 'none': 0}
+out, gm, stat = {}, {}, {'project': 0, 'pin': 0, 'none': 0}
 for area in SITE:
     for r in csv.DictReader(open(os.path.join(ROOT, 'area_property_lists', f'{area}_site.csv'), encoding='utf-8-sig')):
         p = pin(r.get('lat-lon'))
@@ -85,6 +87,7 @@ for area in SITE:
         stat[how] += 1
         out[jskey(p) + '|' + n] = best['near']
         out.setdefault(jskey(p), best['near'])
-json.dump({'places': places, 'near': out}, open(os.path.join(HERE, 'data', 'user_near.json'), 'w', encoding='utf-8'),
+        gm[jskey(p) + '|' + n] = best['gm']; gm.setdefault(jskey(p), best['gm'])
+json.dump({'places': places, 'near': out, 'gm': gm}, open(os.path.join(HERE, 'data', 'user_near.json'), 'w', encoding='utf-8'),
           ensure_ascii=False, separators=(',', ':'))
 print(len(places), 'places;', stat)

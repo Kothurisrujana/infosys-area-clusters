@@ -973,7 +973,12 @@ const SRC_TXT={google:'Google Maps best route',mapbox:'Mapbox driving route'};
 function userOf(r){const raw=r.raw||{};const get=re=>{for(const k in raw){if(re.test(k.trim()))return raw[k]}return null};
   const n=v=>{const x=parseFloat(String(v??'').replace(/[^\d.]/g,''));return isFinite(x)&&x>0?x:null};
   const orr=n(get(/^orr connectivity$/i)),air=n(get(/^airport distance$/i)),near=String(get(/^nearby places$/i)||'').split(',').map(s=>s.trim()).filter(Boolean);
-  return orr||air||near.length?{orr,air,near}:null}
+  let metro=null,from=null;
+  /* not typed in this listing's row: take them from the matching row of your FMV files (same project, or a map pin within 150 m) */
+  if(r.lat!=null&&(orr==null||air==null)){const nmv=String(get(/^name of the project$/i)||'').toLowerCase().replace(/[^a-z0-9]/g,''),pin=r.lat+','+r.lon;
+    const G=UNEAR.gm&&(UNEAR.gm[pin+'|'+nmv]||UNEAR.gm[pin]);
+    if(G){const o=orr==null?G[0]:orr,a=air==null?G[1]:air;metro=G[2];from=G[3];return o!=null||a!=null||near.length||metro!=null?{orr:o,air:a,metro,near,from}:null}}
+  return orr||air||near.length?{orr,air,metro,near,from}:null}
 const roadOf=r=>r.lat==null?null:(ROADS[r.lat+','+r.lon]||null);
 const approxPin=r=>/label only/i.test((r.raw&&r.raw['location basis'])||'');
 const TL={Heavy:'#dc2626',Busy:'#d97706',Moderate:'#16a34a'};
@@ -1095,9 +1100,10 @@ function listingCardHTML(list){
   const I=infraOf(r),U=userOf(r);
   const ut=U?[U.orr!=null?`<div class="lc-t"><div class="lc-l"><i style="background:${catColor('orr')}"></i>ORR connectivity</div><div class="lc-d">${kmTxt(U.orr)}</div>${kmBar(U.orr,catColor('orr'))}<div class="lc-n">your Google Maps data</div></div>`:'',
     U.air!=null?`<div class="lc-t"><div class="lc-l"><i style="background:#475569"></i>Airport (RGIA)</div><div class="lc-d">${kmTxt(U.air)}</div>${kmBar(U.air,'#475569')}<div class="lc-n">your Google Maps data</div></div>`:'',
+    U.metro!=null?`<div class="lc-t"><div class="lc-l"><i style="background:${catColor('metro')}"></i>Nearest metro</div><div class="lc-d">${kmTxt(U.metro)}</div>${kmBar(U.metro,catColor('metro'))}<div class="lc-n">your Google Maps data</div></div>`:'',
     U.near.length?`<div class="lc-t lc-list"><div class="lc-l"><i style="background:#0c5f68"></i>Nearby places</div>${U.near.slice(0,6).map(x=>`<div class="lc-row"><span>${esc(x)}</span></div>`).join('')}<div class="lc-n"><small>from your listing file</small></div></div>`:''].join(''):'';
   const n5=same?'':near5HTML(r);
-  if(!I)return `<div class="lcard">${head2}${n5}${ut?`<div class="lc-src">Your Google Maps data</div><div class="lc-g">${ut}</div><details class="lc-more"><summary>Other places nearby (straight line, OpenStreetMap)</summary><div class="lc-g">${tiles}</div></details>`:`<div class="lc-g">${tiles}</div>`}<p class="nbsrc">Bars run from 0 to ${CARD_KM} km: a short bar means close. Straight-line distance from the map pin, except the main road (by road). Road distances (Mapbox) were not collected for this map pin yet.</p></div>`;
+  if(!I)return `<div class="lcard">${head2}${n5}${ut?`<div class="lc-src">Your Google Maps data${U.from?` <small>(from your file: ${esc(U.from)})</small>`:''}</div><div class="lc-g">${ut}</div><details class="lc-more"><summary>Other places nearby (straight line, OpenStreetMap)</summary><div class="lc-g">${tiles}</div></details>`:`<div class="lc-g">${tiles}</div>`}<p class="nbsrc">Bars run from 0 to ${CARD_KM} km: a short bar means close. Straight-line distance from the map pin, except the main road (by road). Road distances (Mapbox) were not collected for this map pin yet.</p></div>`;
   const one=(c,lab,nm,d)=>`<div class="lc-t"><div class="lc-l"><i style="background:${c}"></i>${lab}</div><div class="lc-d">${d==null?'–':kmTxt(d)}</div>${d!=null?kmBar(d,c):''}<div class="lc-n">${nm?esc(nm):''}</div></div>`;
   const many=(c,lab,L,n)=>!L||!L.length?'':`<div class="lc-t lc-list"><div class="lc-l"><i style="background:${c}"></i>${lab}</div>${L.slice(0,n).map(([nm,d],i)=>`<div class="lc-row${i?'':' first'}"><span>${esc(nm)}</span><b>${kmTxt(d)}</b></div>${i?'':kmBar(d,c)}`).join('')}</div>`;
   const road=[one('#0c5f68','Infosys office','Gachibowli campus',I.inf).replace('</div></div>',`<br>${infLink(r,'Route from Infosys')}</div></div>`),
@@ -1107,7 +1113,7 @@ function listingCardHTML(list){
     ro?one('#f97316','Main road',ro.main.name,ro.onMain?0.001:ro.mainKm):'',
     many(catColor('hospital'),'Nearest hospitals',I.H,6),many(catColor('school'),'Nearest schools',I.S,6),many(catColor('park'),'Nearest parks',I.P,4)].join('');
   const all=(lab,L)=>L&&L.length?`<div class="lc-all"><b>${lab}</b> ${L.map(([nm,d])=>`${esc(nm)} <span>${kmTxt(d)}</span>`).join(' · ')}</div>`:'';
-  return `<div class="lcard">${head2}${n5}${ut?`<div class="lc-src">Your Google Maps data</div><div class="lc-g">${ut}</div>`:''}<div class="lc-src">By road · ${SRC_TXT[I.s]}</div><div class="lc-g">${road}</div>
+  return `<div class="lcard">${head2}${n5}${ut?`<div class="lc-src">Your Google Maps data${U.from?` <small>(from your file: ${esc(U.from)})</small>`:''}</div><div class="lc-g">${ut}</div>`:''}<div class="lc-src">By road · ${SRC_TXT[I.s]}</div><div class="lc-g">${road}</div>
     <details class="lc-more"><summary>Every hospital, school and park measured for this property</summary>${all('Hospitals',I.H)}${all('Schools',I.S)}${all('Parks',I.P)}</details>
     <details class="lc-more"><summary>Other places nearby (straight line, OpenStreetMap)</summary><div class="lc-g">${tiles}</div></details>
     <p class="nbsrc">Distances are by road (${SRC_TXT[I.s]}); bars run from 0 to ${CARD_KM} km. ${I.s==='google'?'Google gives its fastest route at the time it was read, so a few may be longer than the shortest road.':'Mapbox routes follow real roads and one-way streets; parks were not collected for this area.'}</p></div>`;
@@ -2489,6 +2495,8 @@ function sheetColumns(info){
       {key:'rd_p',label:'Nearest park (road)',get:x=>{const I=infraOf(x.r);return I&&I.P.length?`${I.P[0][0]} (${kmTxt(I.P[0][1])})`:null},order:x=>{const I=infraOf(x.r);return I&&I.P.length?I.P[0][1]:null}},
       {key:'u_orr',label:'ORR connectivity (your Google data)',num:1,get:x=>{const U=userOf(x.r);return U&&U.orr!=null?U.orr:null},order:x=>{const U=userOf(x.r);return U?U.orr:null}},
       {key:'u_air',label:'Airport (your Google data)',num:1,get:x=>{const U=userOf(x.r);return U&&U.air!=null?U.air:null},order:x=>{const U=userOf(x.r);return U?U.air:null}},
+      {key:'u_metro',label:'Metro (your Google data)',num:1,get:x=>{const U=userOf(x.r);return U&&U.metro!=null?U.metro:null},order:x=>{const U=userOf(x.r);return U?U.metro:null}},
+      {key:'u_from',label:'Google data from your file row',get:x=>{const U=userOf(x.r);return U&&U.from?U.from:null}},
       {key:'rd_src',label:'Road distances from',get:x=>{const I=infraOf(x.r);return I?SRC_TXT[I.s]:null}},
       ...NEAREST_KINDS.map(K=>({key:'nn_'+(K.key||K.k),label:K.label,get:x=>{const v=nearestOf(x.r,K);return v?`${v.n} (${kmTxt(v.d)})`:null},order:x=>{const v=nearestOf(x.r,K);return v?v.d:null}})),
       {key:'approach',label:'Approach road',get:x=>{const v=roadOf(x.r);return v?(v.app.name||v.app.kind):null}},
