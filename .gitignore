@@ -13,3 +13,17 @@ portal_pages/
 
 # Raw OpenStreetMap road download (12 MB); re-fetch with build/roads/q_roads.overpassql
 build/roads/roads.json
+
+# Mapbox answers cached on this computer only (Mapbox terms limit storing them publicly)
+build/mapbox/cache/
+
+# Separate website repositories built from this project
+sites/
+
+# Kept on this computer only
+area_property_lists/
+build/mapbox/mapbox_distances.json
+build/data/link_status.json
+build/data/links_99acres_todo.json
+*.bak_*
+*.bak[0-9]*

@@ -9,8 +9,7 @@ ROOT = os.path.dirname(HERE)
 def here(*p): return os.path.join(HERE, *p)
 
 # Built-in area files: add a new area here (name -> CSV in area_property_lists) and rebuild.
-PRELOAD_FILES = {'Gachibowli': 'Gachibowli_Property.csv', 'Nanakramguda': 'Nanakramguda_Property.csv', 'Khajaguda': 'Khajaguda_Property.csv',
-                 'Kokapet': 'Kokapet_Property.csv', 'Kondapur': 'Kondapur_Property.csv', 'Narsingi': 'Narsingi_Property.csv'}
+PRELOAD_FILES = {'Gachibowli': 'Gachibowli_site.csv', 'Kokapet': 'Kokapet_site.csv', 'Kondapur': 'Kondapur_site.csv', 'Narsingi': 'Narsingi_site.csv'}
 
 m = open(os.path.join(ROOT, 'Infosys_9km_Area_Map.html'), encoding='utf-8').read()
 data = re.search(r'AREAS=(\[.*?\]);', m, re.S).group(1)
@@ -38,6 +37,7 @@ t = (open(here('site_template.html'), encoding='utf-8').read()
      .replace('__POIS__', pois)
      .replace('__ROADS__', roads.replace('</', '<\\/'))
      .replace('__HOT__', '[]')
+     .replace('__INFRA__', open(here('data', 'infra.json'), encoding='utf-8').read().replace('</', '<\\/'))
      .replace('__PRELOAD__', json.dumps(pre, ensure_ascii=False).replace('</', '<\\/')))
 os.makedirs(os.path.join(ROOT, 'website'), exist_ok=True)
 open(os.path.join(ROOT, 'website', 'index.html'), 'w', encoding='utf-8').write(t)

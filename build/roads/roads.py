@@ -193,8 +193,11 @@ def addr_road(a):
     return ''
 CG = grid(COLONY)
 root = r'C:/Users/kothu/Downloads/Clustering/area_property_lists/'
-for f in ['Gachibowli', 'Nanakramguda', 'Khajaguda', 'Kokapet', 'Kondapur', 'Narsingi']:
-    for r in csv.DictReader(open(root+f+'_Property.csv', encoding='utf-8-sig')):
+import os
+FILES = [f + '_Property.csv' for f in ['Gachibowli', 'Nanakramguda', 'Khajaguda', 'Kokapet', 'Kondapur', 'Narsingi']] +         [f + '_site.csv' for f in ['Gachibowli', 'Kokapet', 'Kondapur', 'Narsingi']]          # the website's current listing files too
+for f in FILES:
+    if not os.path.exists(root + f): continue
+    for r in csv.DictReader(open(root+f, encoding='utf-8-sig')):
         v = r['lat-lon'].strip()
         if v:
             p_ = tuple(float(x) for x in v.split(',')); pins.add(p_)
