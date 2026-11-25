@@ -1098,12 +1098,12 @@ function listingCardHTML(list){
   const tile=(c,lab,name,d,extra)=>`<div class="lc-t"><div class="lc-l"><i style="background:${c}"></i>${lab}</div><div class="lc-d">${d==null?'–':kmTxt(d)}</div>${d!=null?kmBar(d,c):''}<div class="lc-n">${name||''}${extra||''}</div></div>`;
   const ro=roadOf(r);
   const tiles=[tile('#0c5f68','Infosys office',`Gachibowli campus (straight line)<br>${infLink(r,'Route from Infosys')}`,infKm(r)),
-    ...NEAREST_KINDS.map(K=>{const v=nearestOf(r,K),more=K.k==='orr'?[]:nearestN(r,K,4).slice(1);return tile(kindColor(K),K.label,v?esc(v.n):'',v?v.d:null,more.length?`<div class="lc-next">${more.map(([nm,d])=>`<div><span>${esc(nm)}</span><b>${kmTxt(d)}</b></div>`).join('')}</div>`:'')}),
-    ro?tile('#f97316','Main road (by road)',`${esc(ro.main.name)}<br><small>via ${esc(ro.app.name||cap(ro.app.kind))}</small>`,ro.onMain?0.001:ro.mainKm):''].join('');
+    ...NEAREST_KINDS.filter(K=>!['school','hospital','park'].includes(K.k)).map(K=>{const v=nearestOf(r,K),more=K.k==='orr'?[]:nearestN(r,K,4).slice(1);return tile(kindColor(K),K.label,v?esc(v.n):'',v?v.d:null,more.length?`<div class="lc-next">${more.map(([nm,d])=>`<div><span>${esc(nm)}</span><b>${kmTxt(d)}</b></div>`).join('')}</div>`:'')}),
+    ].join('');
   const I=infraOf(r),U=userOf(r);
   const rngTxt=([a,b])=>a===b?kmTxt(a):`${kmTxt(a).replace(' km','')}–${kmTxt(b)}`;
   const estT=U&&U.est?[['ORR connectivity',catColor('orr'),U.est.orr],['Airport (RGIA)','#475569',U.est.air]].map(([lab,c,R])=>`<div class="lc-t lc-est"><div class="lc-l"><i style="background:${c}"></i>${lab}</div><div class="lc-d">≈ ${rngTxt(R)}</div><span class="kbar"><i style="margin-left:${Math.min(100,R[0]/CARD_KM*100).toFixed(1)}%;width:${Math.max(2,Math.min(100,R[1]/CARD_KM*100)-Math.min(100,R[0]/CARD_KM*100)).toFixed(1)}%;background:${c};opacity:.55"></i></span><div class="lc-n">estimated from ${U.est.n} nearby listings with your Google data (within ${U.est.km} km)</div></div>`).join(''):'';
-  const ut=U&&U.est?estT:U?[U.orr!=null?`<div class="lc-t"><div class="lc-l"><i style="background:${catColor('orr')}"></i>ORR connectivity</div><div class="lc-d">${kmTxt(U.orr)}</div>${kmBar(U.orr,catColor('orr'))}<div class="lc-n">your Google Maps data</div></div>`:'',
+  const ut=U&&U.est?'':U?[U.orr!=null?`<div class="lc-t"><div class="lc-l"><i style="background:${catColor('orr')}"></i>ORR connectivity</div><div class="lc-d">${kmTxt(U.orr)}</div>${kmBar(U.orr,catColor('orr'))}<div class="lc-n">your Google Maps data</div></div>`:'',
     U.air!=null?`<div class="lc-t"><div class="lc-l"><i style="background:#475569"></i>Airport (RGIA)</div><div class="lc-d">${kmTxt(U.air)}</div>${kmBar(U.air,'#475569')}<div class="lc-n">your Google Maps data</div></div>`:'',
     U.metro!=null?`<div class="lc-t"><div class="lc-l"><i style="background:${catColor('metro')}"></i>Nearest metro</div><div class="lc-d">${kmTxt(U.metro)}</div>${kmBar(U.metro,catColor('metro'))}<div class="lc-n">your Google Maps data</div></div>`:'',
     U.near.length?`<div class="lc-t lc-list"><div class="lc-l"><i style="background:#0c5f68"></i>Nearby places</div>${U.near.slice(0,6).map(x=>`<div class="lc-row"><span>${esc(x)}</span></div>`).join('')}<div class="lc-n"><small>from your listing file</small></div></div>`:''].join(''):'';
@@ -1115,8 +1115,7 @@ function listingCardHTML(list){
     I.metro?one(catColor('metro'),'Metro',I.metro[0],I.metro[1]):'',
     I.co?one('#111827','Big company',I.co[0],I.co[1]):'',
     U&&U.orr!=null?'':(I.orr?one(catColor('orr'),'ORR exit',I.orr[0],I.orr[1]):''),
-    ro?one('#f97316','Main road',ro.main.name,ro.onMain?0.001:ro.mainKm):'',
-    many(catColor('hospital'),'Nearest hospitals',I.H,6),many(catColor('school'),'Nearest schools',I.S,6),many(catColor('park'),'Nearest parks',I.P,4)].join('');
+    ].join('');
   const all=(lab,L)=>L&&L.length?`<div class="lc-all"><b>${lab}</b> ${L.map(([nm,d])=>`${esc(nm)} <span>${kmTxt(d)}</span>`).join(' · ')}</div>`:'';
   return `<div class="lcard">${head2}${n5}${ut?`<div class="lc-src">${U.est?'Estimated from your Google Maps data nearby <small>(this listing is not in your files)</small>':'Your Google Maps data'}${U.from?` <small>(from your file: ${esc(U.from)})</small>`:''}</div><div class="lc-g">${ut}</div>`:''}<div class="lc-src">By road · ${SRC_TXT[I.s]}</div><div class="lc-g">${road}</div>
     <details class="lc-more"><summary>Every hospital, school and park measured for this property</summary>${all('Hospitals',I.H)}${all('Schools',I.S)}${all('Parks',I.P)}</details>
