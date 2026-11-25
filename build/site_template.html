@@ -85,6 +85,7 @@ button,select,input{font:inherit;color:inherit}
 .lc-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
 .lc-t{border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:#fff}.lc-l{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;text-transform:uppercase;letter-spacing:.03em}.lc-l i{width:8px;height:8px;border-radius:50%;flex:none}
 .lc-d{font-size:17px;font-weight:700;margin:2px 0}.lc-n{font-size:12px;line-height:1.35}.lc-n small{color:var(--muted)}
+.lc-next{margin-top:4px;border-top:1px dashed var(--line);padding-top:3px}.lc-next div{display:flex;justify-content:space-between;gap:6px;font-size:11.5px;line-height:1.4;color:#334155}.lc-next span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.lc-next b{font-weight:600;white-space:nowrap}
 .n5{border:1px solid #cfe3e1;border-radius:10px;padding:8px 10px;margin:6px 0 10px;background:#f7fbfa}
 .n5t{font-weight:700;font-size:13.5px;margin-bottom:6px}.n5t small{font-weight:400;color:var(--muted);font-size:11.5px;margin-left:6px}
 .n5nh{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;margin:2px 0 4px}
@@ -944,9 +945,9 @@ function near5Of(r){
   return out.length?{src:'osm',list:out.sort((a,b)=>a.d-b.d)}:null}
 function near5HTML(r){
   const X=near5Of(r);if(!X)return'';const C=Object.fromEntries(N5_KINDS.map(([k,,c])=>[k,c]));
-  const per={};const close=X.list.filter(p=>p.d<=1&&(X.src==='file'||(per[p.k]=(per[p.k]||0)+1)<=4)),far=X.list.filter(p=>p.d>1);
+  const per={};const close=X.list.filter(p=>p.d<=1&&(X.src==='file'||(per[p.k]=(per[p.k]||0)+1)<=6)),far=X.list.filter(p=>p.d>1);
   const chip=p=>`<span class="n5c" style="--c:${C[p.k]||'#64748b'}"><i></i>${esc(p.n)} <b>${kmTxt(p.d)}</b></span>`;
-  const groups=N5_KINDS.map(([k,lab,c])=>{const L=far.filter(p=>p.k===k);if(!L.length)return'';const cap=X.src==='osm'?5:8;
+  const groups=N5_KINDS.map(([k,lab,c])=>{const L=far.filter(p=>p.k===k);if(!L.length)return'';const cap=10;
     return `<div class="n5g"><div class="n5h"><i style="background:${c}"></i>${lab} <small>${L.length}</small></div>${L.slice(0,cap).map(p=>`<div class="n5r"><span>${esc(p.n)}</span><b>${kmTxt(p.d)}</b></div>`).join('')}${L.length>cap?`<details><summary>${L.length-cap} more</summary>${L.slice(cap).map(p=>`<div class="n5r"><span>${esc(p.n)}</span><b>${kmTxt(p.d)}</b></div>`).join('')}</details>`:''}</div>`}).join('');
   return `<div class="n5"><div class="n5t">Places within 5 km <small>${X.src==='file'?'from your files (distances as you recorded them)':'from OpenStreetMap, straight line (this listing is not in your files)'}</small></div>
   <div class="n5near"><div class="n5nh">Within 1 km${close.length?` · ${close.length}`:''}</div>${close.length?close.map(chip).join(''):'<span class="n5none">Nothing within 1 km in this list.</span>'}</div>
@@ -1073,6 +1074,10 @@ function nearestOf(r,K){if(r.lat==null)return null;r._nn=r._nn||{};const id=K.ke
   let b=null,bd=1e9;POIS[K.k].forEach(p=>{if(K.ok&&!K.ok(p))return;const d=fastKm(r.lat,r.lon,p[1],p[2]);if(d<bd){bd=d;b=p}});
   return r._nn[id]=b?{n:K.name?K.name(b):b[0],d:bd}:null}
 const infKm=r=>r.lat==null?null:haversine(r.lat,r.lon,HQ[0],HQ[1]);
+/* the n nearest places of one kind (different names), closest first */
+function nearestN(r,K,n){if(r.lat==null)return[];r._nN=r._nN||{};const id=(K.key||K.k)+n;if(r._nN[id])return r._nN[id];
+  const seen=new Set(),L=[];POIS[K.k].forEach(p=>{if(K.ok&&!K.ok(p))return;L.push([K.name?K.name(p):p[0],fastKm(r.lat,r.lon,p[1],p[2])])});
+  return r._nN[id]=L.sort((a,b)=>a[1]-b[1]).filter(([nm])=>{const k=nm.toLowerCase();if(seen.has(k))return false;seen.add(k);return true}).slice(0,n)}
 /* ---------- one listing: a card with every distance ---------- */
 const CARD_KM=5;                                   /* distance bars run from 0 to 5 km */
 const kindColor=K=>K.k==='it'&&K.key==='big'?'#111827':catColor(K.k);
@@ -1085,7 +1090,7 @@ function listingCardHTML(list){
   const tile=(c,lab,name,d,extra)=>`<div class="lc-t"><div class="lc-l"><i style="background:${c}"></i>${lab}</div><div class="lc-d">${d==null?'–':kmTxt(d)}</div>${d!=null?kmBar(d,c):''}<div class="lc-n">${name||''}${extra||''}</div></div>`;
   const ro=roadOf(r);
   const tiles=[tile('#0c5f68','Infosys office',`Gachibowli campus (straight line)<br>${infLink(r,'Route from Infosys')}`,infKm(r)),
-    ...NEAREST_KINDS.map(K=>{const v=nearestOf(r,K);return tile(kindColor(K),K.label,v?esc(v.n):'',v?v.d:null)}),
+    ...NEAREST_KINDS.map(K=>{const v=nearestOf(r,K),more=K.k==='orr'?[]:nearestN(r,K,4).slice(1);return tile(kindColor(K),K.label,v?esc(v.n):'',v?v.d:null,more.length?`<div class="lc-next">${more.map(([nm,d])=>`<div><span>${esc(nm)}</span><b>${kmTxt(d)}</b></div>`).join('')}</div>`:'')}),
     ro?tile('#f97316','Main road (by road)',`${esc(ro.main.name)}<br><small>via ${esc(ro.app.name||cap(ro.app.kind))}</small>`,ro.onMain?0.001:ro.mainKm):''].join('');
   const I=infraOf(r),U=userOf(r);
   const ut=U?[U.orr!=null?`<div class="lc-t"><div class="lc-l"><i style="background:${catColor('orr')}"></i>ORR connectivity</div><div class="lc-d">${kmTxt(U.orr)}</div>${kmBar(U.orr,catColor('orr'))}<div class="lc-n">your Google Maps data</div></div>`:'',
@@ -1100,7 +1105,7 @@ function listingCardHTML(list){
     I.co?one('#111827','Big company',I.co[0],I.co[1]):'',
     U&&U.orr!=null?'':(I.orr?one(catColor('orr'),'ORR exit',I.orr[0],I.orr[1]):''),
     ro?one('#f97316','Main road',ro.main.name,ro.onMain?0.001:ro.mainKm):'',
-    many(catColor('hospital'),'Nearest hospitals',I.H,4),many(catColor('school'),'Nearest schools',I.S,4),many(catColor('park'),'Nearest parks',I.P,3)].join('');
+    many(catColor('hospital'),'Nearest hospitals',I.H,6),many(catColor('school'),'Nearest schools',I.S,6),many(catColor('park'),'Nearest parks',I.P,4)].join('');
   const all=(lab,L)=>L&&L.length?`<div class="lc-all"><b>${lab}</b> ${L.map(([nm,d])=>`${esc(nm)} <span>${kmTxt(d)}</span>`).join(' · ')}</div>`:'';
   return `<div class="lcard">${head2}${n5}${ut?`<div class="lc-src">Your Google Maps data</div><div class="lc-g">${ut}</div>`:''}<div class="lc-src">By road · ${SRC_TXT[I.s]}</div><div class="lc-g">${road}</div>
     <details class="lc-more"><summary>Every hospital, school and park measured for this property</summary>${all('Hospitals',I.H)}${all('Schools',I.S)}${all('Parks',I.P)}</details>
