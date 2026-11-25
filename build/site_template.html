@@ -86,6 +86,7 @@ button,select,input{font:inherit;color:inherit}
 .lc-t{border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:#fff}.lc-l{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;text-transform:uppercase;letter-spacing:.03em}.lc-l i{width:8px;height:8px;border-radius:50%;flex:none}
 .lc-d{font-size:17px;font-weight:700;margin:2px 0}.lc-n{font-size:12px;line-height:1.35}.lc-n small{color:var(--muted)}
 .lc-next{margin-top:4px;border-top:1px dashed var(--line);padding-top:3px}.lc-next div{display:flex;justify-content:space-between;gap:6px;font-size:11.5px;line-height:1.4;color:#334155}.lc-next span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.lc-next b{font-weight:600;white-space:nowrap}
+.lc-est{border-style:dashed}.lc-est .lc-d{color:#334155}
 .n5{border:1px solid #cfe3e1;border-radius:10px;padding:8px 10px;margin:6px 0 10px;background:#f7fbfa}
 .n5t{font-weight:700;font-size:13.5px;margin-bottom:6px}.n5t small{font-weight:400;color:var(--muted);font-size:11.5px;margin-left:6px}
 .n5nh{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;margin:2px 0 4px}
@@ -977,7 +978,9 @@ function userOf(r){const raw=r.raw||{};const get=re=>{for(const k in raw){if(re.
   /* not typed in this listing's row: take them from the matching row of your FMV files (same project, or a map pin within 150 m) */
   if(r.lat!=null&&(orr==null||air==null)){const nmv=String(get(/^name of the project$/i)||'').toLowerCase().replace(/[^a-z0-9]/g,''),pin=r.lat+','+r.lon;
     const G=UNEAR.gm&&(UNEAR.gm[pin+'|'+nmv]||UNEAR.gm[pin]);
-    if(G){const o=orr==null?G[0]:orr,a=air==null?G[1]:air;metro=G[2];from=G[3];return o!=null||a!=null||near.length||metro!=null?{orr:o,air:a,metro,near,from}:null}}
+    if(G){const o=orr==null?G[0]:orr,a=air==null?G[1]:air;metro=G[2];from=G[3];return o!=null||a!=null||near.length||metro!=null?{orr:o,air:a,metro,near,from}:null}
+    const E=UNEAR.est&&UNEAR.est[pin];
+    if(E&&orr==null&&air==null)return{orr:null,air:null,metro:null,near,from:null,est:{orr:[E[0],E[1]],air:[E[2],E[3]],n:E[4],km:E[5]}}}
   return orr||air||near.length?{orr,air,metro,near,from}:null}
 const roadOf=r=>r.lat==null?null:(ROADS[r.lat+','+r.lon]||null);
 const approxPin=r=>/label only/i.test((r.raw&&r.raw['location basis'])||'');
@@ -1098,12 +1101,14 @@ function listingCardHTML(list){
     ...NEAREST_KINDS.map(K=>{const v=nearestOf(r,K),more=K.k==='orr'?[]:nearestN(r,K,4).slice(1);return tile(kindColor(K),K.label,v?esc(v.n):'',v?v.d:null,more.length?`<div class="lc-next">${more.map(([nm,d])=>`<div><span>${esc(nm)}</span><b>${kmTxt(d)}</b></div>`).join('')}</div>`:'')}),
     ro?tile('#f97316','Main road (by road)',`${esc(ro.main.name)}<br><small>via ${esc(ro.app.name||cap(ro.app.kind))}</small>`,ro.onMain?0.001:ro.mainKm):''].join('');
   const I=infraOf(r),U=userOf(r);
-  const ut=U?[U.orr!=null?`<div class="lc-t"><div class="lc-l"><i style="background:${catColor('orr')}"></i>ORR connectivity</div><div class="lc-d">${kmTxt(U.orr)}</div>${kmBar(U.orr,catColor('orr'))}<div class="lc-n">your Google Maps data</div></div>`:'',
+  const rngTxt=([a,b])=>a===b?kmTxt(a):`${kmTxt(a).replace(' km','')}–${kmTxt(b)}`;
+  const estT=U&&U.est?[['ORR connectivity',catColor('orr'),U.est.orr],['Airport (RGIA)','#475569',U.est.air]].map(([lab,c,R])=>`<div class="lc-t lc-est"><div class="lc-l"><i style="background:${c}"></i>${lab}</div><div class="lc-d">≈ ${rngTxt(R)}</div><span class="kbar"><i style="margin-left:${Math.min(100,R[0]/CARD_KM*100).toFixed(1)}%;width:${Math.max(2,Math.min(100,R[1]/CARD_KM*100)-Math.min(100,R[0]/CARD_KM*100)).toFixed(1)}%;background:${c};opacity:.55"></i></span><div class="lc-n">estimated from ${U.est.n} nearby listings with your Google data (within ${U.est.km} km)</div></div>`).join(''):'';
+  const ut=U&&U.est?estT:U?[U.orr!=null?`<div class="lc-t"><div class="lc-l"><i style="background:${catColor('orr')}"></i>ORR connectivity</div><div class="lc-d">${kmTxt(U.orr)}</div>${kmBar(U.orr,catColor('orr'))}<div class="lc-n">your Google Maps data</div></div>`:'',
     U.air!=null?`<div class="lc-t"><div class="lc-l"><i style="background:#475569"></i>Airport (RGIA)</div><div class="lc-d">${kmTxt(U.air)}</div>${kmBar(U.air,'#475569')}<div class="lc-n">your Google Maps data</div></div>`:'',
     U.metro!=null?`<div class="lc-t"><div class="lc-l"><i style="background:${catColor('metro')}"></i>Nearest metro</div><div class="lc-d">${kmTxt(U.metro)}</div>${kmBar(U.metro,catColor('metro'))}<div class="lc-n">your Google Maps data</div></div>`:'',
     U.near.length?`<div class="lc-t lc-list"><div class="lc-l"><i style="background:#0c5f68"></i>Nearby places</div>${U.near.slice(0,6).map(x=>`<div class="lc-row"><span>${esc(x)}</span></div>`).join('')}<div class="lc-n"><small>from your listing file</small></div></div>`:''].join(''):'';
   const n5=same?'':near5HTML(r);
-  if(!I)return `<div class="lcard">${head2}${n5}${ut?`<div class="lc-src">Your Google Maps data${U.from?` <small>(from your file: ${esc(U.from)})</small>`:''}</div><div class="lc-g">${ut}</div><details class="lc-more"><summary>Other places nearby (straight line, OpenStreetMap)</summary><div class="lc-g">${tiles}</div></details>`:`<div class="lc-g">${tiles}</div>`}<p class="nbsrc">Bars run from 0 to ${CARD_KM} km: a short bar means close. Straight-line distance from the map pin, except the main road (by road). Road distances (Mapbox) were not collected for this map pin yet.</p></div>`;
+  if(!I)return `<div class="lcard">${head2}${n5}${ut?`<div class="lc-src">${U.est?'Estimated from your Google Maps data nearby <small>(this listing is not in your files)</small>':'Your Google Maps data'}${U.from?` <small>(from your file: ${esc(U.from)})</small>`:''}</div><div class="lc-g">${ut}</div><details class="lc-more"><summary>Other places nearby (straight line, OpenStreetMap)</summary><div class="lc-g">${tiles}</div></details>`:`<div class="lc-g">${tiles}</div>`}<p class="nbsrc">Bars run from 0 to ${CARD_KM} km: a short bar means close. Straight-line distance from the map pin, except the main road (by road). Road distances (Mapbox) were not collected for this map pin yet.</p></div>`;
   const one=(c,lab,nm,d)=>`<div class="lc-t"><div class="lc-l"><i style="background:${c}"></i>${lab}</div><div class="lc-d">${d==null?'–':kmTxt(d)}</div>${d!=null?kmBar(d,c):''}<div class="lc-n">${nm?esc(nm):''}</div></div>`;
   const many=(c,lab,L,n)=>!L||!L.length?'':`<div class="lc-t lc-list"><div class="lc-l"><i style="background:${c}"></i>${lab}</div>${L.slice(0,n).map(([nm,d],i)=>`<div class="lc-row${i?'':' first'}"><span>${esc(nm)}</span><b>${kmTxt(d)}</b></div>${i?'':kmBar(d,c)}`).join('')}</div>`;
   const road=[one('#0c5f68','Infosys office','Gachibowli campus',I.inf).replace('</div></div>',`<br>${infLink(r,'Route from Infosys')}</div></div>`),
@@ -1113,7 +1118,7 @@ function listingCardHTML(list){
     ro?one('#f97316','Main road',ro.main.name,ro.onMain?0.001:ro.mainKm):'',
     many(catColor('hospital'),'Nearest hospitals',I.H,6),many(catColor('school'),'Nearest schools',I.S,6),many(catColor('park'),'Nearest parks',I.P,4)].join('');
   const all=(lab,L)=>L&&L.length?`<div class="lc-all"><b>${lab}</b> ${L.map(([nm,d])=>`${esc(nm)} <span>${kmTxt(d)}</span>`).join(' · ')}</div>`:'';
-  return `<div class="lcard">${head2}${n5}${ut?`<div class="lc-src">Your Google Maps data${U.from?` <small>(from your file: ${esc(U.from)})</small>`:''}</div><div class="lc-g">${ut}</div>`:''}<div class="lc-src">By road · ${SRC_TXT[I.s]}</div><div class="lc-g">${road}</div>
+  return `<div class="lcard">${head2}${n5}${ut?`<div class="lc-src">${U.est?'Estimated from your Google Maps data nearby <small>(this listing is not in your files)</small>':'Your Google Maps data'}${U.from?` <small>(from your file: ${esc(U.from)})</small>`:''}</div><div class="lc-g">${ut}</div>`:''}<div class="lc-src">By road · ${SRC_TXT[I.s]}</div><div class="lc-g">${road}</div>
     <details class="lc-more"><summary>Every hospital, school and park measured for this property</summary>${all('Hospitals',I.H)}${all('Schools',I.S)}${all('Parks',I.P)}</details>
     <details class="lc-more"><summary>Other places nearby (straight line, OpenStreetMap)</summary><div class="lc-g">${tiles}</div></details>
     <p class="nbsrc">Distances are by road (${SRC_TXT[I.s]}); bars run from 0 to ${CARD_KM} km. ${I.s==='google'?'Google gives its fastest route at the time it was read, so a few may be longer than the shortest road.':'Mapbox routes follow real roads and one-way streets; parks were not collected for this area.'}</p></div>`;
@@ -2496,6 +2501,8 @@ function sheetColumns(info){
       {key:'u_orr',label:'ORR connectivity (your Google data)',num:1,get:x=>{const U=userOf(x.r);return U&&U.orr!=null?U.orr:null},order:x=>{const U=userOf(x.r);return U?U.orr:null}},
       {key:'u_air',label:'Airport (your Google data)',num:1,get:x=>{const U=userOf(x.r);return U&&U.air!=null?U.air:null},order:x=>{const U=userOf(x.r);return U?U.air:null}},
       {key:'u_metro',label:'Metro (your Google data)',num:1,get:x=>{const U=userOf(x.r);return U&&U.metro!=null?U.metro:null},order:x=>{const U=userOf(x.r);return U?U.metro:null}},
+      {key:'u_orr_est',label:'ORR (estimated range)',get:x=>{const U=userOf(x.r);return U&&U.est?`${U.est.orr[0]}–${U.est.orr[1]} km`:null},order:x=>{const U=userOf(x.r);return U&&U.est?U.est.orr[0]:null}},
+      {key:'u_air_est',label:'Airport (estimated range)',get:x=>{const U=userOf(x.r);return U&&U.est?`${U.est.air[0]}–${U.est.air[1]} km`:null},order:x=>{const U=userOf(x.r);return U&&U.est?U.est.air[0]:null}},
       {key:'u_from',label:'Google data from your file row',get:x=>{const U=userOf(x.r);return U&&U.from?U.from:null}},
       {key:'rd_src',label:'Road distances from',get:x=>{const I=infraOf(x.r);return I?SRC_TXT[I.s]:null}},
       ...NEAREST_KINDS.map(K=>({key:'nn_'+(K.key||K.k),label:K.label,get:x=>{const v=nearestOf(x.r,K);return v?`${v.n} (${kmTxt(v.d)})`:null},order:x=>{const v=nearestOf(x.r,K);return v?v.d:null}})),

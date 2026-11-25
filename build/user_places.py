@@ -88,6 +88,25 @@ for area in SITE:
         out[jskey(p) + '|' + n] = best['near']
         out.setdefault(jskey(p), best['near'])
         gm[jskey(p) + '|' + n] = best['gm']; gm.setdefault(jskey(p), best['gm'])
-json.dump({'places': places, 'near': out, 'gm': gm}, open(os.path.join(HERE, 'data', 'user_near.json'), 'w', encoding='utf-8'),
+# Listings not in the user's files: estimate ORR and airport km from the nearest listings that have the user's Google values.
+# ORR: the range of those listings' values. Airport: this listing's straight-line km to RGIA times their road/straight ratios.
+RGIA = (17.2403, 78.4294)
+def hv(p, q):
+    r = math.pi / 180; x = math.sin((q[0] - p[0]) * r / 2) ** 2 + math.cos(p[0] * r) * math.cos(q[0] * r) * math.sin((q[1] - p[1]) * r / 2) ** 2
+    return 12742 * math.asin(math.sqrt(x))
+known = [(tuple(map(float, k.split(','))), v) for k, v in gm.items() if '|' not in k and v[0] is not None and v[1] is not None]
+est, est_n = {}, 0
+for area in SITE:
+    for r in csv.DictReader(open(os.path.join(ROOT, 'area_property_lists', f'{area}_site.csv'), encoding='utf-8-sig')):
+        p = pin(r.get('lat-lon'))
+        if not p or jskey(p) in gm or jskey(p) in est: continue
+        for rad in (1, 2, 3, 5):
+            nb = [(q, v) for q, v in known if km(p, q) <= rad]
+            if len(nb) >= 3: break
+        if not nb: continue
+        o = [v[0] for _, v in nb]; ra = [v[1] / hv(q, RGIA) for q, v in nb]; s = hv(p, RGIA)
+        est[jskey(p)] = [min(o), max(o), round(s * min(ra), 1), round(s * max(ra), 1), len(nb), rad]; est_n += 1
+print('estimated for', est_n, 'map pins')
+json.dump({'places': places, 'near': out, 'gm': gm, 'est': est}, open(os.path.join(HERE, 'data', 'user_near.json'), 'w', encoding='utf-8'),
           ensure_ascii=False, separators=(',', ':'))
 print(len(places), 'places;', stat)
