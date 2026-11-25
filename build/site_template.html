@@ -85,6 +85,16 @@ button,select,input{font:inherit;color:inherit}
 .lc-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
 .lc-t{border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:#fff}.lc-l{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;text-transform:uppercase;letter-spacing:.03em}.lc-l i{width:8px;height:8px;border-radius:50%;flex:none}
 .lc-d{font-size:17px;font-weight:700;margin:2px 0}.lc-n{font-size:12px;line-height:1.35}.lc-n small{color:var(--muted)}
+.n5{border:1px solid #cfe3e1;border-radius:10px;padding:8px 10px;margin:6px 0 10px;background:#f7fbfa}
+.n5t{font-weight:700;font-size:13.5px;margin-bottom:6px}.n5t small{font-weight:400;color:var(--muted);font-size:11.5px;margin-left:6px}
+.n5nh{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;margin:2px 0 4px}
+.n5near{background:#e8f6ee;border:1px solid #b7e2c8;border-radius:8px;padding:6px 8px;margin-bottom:8px}.n5near .n5nh{color:#15803d}
+.n5c{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid #d5e9dc;border-left:4px solid var(--c);border-radius:6px;padding:2px 7px;margin:2px 4px 2px 0;font-size:12.5px}
+.n5c i{display:none}.n5c b{color:#15803d}
+.n5gs{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:6px 12px}
+.n5h{display:flex;align-items:center;gap:6px;font-weight:700;font-size:12px;margin-bottom:2px}.n5h i{width:9px;height:9px;border-radius:50%}.n5h small{color:var(--muted);font-weight:400}
+.n5r{display:flex;justify-content:space-between;gap:8px;font-size:12px;line-height:1.45}.n5r span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.n5r b{font-weight:600;white-space:nowrap}
+.n5g details summary{cursor:pointer;font-size:11.5px;color:var(--muted)}.n5none{font-size:12px;color:var(--muted)}
 .lc-src{font-size:11.5px;font-weight:700;color:#0c5f68;margin:-2px 0 6px}
 .lc-list .lc-row{display:flex;justify-content:space-between;gap:8px;font-size:12px;line-height:1.35;padding:1px 0}.lc-list .lc-row span{overflow:hidden;text-overflow:ellipsis}.lc-list .lc-row.first b{font-size:15px}.lc-list .lc-row b{white-space:nowrap;flex:none}
 .lc-more{margin-top:8px;font-size:12px}.lc-more summary{cursor:pointer;font-weight:600;color:var(--muted)}.lc-all{margin:4px 0;line-height:1.5}.lc-all span{color:var(--muted)}
@@ -919,6 +929,28 @@ const POIS=__POIS__,NEAR_KM=2;
 const ROADS=__ROADS__,BOTTLENECKS=__HOT__;
 /* Road (driving) distances per map pin: Google Maps best route for Gachibowli, Mapbox driving route for Kokapet and Narsingi. */
 const INFRA=__INFRA__;
+/* ---------- places within 5 km of a listing: under 1 km first ---------- */
+const UNEAR=__UNEAR__;
+const N5_KINDS=[['school','Schools & colleges','#7c3aed'],['hospital','Hospitals & clinics','#dc2626'],['office','Offices','#111827'],
+  ['transport','Metro & bus','#0284c7'],['shop','Shops & malls','#d97706'],['park','Parks & lakes','#16a34a'],['fitness','Gyms & sports','#0d9488'],['worship','Temples, mosques & churches','#9333ea'],['other','Other','#64748b']];
+const N5_OSM={school:'school',hospital:'hospital',it:'office',metro:'transport',park:'park'};
+function near5Of(r){
+  if(r.lat==null)return null;const pin=r.lat+','+r.lon;
+  let raw=r.raw||{},nmv='';for(const k in raw)if(/^name of the project$/i.test(k.trim()))nmv=String(raw[k]||'');
+  const L=UNEAR.near[pin+'|'+nmv.toLowerCase().replace(/[^a-z0-9]/g,'')]||UNEAR.near[pin];
+  if(L)return{src:'file',list:L.map(([i,d])=>({n:UNEAR.places[i][0],k:UNEAR.places[i][1],d}))};
+  const out=[];for(const k in N5_OSM){(POIS[k]||[]).forEach(p=>{if(k==='park'&&(p[0]==='Neighbourhood park'||/sez|tech|it park/i.test(p[0])))return;
+    if(k==='hospital'&&/clinic|dental|skin|physician/i.test(p[0]))return;const d=fastKm(r.lat,r.lon,p[1],p[2]);if(d<=5)out.push({n:p[0],k:N5_OSM[k],d})})}
+  return out.length?{src:'osm',list:out.sort((a,b)=>a.d-b.d)}:null}
+function near5HTML(r){
+  const X=near5Of(r);if(!X)return'';const C=Object.fromEntries(N5_KINDS.map(([k,,c])=>[k,c]));
+  const per={};const close=X.list.filter(p=>p.d<=1&&(X.src==='file'||(per[p.k]=(per[p.k]||0)+1)<=4)),far=X.list.filter(p=>p.d>1);
+  const chip=p=>`<span class="n5c" style="--c:${C[p.k]||'#64748b'}"><i></i>${esc(p.n)} <b>${kmTxt(p.d)}</b></span>`;
+  const groups=N5_KINDS.map(([k,lab,c])=>{const L=far.filter(p=>p.k===k);if(!L.length)return'';const cap=X.src==='osm'?5:8;
+    return `<div class="n5g"><div class="n5h"><i style="background:${c}"></i>${lab} <small>${L.length}</small></div>${L.slice(0,cap).map(p=>`<div class="n5r"><span>${esc(p.n)}</span><b>${kmTxt(p.d)}</b></div>`).join('')}${L.length>cap?`<details><summary>${L.length-cap} more</summary>${L.slice(cap).map(p=>`<div class="n5r"><span>${esc(p.n)}</span><b>${kmTxt(p.d)}</b></div>`).join('')}</details>`:''}</div>`}).join('');
+  return `<div class="n5"><div class="n5t">Places within 5 km <small>${X.src==='file'?'from your files (distances as you recorded them)':'from OpenStreetMap, straight line (this listing is not in your files)'}</small></div>
+  <div class="n5near"><div class="n5nh">Within 1 km${close.length?` · ${close.length}`:''}</div>${close.length?close.map(chip).join(''):'<span class="n5none">Nothing within 1 km in this list.</span>'}</div>
+  <div class="n5far"><div class="n5nh">1 to 5 km</div><div class="n5gs">${groups||'<span class="n5none">Nothing else within 5 km.</span>'}</div></div></div>`}
 const infraOf=r=>r.lat==null?null:(INFRA[r.lat+','+r.lon]||null);
 /* the size the portal quoted: super built-up / built-up / carpet / plot, or not stated */
 function basisOf(r){if(r._basis!==undefined)return r._basis;const raw=r.raw||{};let v='';for(const k in raw){if(/^area\s*basis$/i.test(k.trim())){v=String(raw[k]||'');break}}
@@ -1059,7 +1091,8 @@ function listingCardHTML(list){
   const ut=U?[U.orr!=null?`<div class="lc-t"><div class="lc-l"><i style="background:${catColor('orr')}"></i>ORR connectivity</div><div class="lc-d">${kmTxt(U.orr)}</div>${kmBar(U.orr,catColor('orr'))}<div class="lc-n">your Google Maps data</div></div>`:'',
     U.air!=null?`<div class="lc-t"><div class="lc-l"><i style="background:#475569"></i>Airport (RGIA)</div><div class="lc-d">${kmTxt(U.air)}</div>${kmBar(U.air,'#475569')}<div class="lc-n">your Google Maps data</div></div>`:'',
     U.near.length?`<div class="lc-t lc-list"><div class="lc-l"><i style="background:#0c5f68"></i>Nearby places</div>${U.near.slice(0,6).map(x=>`<div class="lc-row"><span>${esc(x)}</span></div>`).join('')}<div class="lc-n"><small>from your listing file</small></div></div>`:''].join(''):'';
-  if(!I)return `<div class="lcard">${head2}${ut?`<div class="lc-src">Your Google Maps data</div><div class="lc-g">${ut}</div><details class="lc-more"><summary>Other places nearby (straight line, OpenStreetMap)</summary><div class="lc-g">${tiles}</div></details>`:`<div class="lc-g">${tiles}</div>`}<p class="nbsrc">Bars run from 0 to ${CARD_KM} km: a short bar means close. Straight-line distance from the map pin, except the main road (by road). Road distances (Mapbox) were not collected for this map pin yet.</p></div>`;
+  const n5=same?'':near5HTML(r);
+  if(!I)return `<div class="lcard">${head2}${n5}${ut?`<div class="lc-src">Your Google Maps data</div><div class="lc-g">${ut}</div><details class="lc-more"><summary>Other places nearby (straight line, OpenStreetMap)</summary><div class="lc-g">${tiles}</div></details>`:`<div class="lc-g">${tiles}</div>`}<p class="nbsrc">Bars run from 0 to ${CARD_KM} km: a short bar means close. Straight-line distance from the map pin, except the main road (by road). Road distances (Mapbox) were not collected for this map pin yet.</p></div>`;
   const one=(c,lab,nm,d)=>`<div class="lc-t"><div class="lc-l"><i style="background:${c}"></i>${lab}</div><div class="lc-d">${d==null?'–':kmTxt(d)}</div>${d!=null?kmBar(d,c):''}<div class="lc-n">${nm?esc(nm):''}</div></div>`;
   const many=(c,lab,L,n)=>!L||!L.length?'':`<div class="lc-t lc-list"><div class="lc-l"><i style="background:${c}"></i>${lab}</div>${L.slice(0,n).map(([nm,d],i)=>`<div class="lc-row${i?'':' first'}"><span>${esc(nm)}</span><b>${kmTxt(d)}</b></div>${i?'':kmBar(d,c)}`).join('')}</div>`;
   const road=[one('#0c5f68','Infosys office','Gachibowli campus',I.inf).replace('</div></div>',`<br>${infLink(r,'Route from Infosys')}</div></div>`),
@@ -1069,7 +1102,7 @@ function listingCardHTML(list){
     ro?one('#f97316','Main road',ro.main.name,ro.onMain?0.001:ro.mainKm):'',
     many(catColor('hospital'),'Nearest hospitals',I.H,4),many(catColor('school'),'Nearest schools',I.S,4),many(catColor('park'),'Nearest parks',I.P,3)].join('');
   const all=(lab,L)=>L&&L.length?`<div class="lc-all"><b>${lab}</b> ${L.map(([nm,d])=>`${esc(nm)} <span>${kmTxt(d)}</span>`).join(' · ')}</div>`:'';
-  return `<div class="lcard">${head2}${ut?`<div class="lc-src">Your Google Maps data</div><div class="lc-g">${ut}</div>`:''}<div class="lc-src">By road · ${SRC_TXT[I.s]}</div><div class="lc-g">${road}</div>
+  return `<div class="lcard">${head2}${n5}${ut?`<div class="lc-src">Your Google Maps data</div><div class="lc-g">${ut}</div>`:''}<div class="lc-src">By road · ${SRC_TXT[I.s]}</div><div class="lc-g">${road}</div>
     <details class="lc-more"><summary>Every hospital, school and park measured for this property</summary>${all('Hospitals',I.H)}${all('Schools',I.S)}${all('Parks',I.P)}</details>
     <details class="lc-more"><summary>Other places nearby (straight line, OpenStreetMap)</summary><div class="lc-g">${tiles}</div></details>
     <p class="nbsrc">Distances are by road (${SRC_TXT[I.s]}); bars run from 0 to ${CARD_KM} km. ${I.s==='google'?'Google gives its fastest route at the time it was read, so a few may be longer than the shortest road.':'Mapbox routes follow real roads and one-way streets; parks were not collected for this area.'}</p></div>`;
