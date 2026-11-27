@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kokapet Village Boundary</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+:root{--bg:#f6f7f5;--panel:#fff;--ink:#1f2a2c;--muted:#5d6b6e;--line:#dfe4e2;--kok:#0c5f68;--out:#d9541e;--touch:#e9a23b;--near:#9aa5a8}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{display:grid;grid-template-columns:340px 1fr;height:100%}
+aside{background:var(--panel);border-right:1px solid var(--line);overflow:auto;padding:16px}
+#map{height:100%}
+h1{font-size:18px;margin:0 0 4px}
+.sub{color:var(--muted);font-size:12.5px;margin:0 0 14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.stat{border:1px solid var(--line);border-radius:8px;padding:8px}
+.stat b{display:block;font-size:20px}
+.stat span{font-size:11.5px;color:var(--muted)}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:16px 0 6px;display:flex;align-items:center;gap:6px}
+h2 i{width:10px;height:10px;border-radius:50%;display:inline-block}
+ul{list-style:none;margin:0;padding:0}
+li{display:flex;justify-content:space-between;gap:8px;padding:5px 6px;border-radius:6px;cursor:pointer}
+li:hover{background:#eef3f2}
+li small{color:var(--muted);white-space:nowrap}
+.note{font-size:11.5px;color:var(--muted);margin-top:16px;border-top:1px solid var(--line);padding-top:10px}
+.lbl{background:none;border:none;box-shadow:none;font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-size:11px;color:#56656a}
+.lbl.k{color:var(--kok);font-size:20px;letter-spacing:.3em}
+.lbl.t{color:#a86a10}
+.nm{white-space:nowrap;font-size:11px;font-weight:600;color:#1f3c40;text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 3px #fff}
+.nm.o{color:#c2410c}.nm small{display:block;font-weight:500;color:#c2410c}
+.tg{background:#fff;padding:5px 8px;border-radius:6px;box-shadow:0 1px 4px #0003;font-size:12px;cursor:pointer;color:#1f2a2c}
+.leaflet-tooltip.pt{font-size:12px;padding:3px 6px}
+@media (max-width:760px){.wrap{grid-template-columns:1fr;grid-template-rows:55% 45%}aside{order:2;border-right:0;border-top:1px solid var(--line)}#map{order:1}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121718;--panel:#1a2123;--ink:#e6ecec;--muted:#9aa8ab;--line:#2c3638}:root:not([data-theme="light"]) li:hover{background:#243032}}
+:root[data-theme="dark"]{--bg:#121718;--panel:#1a2123;--ink:#e6ecec;--muted:#9aa8ab;--line:#2c3638}
+</style>
+</head>
+<body>
+<div class="wrap">
+<aside>
+  <h1>Kokapet village boundary</h1>
+  <p class="sub">Official revenue-village border, the villages that touch it, and the projects from your checked Kokapet file.</p>
+  <div class="stats">
+    <div class="stat"><b id="sIn"></b><span>projects inside</span></div>
+    <div class="stat"><b id="sOut"></b><span>projects just outside</span></div>
+    <div class="stat"><b id="sTouch"></b><span>villages touching</span></div>
+  </div>
+  <h2><i style="background:var(--touch)"></i>Villages touching Kokapet</h2><ul id="lTouch"></ul>
+  <h2><i style="background:var(--near)"></i>Nearby, not touching</h2><ul id="lNear"></ul>
+  <h2><i style="background:var(--out)"></i>Excluded: outside the border</h2><ul id="lOut"></ul>
+  <h2><i style="background:var(--kok)"></i>Included: inside Kokapet</h2><ul id="lIn"></ul>
+  <p class="note">Border: Telangana revenue-village boundary, the same one used on the area map. Project pins: the Lat-Lon column of your checked file (middle pin when a project has several rows). "Outside" distance is the straight distance from the pin to the Kokapet border.</p>
+</aside>
+<div id="map"></div>
+</div>
+<script>
+const D=__DATA__;
+const ll=r=>r.map(x=>[x[0],x[1]]);
+const map=L.map('map',{zoomSnap:.25});
+L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',{subdomains:'abc',maxZoom:19,opacity:.55,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, tiles by OpenStreetMap France'}).addTo(map);
+const centre=p=>p.getBounds().getCenter();
+const km=m=>m>=1000?(m/1000).toFixed(1)+' km':m+' m';
+const label=(at,txt,cls)=>L.marker(at,{interactive:false,icon:L.divIcon({className:'lbl '+cls,html:txt,iconSize:[200,20],iconAnchor:[100,10]})}).addTo(map);
+const add=(ul,html,fn)=>{const li=document.createElement('li');li.innerHTML=html;li.onclick=fn;document.getElementById(ul).appendChild(li)};
+
+D.nearby.forEach(v=>{const p=L.polygon(v.rings.map(ll),{color:'#9aa5a8',weight:1,dashArray:'4 4',fillColor:'#9aa5a8',fillOpacity:.06}).addTo(map)
+  .bindTooltip(`${v.name}: ${km(v.m)} from Kokapet, does not touch`,{sticky:true});
+  label(centre(p),v.name,'');add('lNear',`<span>${v.name}</span><small>${km(v.m)} away</small>`,()=>map.fitBounds(p.getBounds()))});
+D.neighbours.forEach(v=>{const p=L.polygon(v.rings.map(ll),{color:'#e9a23b',weight:1.5,fillColor:'#e9a23b',fillOpacity:.13}).addTo(map)
+  .bindTooltip(`${v.name}: touches Kokapet along about ${km(v.shared_m)} of border`,{sticky:true});
+  label(centre(p),v.name,'t');add('lTouch',`<span>${v.name}</span><small>shares ~${km(v.shared_m)}</small>`,()=>map.fitBounds(p.getBounds()))});
+const K=L.polygon(D.kokapet.map(ll),{color:'#0c5f68',weight:3,fillColor:'#0c5f68',fillOpacity:.07}).addTo(map);
+label(centre(K),'Kokapet','k');
+
+const mk={},names=[];
+D.projects.forEach(p=>{
+  const c=p.inside?'#0c5f68':'#d9541e';
+  const m=L.circleMarker([p.lat,p.lon],{radius:p.inside?5:7,color:'#fff',weight:1.5,fillColor:c,fillOpacity:1}).addTo(map)
+    .bindTooltip(p.inside?`<b>${p.name}</b><br>Inside Kokapet · ${p.n} listing${p.n>1?'s':''}`:`<b>${p.name}</b><br>Outside: in ${p.village}, ${km(p.m)} from the Kokapet border`,{className:'pt',direction:'top',offset:[0,-4]});
+  names.push(L.marker([p.lat,p.lon],{interactive:false,icon:L.divIcon({className:'nm'+(p.inside?'':' o'),html:p.inside?p.name:`${p.name}<small>${p.village} · ${km(p.m)} outside</small>`,iconSize:null,iconAnchor:[-8,8]})}));
+  mk[p.name]=m;
+  const go=()=>{map.setView([p.lat,p.lon],16);m.openTooltip()};
+  p.inside?add('lIn',`<span>${p.name}</span><small>${p.n} listing${p.n>1?'s':''}</small>`,go)
+          :add('lOut',`<span>${p.name}</span><small>${p.village}, ${km(p.m)} out</small>`,go);
+});
+document.getElementById('sIn').textContent=D.projects.filter(p=>p.inside).length;
+document.getElementById('sOut').textContent=D.projects.filter(p=>!p.inside).length;
+document.getElementById('sTouch').textContent=D.neighbours.length;
+map.fitBounds(K.getBounds(),{padding:[30,30]});
+const NL=L.layerGroup(names).addTo(map);
+const Tg=L.control({position:'topright'});Tg.onAdd=()=>{const d=L.DomUtil.create('label','tg');d.innerHTML='<input type="checkbox" checked> Project names';
+  L.DomEvent.disableClickPropagation(d);d.querySelector('input').onchange=e=>e.target.checked?NL.addTo(map):NL.remove();return d};Tg.addTo(map);
+L.control.scale({imperial:false}).addTo(map);
+</script>
+</body>
+</html>
